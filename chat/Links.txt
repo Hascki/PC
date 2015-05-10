@@ -1,0 +1,7 @@
+Website:
+
+https://subinsb.com/group-chat-in-php-with-ajax-jquery-mysql
+
+Demo:
+
+http://demos.subinsb.com/php/chat/
