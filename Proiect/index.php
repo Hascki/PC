@@ -50,25 +50,32 @@ body  {
 .twoColElsLtHdr #mainContent { zoom: 1; padding-top: 15px; }
 
 </style>
-<![endif]--></head>
+<![endif]-->
+<title>Index</title>
+</head>
 
 <body class="twoColElsLtHdr">
 
 <div id="container">
-  <div id="header">
-    <h1 align="center"><font size="7" color="#0C090A"> Buy your own car </font></h1>
-  </div>
+	<div id="header">
+		<h1 align="center"><font size="7" color="#0C090A"> Buy your own car </font></h1>
+	</div>
    <div id="navigare" align="center">
-            <a href="index.html">Acasa</a>
+            <a href="index.php">Acasa</a>
             
             <a href="produse.html">Produse</a>
             
             <a href="contact.html">Contact</a>
-          
+			
+			<a href="account.php">Setari cont</a>
+			
+			<a href="inregistrare.php">Inregistrare</a>
+			
+			<a href="login.php">Login</a>
+			
+			<a href="logout.php">Logout</a>
     </div>
-  
-  
-	</div>
+</div>
 	
 </body>
 </html>
