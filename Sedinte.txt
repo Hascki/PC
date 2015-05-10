@@ -1,6 +1,8 @@
+AUTOVEST
 Echipa: Adi, Bogdan, Dani, Lucian, Stefan
 Done:
 1 mai ora 20 - S01 -11111
 6 mai ora 20 - S02 -11011
+10 mai ora 20 - S03 -11111
 Next:
-10 mai ora 20 - S03
+13 mai ora 20 - S04
