@@ -7,7 +7,7 @@ iframe{
    
 }
 </style>
-<style type="text/css">
+<style type="text/css"> 
 #pos{position: fixed;
     top: 20px;
    
