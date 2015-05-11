@@ -11,21 +11,19 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping database structure for proiectcolectiv
-DROP DATABASE IF EXISTS `proiectcolectiv`;
 CREATE DATABASE IF NOT EXISTS `proiectcolectiv` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `proiectcolectiv`;
 
 
 -- Dumping structure for table proiectcolectiv.categorie
-DROP TABLE IF EXISTS `categorie`;
 CREATE TABLE IF NOT EXISTS `categorie` (
   `Type` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `CatName` varchar(30) NOT NULL,
+  `CatName` varchar(30) COLLATE utf16_romanian_ci NOT NULL,
   PRIMARY KEY (`Type`),
   UNIQUE KEY `CatName` (`CatName`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='Tipurile de vehicule';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci COMMENT='Tipurile de vehicule';
 
--- Dumping data for table proiectcolectiv.categorie: ~2 rows (approximately)
+-- Dumping data for table proiectcolectiv.categorie: ~3 rows (approximately)
 DELETE FROM `categorie`;
 /*!40000 ALTER TABLE `categorie` DISABLE KEYS */;
 INSERT INTO `categorie` (`Type`, `CatName`) VALUES
@@ -36,18 +34,17 @@ INSERT INTO `categorie` (`Type`, `CatName`) VALUES
 
 
 -- Dumping structure for table proiectcolectiv.chat
-DROP TABLE IF EXISTS `chat`;
 CREATE TABLE IF NOT EXISTS `chat` (
   `ChatId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `IdAnunt` int(11) unsigned NOT NULL,
   `UserId` int(11) unsigned NOT NULL,
-  `Text` text NOT NULL,
+  `Text` text COLLATE utf16_romanian_ci NOT NULL,
   PRIMARY KEY (`ChatId`),
   KEY `AnuntComentat` (`IdAnunt`),
   KEY `Comentator` (`UserId`),
   CONSTRAINT `AnuntComentat` FOREIGN KEY (`IdAnunt`) REFERENCES `produse` (`IdAnunt`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Comentator` FOREIGN KEY (`UserId`) REFERENCES `utilizatori` (`UserId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stored Comments';
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci COMMENT='Stored Comments';
 
 -- Dumping data for table proiectcolectiv.chat: ~0 rows (approximately)
 DELETE FROM `chat`;
@@ -56,12 +53,11 @@ DELETE FROM `chat`;
 
 
 -- Dumping structure for table proiectcolectiv.culori
-DROP TABLE IF EXISTS `culori`;
 CREATE TABLE IF NOT EXISTS `culori` (
   `ColorId` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `Culoare` varchar(15) NOT NULL,
+  `Culoare` varchar(15) COLLATE utf16_romanian_ci NOT NULL,
   PRIMARY KEY (`ColorId`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COMMENT='Posibilele culori ale masinilor';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci COMMENT='Posibilele culori ale masinilor';
 
 -- Dumping data for table proiectcolectiv.culori: ~13 rows (approximately)
 DELETE FROM `culori`;
@@ -84,12 +80,11 @@ INSERT INTO `culori` (`ColorId`, `Culoare`) VALUES
 
 
 -- Dumping structure for table proiectcolectiv.emisii
-DROP TABLE IF EXISTS `emisii`;
 CREATE TABLE IF NOT EXISTS `emisii` (
   `EcoId` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `EuroName` varchar(10) NOT NULL,
+  `EuroName` varchar(10) COLLATE utf16_romanian_ci NOT NULL,
   PRIMARY KEY (`EcoId`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COMMENT='Noxele Emise si clasa ecologica';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci COMMENT='Noxele Emise si clasa ecologica';
 
 -- Dumping data for table proiectcolectiv.emisii: ~7 rows (approximately)
 DELETE FROM `emisii`;
@@ -105,17 +100,73 @@ INSERT INTO `emisii` (`EcoId`, `EuroName`) VALUES
 /*!40000 ALTER TABLE `emisii` ENABLE KEYS */;
 
 
+-- Dumping structure for table proiectcolectiv.judete
+CREATE TABLE IF NOT EXISTS `judete` (
+  `JudetId` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `NumeJudet` varchar(50) COLLATE utf16_romanian_ci NOT NULL DEFAULT '0',
+  `PrescurtareJudet` varchar(50) COLLATE utf16_romanian_ci NOT NULL DEFAULT '0',
+  PRIMARY KEY (`JudetId`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci;
+
+-- Dumping data for table proiectcolectiv.judete: ~39 rows (approximately)
+DELETE FROM `judete`;
+/*!40000 ALTER TABLE `judete` DISABLE KEYS */;
+INSERT INTO `judete` (`JudetId`, `NumeJudet`, `PrescurtareJudet`) VALUES
+	(1, 'Alba', 'AB'),
+	(2, 'Arad', 'AR'),
+	(3, 'Arges', 'AG'),
+	(4, 'Bacau', 'BC'),
+	(5, 'Bihor', 'BH'),
+	(6, 'Bistrita-Nasaud', 'BN'),
+	(7, 'Botosani', 'BT'),
+	(8, 'Brasov', 'BV'),
+	(9, 'Braila', 'BR'),
+	(10, 'Buzau', 'BZ'),
+	(11, 'Caras-Severin', 'CS'),
+	(12, 'Calarasi', 'CL'),
+	(13, 'Cluj', 'CJ'),
+	(14, 'Constanta', 'CT'),
+	(15, 'Covasna', 'CV'),
+	(16, 'Dambovita', 'DB'),
+	(17, 'Dolj', 'DJ'),
+	(18, 'Galati', 'GL'),
+	(19, 'Giurgiu', 'GR'),
+	(20, 'Gorj', 'GJ'),
+	(21, 'Harghita', 'HR'),
+	(22, 'Hunedoara', 'HD'),
+	(23, 'Ialomita', 'IL'),
+	(24, 'Iasi', 'IS'),
+	(25, 'Ilfov', 'IF'),
+	(26, 'Maramures', 'MM'),
+	(27, 'Mehedinti', 'MH'),
+	(28, 'Mures', 'MS'),
+	(29, 'Neamt', 'NT'),
+	(30, 'Olt', 'OT'),
+	(31, 'Prahova', 'PH'),
+	(32, 'Satu Mare', 'SM'),
+	(33, 'Salaj', 'SJ'),
+	(34, 'Sibiu', 'SB'),
+	(35, 'Suceava', 'SV'),
+	(36, 'Teleorman', 'TR'),
+	(37, 'Timis', 'TM'),
+	(38, 'Tulcea', 'TL'),
+	(39, 'Vaslui', 'VS'),
+	(40, 'Valcea', 'VL'),
+	(41, 'Vrancea', 'VN'),
+	(42, 'Bucuresti', 'B');
+/*!40000 ALTER TABLE `judete` ENABLE KEYS */;
+
+
 -- Dumping structure for table proiectcolectiv.marci
-DROP TABLE IF EXISTS `marci`;
 CREATE TABLE IF NOT EXISTS `marci` (
   `MakeId` tinyint(3) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id-ul o sa fie folosit ca si cheie straina',
-  `Producator` varchar(20) NOT NULL,
+  `Producator` varchar(20) COLLATE utf16_romanian_ci NOT NULL,
   `Auto` bit(1) NOT NULL,
   `Moto` bit(1) NOT NULL,
   `ATV` bit(1) NOT NULL,
   PRIMARY KEY (`MakeId`),
   UNIQUE KEY `Producator` (`Producator`)
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=latin1 COMMENT='Tabelul contine principalele marci auto';
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci COMMENT='Tabelul contine principalele marci auto';
 
 -- Dumping data for table proiectcolectiv.marci: ~112 rows (approximately)
 DELETE FROM `marci`;
@@ -237,18 +288,17 @@ INSERT INTO `marci` (`MakeId`, `Producator`, `Auto`, `Moto`, `ATV`) VALUES
 
 
 -- Dumping structure for table proiectcolectiv.modele
-DROP TABLE IF EXISTS `modele`;
 CREATE TABLE IF NOT EXISTS `modele` (
   `ModelId` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `MakeId` tinyint(3) unsigned NOT NULL,
-  `ModelName` varchar(30) NOT NULL,
+  `ModelName` varchar(30) COLLATE utf16_romanian_ci NOT NULL,
   `Type` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`ModelId`),
   KEY `Marca` (`MakeId`),
   KEY `Tip` (`Type`),
   CONSTRAINT `Marca` FOREIGN KEY (`MakeId`) REFERENCES `marci` (`MakeId`) ON UPDATE CASCADE,
   CONSTRAINT `Tip` FOREIGN KEY (`Type`) REFERENCES `categorie` (`Type`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1820 DEFAULT CHARSET=latin1 COMMENT='Tabelul contine modelele asociate fiecarui producator';
+) ENGINE=InnoDB AUTO_INCREMENT=1820 DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci COMMENT='Tabelul contine modelele asociate fiecarui producator';
 
 -- Dumping data for table proiectcolectiv.modele: ~1.806 rows (approximately)
 DELETE FROM `modele`;
@@ -2064,7 +2114,6 @@ INSERT INTO `modele` (`ModelId`, `MakeId`, `ModelName`, `Type`) VALUES
 
 
 -- Dumping structure for table proiectcolectiv.pozeanunturi
-DROP TABLE IF EXISTS `pozeanunturi`;
 CREATE TABLE IF NOT EXISTS `pozeanunturi` (
   `PozaId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `IdAnunt` int(11) unsigned NOT NULL,
@@ -2072,7 +2121,7 @@ CREATE TABLE IF NOT EXISTS `pozeanunturi` (
   PRIMARY KEY (`PozaId`),
   KEY `Anunt` (`IdAnunt`),
   CONSTRAINT `Anunt` FOREIGN KEY (`IdAnunt`) REFERENCES `produse` (`IdAnunt`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Host for photos';
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci COMMENT='Host for photos';
 
 -- Dumping data for table proiectcolectiv.pozeanunturi: ~0 rows (approximately)
 DELETE FROM `pozeanunturi`;
@@ -2081,10 +2130,9 @@ DELETE FROM `pozeanunturi`;
 
 
 -- Dumping structure for table proiectcolectiv.produse
-DROP TABLE IF EXISTS `produse`;
 CREATE TABLE IF NOT EXISTS `produse` (
   `IdAnunt` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `DataCreere` date NOT NULL DEFAULT '0000-00-00',
+  `DataCreere` date NOT NULL,
   `Categorie` tinyint(3) unsigned NOT NULL,
   `IdVanzator` int(11) unsigned NOT NULL,
   `MakeId` tinyint(3) unsigned NOT NULL,
@@ -2102,10 +2150,10 @@ CREATE TABLE IF NOT EXISTS `produse` (
   `ClasaEuro` tinyint(3) unsigned NOT NULL,
   `Emisi` smallint(5) unsigned NOT NULL COMMENT 'Emisii CO2/l',
   `Culoare` tinyint(3) unsigned NOT NULL,
-  `VIN` varchar(15) NOT NULL COMMENT 'Serie Sasiu',
-  `Combustibil` varchar(1) NOT NULL COMMENT '1=benzina, 2=motorina, 3=hibrid si continuati daca vreti',
-  `Distributie` varchar(1) NOT NULL COMMENT '1=manuala, 2=secventiala, 3=automata',
-  `Climatizare` varchar(1) NOT NULL COMMENT '0=fara ac, 1=ac manual, 2=ac automat',
+  `VIN` varchar(15) COLLATE utf16_romanian_ci NOT NULL COMMENT 'Serie Sasiu',
+  `Combustibil` varchar(1) COLLATE utf16_romanian_ci NOT NULL COMMENT '1=benzina, 2=motorina, 3=hibrid si continuati daca vreti',
+  `Distributie` varchar(1) COLLATE utf16_romanian_ci NOT NULL COMMENT '1=manuala, 2=secventiala, 3=automata',
+  `Climatizare` varchar(1) COLLATE utf16_romanian_ci NOT NULL COMMENT '0=fara ac, 1=ac manual, 2=ac automat',
   `SIA` bit(1) NOT NULL COMMENT 'Sistem de incalzire auxiliar',
   `IC` bit(1) NOT NULL COMMENT 'Inchidere centralizata',
   `RV` bit(1) NOT NULL COMMENT 'Regulator de viteza',
@@ -2121,7 +2169,7 @@ CREATE TABLE IF NOT EXISTS `produse` (
   `ESP` bit(1) NOT NULL,
   `Integrala` bit(1) NOT NULL COMMENT '4x4',
   `Xenon` bit(1) NOT NULL,
-  `Promovare` varchar(1) DEFAULT NULL COMMENT '0>1>2=gratis',
+  `Promovare` varchar(1) COLLATE utf16_romanian_ci NOT NULL COMMENT '0>1>2=gratis',
   PRIMARY KEY (`IdAnunt`),
   KEY `MarcaP` (`MakeId`),
   KEY `ModelP` (`ModelId`),
@@ -2135,32 +2183,36 @@ CREATE TABLE IF NOT EXISTS `produse` (
   CONSTRAINT `MarcaP` FOREIGN KEY (`MakeId`) REFERENCES `marci` (`MakeId`) ON UPDATE CASCADE,
   CONSTRAINT `ModelP` FOREIGN KEY (`ModelId`) REFERENCES `modele` (`ModelId`) ON UPDATE CASCADE,
   CONSTRAINT `Vanzator` FOREIGN KEY (`IdVanzator`) REFERENCES `utilizatori` (`UserId`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Anunturile cu masini de vanzare';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci COMMENT='Anunturile cu masini de vanzare';
 
 -- Dumping data for table proiectcolectiv.produse: ~0 rows (approximately)
 DELETE FROM `produse`;
 /*!40000 ALTER TABLE `produse` DISABLE KEYS */;
+INSERT INTO `produse` (`IdAnunt`, `DataCreere`, `Categorie`, `IdVanzator`, `MakeId`, `ModelId`, `Kilometraj`, `DataFabricatie`, `Pret`, `Putere`, `CaiPutere`, `Capacitate`, `NrLocuri`, `MMA`, `CostTimbru`, `CostRCA`, `ClasaEuro`, `Emisi`, `Culoare`, `VIN`, `Combustibil`, `Distributie`, `Climatizare`, `SIA`, `IC`, `RV`, `SIE`, `GE`, `Nav`, `SP`, `Servo`, `TD`, `JA`, `Carlig`, `ABS`, `ESP`, `Integrala`, `Xenon`, `Promovare`) VALUES
+	(6, '2015-05-11', 1, 1, 77, 1356, 123456, '2010-08-06', 8999, 120, 160, 2000, 5, 1800, 100, 400, 6, 160, 9, 'Vin123', '2', '1', '1', b'1', b'1', b'1', b'1', b'1', b'1', b'1', b'1', b'1', b'1', b'1', b'1', b'1', b'1', b'1', '0');
 /*!40000 ALTER TABLE `produse` ENABLE KEYS */;
 
 
 -- Dumping structure for table proiectcolectiv.profiles
-DROP TABLE IF EXISTS `profiles`;
 CREATE TABLE IF NOT EXISTS `profiles` (
   `ProfileId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `Nume` varchar(15) DEFAULT NULL,
-  `Prenume` varchar(30) DEFAULT NULL,
-  `Telefon` varchar(12) DEFAULT NULL,
-  `AdresaEmail` varchar(35) DEFAULT NULL,
-  `Localitate` varchar(15) DEFAULT NULL,
-  `Strada` varchar(30) DEFAULT NULL,
-  `Bloc` varchar(5) DEFAULT NULL,
-  `Numar` varchar(5) DEFAULT NULL,
-  `Scara` varchar(5) DEFAULT NULL,
-  `Etaj` varchar(5) DEFAULT NULL,
-  `Apartament` varchar(5) DEFAULT NULL,
+  `Nume` varchar(15) COLLATE utf16_romanian_ci DEFAULT NULL,
+  `Prenume` varchar(30) COLLATE utf16_romanian_ci DEFAULT NULL,
+  `Telefon` varchar(12) COLLATE utf16_romanian_ci DEFAULT NULL,
+  `AdresaEmail` varchar(35) COLLATE utf16_romanian_ci DEFAULT NULL,
+  `Judet` tinyint(3) unsigned DEFAULT NULL,
+  `Localitate` varchar(15) COLLATE utf16_romanian_ci DEFAULT NULL,
+  `Strada` varchar(30) COLLATE utf16_romanian_ci DEFAULT NULL,
+  `Bloc` varchar(5) COLLATE utf16_romanian_ci DEFAULT NULL,
+  `Numar` varchar(5) COLLATE utf16_romanian_ci DEFAULT NULL,
+  `Scara` varchar(5) COLLATE utf16_romanian_ci DEFAULT NULL,
+  `Etaj` varchar(5) COLLATE utf16_romanian_ci DEFAULT NULL,
+  `Apartament` varchar(5) COLLATE utf16_romanian_ci DEFAULT NULL,
   `Avatar` mediumblob COMMENT '16Mb MaximSize',
-  PRIMARY KEY (`ProfileId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Datele utilizatorilor';
+  PRIMARY KEY (`ProfileId`),
+  KEY `Judet` (`Judet`),
+  CONSTRAINT `Judet` FOREIGN KEY (`Judet`) REFERENCES `judete` (`JudetId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci COMMENT='Datele utilizatorilor';
 
 -- Dumping data for table proiectcolectiv.profiles: ~0 rows (approximately)
 DELETE FROM `profiles`;
@@ -2169,7 +2221,6 @@ DELETE FROM `profiles`;
 
 
 -- Dumping structure for table proiectcolectiv.promotii
-DROP TABLE IF EXISTS `promotii`;
 CREATE TABLE IF NOT EXISTS `promotii` (
   `PromoId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `AnuntId` int(11) unsigned NOT NULL DEFAULT '0',
@@ -2179,7 +2230,7 @@ CREATE TABLE IF NOT EXISTS `promotii` (
   PRIMARY KEY (`PromoId`),
   KEY `Id` (`AnuntId`),
   CONSTRAINT `Id` FOREIGN KEY (`AnuntId`) REFERENCES `produse` (`IdAnunt`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Aici o sa fie stocate reducerile de pret';
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci COMMENT='Aici o sa fie stocate reducerile de pret';
 
 -- Dumping data for table proiectcolectiv.promotii: ~0 rows (approximately)
 DELETE FROM `promotii`;
@@ -2188,15 +2239,14 @@ DELETE FROM `promotii`;
 
 
 -- Dumping structure for table proiectcolectiv.style
-DROP TABLE IF EXISTS `style`;
 CREATE TABLE IF NOT EXISTS `style` (
   `StyleId` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `TypeId` tinyint(3) unsigned NOT NULL,
-  `Tip` varchar(30) NOT NULL,
+  `Tip` varchar(30) COLLATE utf16_romanian_ci NOT NULL,
   PRIMARY KEY (`StyleId`),
   KEY `Type` (`TypeId`),
   CONSTRAINT `Type` FOREIGN KEY (`TypeId`) REFERENCES `categorie` (`Type`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1 COMMENT='Stilul Vehiculului';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf16 COLLATE=utf16_romanian_ci COMMENT='Stilul Vehiculului';
 
 -- Dumping data for table proiectcolectiv.style: ~18 rows (approximately)
 DELETE FROM `style`;
@@ -2224,7 +2274,6 @@ INSERT INTO `style` (`StyleId`, `TypeId`, `Tip`) VALUES
 
 
 -- Dumping structure for table proiectcolectiv.utilizatori
-DROP TABLE IF EXISTS `utilizatori`;
 CREATE TABLE IF NOT EXISTS `utilizatori` (
   `UserId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID-ul userului, care o sa fie folosit la identificarea lui in comentarii sau ca vanzator',
   `UserName` varchar(15) COLLATE utf16_romanian_ci NOT NULL,
