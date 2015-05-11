@@ -75,7 +75,6 @@ $sql=mysql_query("SELECT Producator,ModelName,Poza,Kilometraj,DataFabricatie,Pre
 echo "<table>";
 while ($row=mysql_fetch_array($sql)) {
 //echo get_bit_fields($row); ".get_climatizare($row)." ".get_bit_fields($row["ABS"])."
-echo get_combustibil($row["Combustibil"]);
 echo "<tr><td rowspan=2 width=225 height=204>".'<img src="data:image/jpeg;base64,'.base64_encode($row['Poza']).'" width=225 height=200>'."</td><td width=54><font size=4><b>$row[Producator]</b></font></td><td ><font size=3><b>$row[ModelName]</b></font></td>
 <td width=429>
   <form action=tel.php method=POST>
