@@ -82,7 +82,7 @@ echo "<tr><td rowspan=2 width=225 height=204>".'<img src="data:image/jpeg;base64
    <input type=submit name=submit_one value=Cumpara />
   </form>
 </td></tr>
-<tr><td ><dl>$row[Culoare]</dl></td><td width=429><dl>$row[4]</dl></td><td width=176><b>Pret:<br>euro</b></td></tr>";
+<tr><td ><dl>$row[Culoare]</dl></td><td width=429><dl>$row[CaiPutere]</dl></td><td width=176><b>Pret:<br>$row[Pret] euro</b></td></tr>";
 }
 echo "</table>";
 
