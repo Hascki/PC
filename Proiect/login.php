@@ -29,7 +29,11 @@
 		}
 		if (!$eroare)
 		{
+			/*
 			if (strlen($nume) !== (strlen($nume) - strlen(substr(strrev($nume), 0, strpos(strrev($nume), '@')))))
+				$isEmail = true;
+			*/
+			if (filter_var($nume, FILTER_VALIDATE_EMAIL))
 				$isEmail = true;
 			$nume = mysqli_real_escape_string($conexiune2, $nume);
 			$parola = mysqli_real_escape_string($conexiune2, $parola);
@@ -42,17 +46,20 @@
 			{
 				$rez = mysqli_fetch_array($rez);
 				$nume = $_SESSION["login"] = $rez[1];
+				$_SESSION['userID'] = $rez[0];
 				header("location:index.php");
 			}
 			else
 			{			
 				$mesaj =  "Numele sau parola sunt incorecte! Daca nu v-ați creat un cont vă puteți înregistra <a href = \"inregistrare.php\">aici</a>.";
 				$_SESSION["login"] = "";
+				$_SESSION["userID"] = "";
 			}
 			mysqli_free_result($rez);
 		}
 	}
 ?>
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -125,6 +132,7 @@ body  {
 			<a href="logout.php">Logout</a>
     </div>
 </div>
+<div align = "left">
 <form name = "form_login" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method = "post">
 	<table>
 		<tr>
@@ -147,6 +155,7 @@ body  {
 		</tr>
 	</table>
 </form>
+</div>
 <div align = "left">
 	<?php echo $mesaj ?>
 </div>
