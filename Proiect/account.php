@@ -274,7 +274,6 @@
 				$paramsArray[] = & $parameters[$i];
 			if (strlen(implode($errorsArray)) === 0)
 			{
-				print($query);
 				if ($stmt = mysqli_prepare($conexiune2, $query))
 				{
 					call_user_func_array(array($stmt, 'bind_param'), $paramsArray);
@@ -327,8 +326,6 @@
 			$judete .= " selected";
 		$judete .= ">" . $row[1] . "</option>";
 	}
-	print_r($errorsArray);
-	echo "   " . strlen(implode($errorsArray)) . "   " . (strlen(implode($errorsArray)) === 0);
 ?>
 <!DOCTYPE html>
 <html>
