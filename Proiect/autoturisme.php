@@ -58,18 +58,6 @@ $r="Automat";
 return $r;
 }
 
-function get_poluare($field)
-{
-$r='';
-if($field=="0")
-{
-$r="Non-euro";
-}
-else{
-$r="Euro ".$field;
-}
-return $r;
-}
 
 $selMaker = $selModel = ""; //Marca selectata/Model selectat
 $stareListaModele = ""; // Activeaza sau dezactiveaza casuta cu modele
@@ -182,7 +170,7 @@ else
 	$selModel = mysql_real_escape_string($selModel);
 	$_SESSION['selMaker']=$selMaker;
 	$_SESSION['selModel']=$selModel;
-	$sql = "SELECT `Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `pozeanunturi`, `produse`,`modele`,`marci` WHERE `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
+	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`,`pozeanunturi`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
 	// Daca nu s-a ales optiunea Toate
 	if ($selModel != 9999)
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";
@@ -204,8 +192,8 @@ else
 			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer condiționat</th><td></td><th>Cutie</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";
 			$rezultate .= "<td height = '60' align='center'>".get_climatizare($row['climatizare'])."</td><td></td><td td align='center'>";
 			$rezultate .= "".get_distributie($row['distributie'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
-			$rezultate .= "<td align='center'>" . get_poluare($row['clasaeuro'])  . "</td><td></td><td>";
-			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . "</td>";
+			$rezultate .= "<td align='center'>".$row['EuroName']. "</td><td></td><td>";
+			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
 			$rezultate .="<td border = '0'><form action='detalii1.php' method=POST><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
 		}
 	}
