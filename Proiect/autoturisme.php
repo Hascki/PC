@@ -13,7 +13,7 @@ $r="Benzina";
 }
 elseif($field=="2")
 {
-$r="Diesel";
+$r="Motorina";
 }
 elseif($field=="3")
 {
@@ -180,6 +180,8 @@ else
 	$_SESSION['models'] = $models;
 	$selMaker = mysql_real_escape_string($selMaker);
 	$selModel = mysql_real_escape_string($selModel);
+	$_SESSION['selMaker']=$selMaker;
+	$_SESSION['selModel']=$selModel;
 	$sql = "SELECT `Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `pozeanunturi`, `produse`,`modele`,`marci` WHERE `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
 	// Daca nu s-a ales optiunea Toate
 	if ($selModel != 9999)
@@ -192,20 +194,19 @@ else
 	{
 		while ($row = mysql_fetch_array($result))
 		{
-			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >Poza</th><th align = 'center'>". $row['Producator'] ."</th><td></td><th>Culoare</th><td></td><th style>Data fabricatiei</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td><th align = 'center'>Kilometraj</th></tr>";
-			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td>";
-			$rezultate .= "<td height = '60' valign = 'top'>" . $row['ModelName'] . "</td><td></td><td>";
+			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricatiei</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
+			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
 			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
 			$col = mysql_query($sql);
 			$col = mysql_fetch_array($col);
 			$rezultate .= "" . $col['culoare'] . "</td><td></td><td>" . $row['datafabricatie'] . "</td><td></td><td>";
 			$rezultate .= get_combustibil($row['combustibil']);
-			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer conditionat</th><td></td><th>Cutie</th><td></td><th style>Capacitate cilindrica</th><td></td><th>Norma poluare</th><td></td><td></td><td></td><th colspan = '2' align='left'>Pret(€)</th></tr><tr>";
+			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer conditionat</th><td></td><th>Cutie</th><td></td><th style>Capacitate cilindrica</th><td></td><th>Norma poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";
 			$rezultate .= "<td height = '60' align='center'>".get_climatizare($row['climatizare'])."</td><td></td><td td align='center'>";
 			$rezultate .= "".get_distributie($row['distributie'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
 			$rezultate .= "<td align='center'>Euro " . $row['clasaeuro'] . "</td><td></td><td>";
 			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " Euro</td>";
-			$rezultate .="<td border = '0'><form action=tel.php method=POST><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='cumpara' value='Cumpara' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
+			$rezultate .="<td border = '0'><form action='detalii.php' method=POST><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
 		}
 	}
 	
