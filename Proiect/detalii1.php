@@ -110,7 +110,7 @@ $selModel=$_SESSION['selModel'];
 			$rezultat .= "<td height = '60' align='center'>".get_climatizare($row['climatizare'])."</td><td></td><td td align='center'>";
 			$rezultat .= "".get_distributie($row['distributie'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
 			$rezultat .= "<td align='center'>" . get_poluare($row['clasaeuro']) . "</td><td></td><td>";
-			$rezultat .= "<td></td> <td align='center'>" . $row['pret'] . " Euro</td>";
+			$rezultat .= "<td></td> <td align='center'>" . $row['pret'] . "</td>";
 			$rezultat .="<td border = '0' align='center'><form action='tel.php' method=POST><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='cumpara' value='Cumpara' /></form></td></tr>";
 			$rezultat .="<tr><th height='30' rowspan='6'>Dotări opționale</th><th height='40' align='center'>Sistem de încălzire auxiliar</th><th></th><th>Închidere centralizată</th><th></th><th>Regulator de viteză</th><th></th><th>Scaune încălzite electric</th><th></th><th></th><th></th><th>Geamuri electrice</th></tr>";
 			$rezultat .="<tr align='center'><td height='20'>".get_bit_fields($row['SIA'])."</td><td></td><td>".get_bit_fields($row['IC'])."</td><td></td><td>".get_bit_fields($row['RV'])."</td><td></td><td>".get_bit_fields($row['SIE'])."</td><td></td><td></td><td></td><td>".get_bit_fields($row['GE'])."</td></tr>";

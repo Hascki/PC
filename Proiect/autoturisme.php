@@ -205,7 +205,7 @@ else
 			$rezultate .= "<td height = '60' align='center'>".get_climatizare($row['climatizare'])."</td><td></td><td td align='center'>";
 			$rezultate .= "".get_distributie($row['distributie'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
 			$rezultate .= "<td align='center'>" . get_poluare($row['clasaeuro'])  . "</td><td></td><td>";
-			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " Euro</td>";
+			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . "</td>";
 			$rezultate .="<td border = '0'><form action='detalii1.php' method=POST><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
 		}
 	}
