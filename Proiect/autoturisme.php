@@ -58,19 +58,19 @@ $r="Automat";
 return $r;
 }
 
-function get_bit_fields($field)
+function get_poluare($field)
 {
 $r='';
 if($field=="0")
 {
-$r="NU";
+$r="Non-euro";
 }
-elseif($field=="1")
-{
-$r="DA";
+else{
+$r="Euro ".$field;
 }
 return $r;
 }
+
 $selMaker = $selModel = ""; //Marca selectata/Model selectat
 $stareListaModele = ""; // Activeaza sau dezactiveaza casuta cu modele
 $makers = $models = "";
@@ -194,17 +194,17 @@ else
 	{
 		while ($row = mysql_fetch_array($result))
 		{
-			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricatiei</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
+			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
 			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
 			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
 			$col = mysql_query($sql);
 			$col = mysql_fetch_array($col);
 			$rezultate .= "" . $col['culoare'] . "</td><td></td><td>" . $row['datafabricatie'] . "</td><td></td><td>";
 			$rezultate .= get_combustibil($row['combustibil']);
-			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer conditionat</th><td></td><th>Cutie</th><td></td><th style>Capacitate cilindrica</th><td></td><th>Norma poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";
+			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer condiționat</th><td></td><th>Cutie</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";
 			$rezultate .= "<td height = '60' align='center'>".get_climatizare($row['climatizare'])."</td><td></td><td td align='center'>";
 			$rezultate .= "".get_distributie($row['distributie'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
-			$rezultate .= "<td align='center'>Euro " . $row['clasaeuro'] . "</td><td></td><td>";
+			$rezultate .= "<td align='center'>" . get_poluare($row['clasaeuro'])  . "</td><td></td><td>";
 			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " Euro</td>";
 			$rezultate .="<td border = '0'><form action='detalii1.php' method=POST><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
 		}
