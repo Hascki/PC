@@ -72,25 +72,12 @@ $r="DA";
 return $r;
 }
 
-function get_poluare($field)
-{
-$r='';
-if($field=="0")
-{
-$r="Non-euro";
-}
-else{
-$r="Euro ".$field;
-}
-return $r;
-}
-
 
 $_SESSION['idanunt']=$_POST['idAnunt'];
 $rezultat = "";
 $selMaker=$_SESSION['selMaker'];
 $selModel=$_SESSION['selModel'];
-	$sql = "SELECT `Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `pozeanunturi`, `produse`,`modele`,`marci` WHERE `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
+	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`,`pozeanunturi`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
 	if ($selModel != 9999)
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";
 		$sql .=" ORDER by Promovare ASC";
@@ -109,8 +96,8 @@ $selModel=$_SESSION['selModel'];
 			$rezultat .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer condiționat</th><td></td><th>Cutie</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Preț(€)</th></tr><tr>";
 			$rezultat .= "<td height = '60' align='center'>".get_climatizare($row['climatizare'])."</td><td></td><td td align='center'>";
 			$rezultat .= "".get_distributie($row['distributie'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
-			$rezultat .= "<td align='center'>" . get_poluare($row['clasaeuro']) . "</td><td></td><td>";
-			$rezultat .= "<td></td> <td align='center'>" . $row['pret'] . "</td>";
+			$rezultat .= "<td align='center'>" . $row['EuroName'] . "</td><td></td><td>";
+			$rezultat .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
 			$rezultat .="<td border = '0' align='center'><form action='tel.php' method=POST><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='cumpara' value='Cumpara' /></form></td></tr>";
 			$rezultat .="<tr><th height='30' rowspan='6'>Dotări opționale</th><th height='40' align='center'>Sistem de încălzire auxiliar</th><th></th><th>Închidere centralizată</th><th></th><th>Regulator de viteză</th><th></th><th>Scaune încălzite electric</th><th></th><th></th><th></th><th>Geamuri electrice</th></tr>";
 			$rezultat .="<tr align='center'><td height='20'>".get_bit_fields($row['SIA'])."</td><td></td><td>".get_bit_fields($row['IC'])."</td><td></td><td>".get_bit_fields($row['RV'])."</td><td></td><td>".get_bit_fields($row['SIE'])."</td><td></td><td></td><td></td><td>".get_bit_fields($row['GE'])."</td></tr>";
