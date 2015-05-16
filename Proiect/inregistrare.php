@@ -125,6 +125,11 @@ body  {
 {
 	color: #FF0000;
 }
+
+.succes
+{
+	color: #008000;
+}
 </style><!--[if IE]>
 <style type="text/css"> 
 
@@ -133,6 +138,34 @@ body  {
 
 </style>
 <![endif]-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+$(document).ready(function()
+{
+	$("#email").focusout(function()
+	{
+		$.post("checkEmail.php",
+		{
+			email: $("#email").val()
+		},
+		function(data)
+		{
+			data = $.trim(data);
+			if (data === "Email valabil.")
+			{
+				$("span:first").removeClass("error");
+				$("span:first").addClass("succes");
+			}
+			else
+			{
+				$("span:first").removeClass("succes");
+				$("span:first").addClass("error");
+			}
+			$("span:first").text(" " + data);
+		});
+	});
+});
+</script>
 <title>Înregistrare</title>
 </head>
 
@@ -162,25 +195,19 @@ body  {
 <form name = "form_inregistrare" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method = "post">
 	<table>
 	<tr>
-		<td>
-			<input type = "email" name = "email" maxlength = "30" value = "<?php echo $email ?>" placeholder = "Email utilizator">
-			<span class = "error"><?php echo " " . $emailErr; ?></span>
-		</td>
+		<td><input id = "email" type = "email" name = "email" maxlength = "30" value = "<?php echo $email ?>" placeholder = "Email utilizator"></td>
+		<td><span class = "error"><?php echo " " . $emailErr; ?></span></td>
 	</tr>
 	<tr>
-		<td>
-			<input type = "password" name = "parola" maxlength = "10" placeholder = "Parolă">
-			<span class = "error"><?php echo " " . $parolaErr; ?></span>
-		</td>
+		<td><input type = "password" name = "parola" maxlength = "10" placeholder = "Parolă"></td>
+		<td><span class = "error"><?php echo " " . $parolaErr; ?></span></td>
 	</tr>
 	<tr>
-		<td>
-			<input type = "password" name = "parola_confirm" maxlength = "10" placeholder = "Confirmă parola">
-			<span class = "error"><?php echo " " . $parola_confirmErr; ?></span>
-		</td>
+		<td><input type = "password" name = "parola_confirm" maxlength = "10" placeholder = "Confirmă parola"></td>
+		<td><span class = "error"><?php echo " " . $parola_confirmErr; ?></span></td>
 	</tr>
 	<tr>
-		<td colspan = "2"><input type = "submit" name = "submit" value = "Înregistrează"></td>
+		<td><input type = "submit" name = "submit" value = "Înregistrează"></td>
 	</tr>
 	</table>
 </form>
