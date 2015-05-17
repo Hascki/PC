@@ -119,7 +119,16 @@ body  {
 	height: 50px;
 	font-size : 1em;
 	font-weight:bolder;
-	
+
+.succes
+{
+	color: #008000;
+}
+
+.error
+{
+	color: #FF0000;
+}
 }
 </style><!--[if IE]>
 <style type="text/css"> 
