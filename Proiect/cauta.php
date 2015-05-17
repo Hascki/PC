@@ -70,10 +70,29 @@ $r="Euro ".$field;
 }
 return $r;
 }
+/*$c=0;
+	if ($c==1){
+	unset ($_SESSION['makers']);
+	
+	unset ($_SESSION['models']);
+	
+	unset ($_SESSION['categories']);
+	$_SESSION['makers']='';
+	$_SESSION['models']='';
+	$_SESSION['categories']='';
+	unset ($models);
+	*/
+	/*
+	if (!(isset($_SESSION['selMaker'])))
+	$_SESSION['selMaker']='';
+	if (!(isset($_SESSION['selModel'])))
+	$_SESSION['selModel']='';
+	(isset($_POST['marci']))&&(isset($_POST['modele']))&&(isset($_POST['categorii']))&&
+*/
 
-$selCategory=$selMaker = $selModel = ""; //Marca selectata/Model selectat
-$stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
-$categories = $makers = $models = "";
+$selCategory = $selMaker = $selModel = ""; //Marca selectata/Model selectat
+$stareListaCategorii = $stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
+$categories = $makers = $models = "0";
 $rezultate = "";
 
 function get_categories()
@@ -88,18 +107,34 @@ function get_categories()
 	}
 }
 
-function get_makers()
+function get_makers($selCategory)
 {
 	// Extrage din baza de date marcile de masini
-	$sql = "SELECT MakeId,Producator FROM marci where Auto=1";
+	$category = mysql_real_escape_string($selCategory);
+	$sql = "SELECT MakeId,Producator FROM marci";
+	
+	if ($category == 1)
+		$sql .= " where Auto = 1";
+	elseif ($category == 2){
+		$sql .= " where `Moto` = 1";
+	}
+	elseif ($category == 3){
+		$sql .= " where ATV = 1";
+	}
+	elseif ($category == 9999){
+		$sql .= "";
+	}
 	$result = mysql_query($sql);
 	global $makers;
 	$makers = '<option value = "0"> Alegeti marca </option>';
+	//$makers .= '<option value="9999">Toate</option>';
 	while ($row = mysql_fetch_array($result)) 
 	{
 		$makers.='<option value="' . $row["MakeId"] . '">' . $row["Producator"] . '</option>';
 	}
+	
 }
+ 
 function get_models($selMaker)
 {
 	// Extrage modelele in functie de marca primita ca parametru
@@ -134,34 +169,80 @@ function change_selected($optionList, $selected = '0')
 	
 }
 
-if (!isset($_POST['marci']) && !isset($_POST['modele']))
+if (!isset($_POST['categorii'])&&!isset($_POST['marci']) && !isset($_POST['modele']))
 {
+echo "f1";
+//global $c;$c=1;
 	// Prima data cand se intra pe pagina
 	get_categories();
 	$_SESSION['categories'] = $categories;
 	//get_makers();
 	//$_SESSION['makers'] = $makers;
-	$stareListaModele = "disabled";
+	//$stareListaModele = "disabled";
 }
-else if (isset($_POST['marci']) && !isset($_POST['modele']))
-{
-	// Daca s-a ales un model iar lista de modele era dezactivata
+
+else if (isset($_POST['categorii'])&&!isset($_POST['marci']) && !isset($_POST['modele']))
+{echo "f2";
+	//
+	$categories = $_SESSION['categories'];
+	$selCategory = $_POST['categorii'];
+	$categories= change_selected($categories, $selCategory);
+	get_makers($selCategory);
+	$_SESSION['categories'] = $categories;
+	$_SESSION['makers'] = $makers;
+	$selMaker = "0";
+	//$stareListaModele = "disabled";
+}
+
+else if (isset($_POST['categorii'])&&isset($_POST['marci']) && !isset($_POST['modele'])&& $_POST['marci'] === $_POST['lastSelMaker'])
+{echo "f2.2";
+	//
+	$categories = $_SESSION['categories'];
+	$selCategory = $_POST['categorii'];
+	$categories= change_selected($categories, $selCategory);
+	get_makers($selCategory);
+	$_SESSION['categories'] = $categories;
+	$_SESSION['makers'] = $makers;
+	$selMaker=$_POST['marci'];
+}
+
+else if (isset($_POST['categorii'])&&isset($_POST['marci']) && !isset($_POST['modele'])&& $_POST['marci'] !== $_POST['lastSelMaker'])
+{echo "f3";
+	//
+	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
 	$selMaker = $_POST['marci'];
-	$makers = change_selected($makers, $selMaker);
+	$selCategory = $_POST['categorii'];
+	$makers= change_selected($makers, $selMaker);
 	get_models($selMaker);
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
 }
+
+else if (isset($_POST['categorii'])&&isset($_POST['marci']) && !isset($_POST['modele'])&& $_POST['categorii'] !== $_POST['lastSelCategory'])
+{echo "f3.3";
+	//
+	$categories = $_SESSION['categories'];
+	//$makers=$_SESSION['makers'];
+	$selCategory = $_POST['categorii'];
+	$categories= change_selected($categories, $selCategory);
+	get_makers($selCategory);
+	//$makers= change_selected($makers);
+	$_SESSION['categories'] = $categories;
+	$_SESSION['makers']=$makers;
+	//$stareListaModele = "disabled";
+
+}
+
 else if ((isset($_POST['marci']) && isset($_POST['modele'])) && $_POST['marci'] == 0)
-{
+{echo "f4";
 	// Daca se alege prima optiune din lista marcilor se dezactiveaza lista de modele. Un fel de buton de restart.
 	$stareListaModele = "disabled";
 	$makers = $_SESSION['makers'];
 	$makers = change_selected($makers);
 }
 else if ((isset($_POST['marci']) && isset($_POST['modele'])) && $_POST['modele'] == 0)
-{
+{echo "f5";
 	// Daca este activa optiunea default din lista de modele.
 	$selMaker = $_POST['marci'];
 	$makers = $_SESSION['makers'];
@@ -171,9 +252,10 @@ else if ((isset($_POST['marci']) && isset($_POST['modele'])) && $_POST['modele']
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
 }
-else if ((isset($_POST['marci']) && isset($_POST['modele']) && isset($_POST['lastSelMaker'])) && $_POST['marci'] !== $_POST['lastSelMaker'])
-{
+else if ((isset($_POST['categorii']))&&(isset($_POST['marci']) && isset($_POST['modele']) && isset($_POST['lastSelMaker'])) && $_POST['marci'] !== $_POST['lastSelMaker'])
+{echo "f33333";
 	// Cand se trece de la o marca la alta sa se reseteze lista de modele, id-ul marcii selectate.
+	$categories = $_SESSION['categories'];
 	$selMaker = $_POST['marci'];
 	$makers = $_SESSION['makers'];
 	$makers = change_selected($makers, $selMaker);
@@ -181,20 +263,47 @@ else if ((isset($_POST['marci']) && isset($_POST['modele']) && isset($_POST['las
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
 }
+else if (((isset($_POST['categorii']))&&(isset($_POST['marci']) && (isset($_POST['modele']))) && isset($_POST['lastSelCategory'])) && $_POST['categorii'] !== $_POST['lastSelCategory'])
+{echo "f4444";
+//echo $_POST['categorii'];
+//echo $_POST['lastSelCategory'];
+$categories = $_SESSION['categories'];
+//$makers=$_SESSION['makers'];
+$selCategory = $_POST['categorii'];
+$categories= change_selected($categories, $selCategory);
+get_makers($selCategory);
+//$makers= change_selected($makers);
+$_SESSION['categories'] = $categories;
+$_SESSION['makers']=$makers;
+//$stareListaModele = "disabled";
+}
 else
-{
+{echo "f5555";
 	// Aici se ajunge cand s-a ales o marca si un model si se poate cauta in tabelul de anunturi.
 	// Daca numarul de randuri este 0 inseamna ca nu exista nici un anunt care sa respecte cerintele selectate
 	// si se va afisa un mesaj.
+	if ((isset($_POST['marci'])))
 	$selMaker = $_POST['marci'];
+	if ((isset($_POST['modele'])))
 	$selModel = $_POST['modele'];
+	global $rezultate;
+	if ((isset($_POST['categorii'])))
+	$selCategory = $_POST['categorii'];
+	if ((isset($_SESSION['categories'])))
+	$categories = $_SESSION['categories'];
+	if ((isset($_SESSION['makers'])))
 	$makers = $_SESSION['makers'];
+	if ((isset($_SESSION['models'])))
 	$models = $_SESSION['models'];
+	$makers = change_selected($makers, $selMaker);
 	$models = change_selected($models, $selModel);
+	$_SESSION['categories']=$categories;
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
+	$selCategory = mysql_real_escape_string($selCategory);
 	$selMaker = mysql_real_escape_string($selMaker);
 	$selModel = mysql_real_escape_string($selModel);
+	echo $selMaker;
 	$_SESSION['selMaker']=$selMaker;
 	$_SESSION['selModel']=$selModel;
 	$sql = "SELECT `Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `pozeanunturi`, `produse`,`modele`,`marci` WHERE `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
@@ -257,7 +366,7 @@ else
 		</select>
 	</div>
 	<div id="lista_marci1">
-		<select name="marci" onchange = "this.form.submit();">
+		<select name="marci" <?php echo $stareListaMarci ?> onchange = "this.form.submit();">
 			<?php  echo $makers; ?>
 		</select>
 	</div>
@@ -266,6 +375,7 @@ else
 			<?php echo $models; ?>
 		</select>
 	</div>
+	<input type = "hidden" name = "lastSelCategory" value = "<?php echo $selCategory; ?>">
 	<input type = "hidden" name = "lastSelMaker" value = "<?php echo $selMaker; ?>">
 </form>
 <div id = "rezultate">
