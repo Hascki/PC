@@ -2,80 +2,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-
-<style type="text/css"> 
-
-body  {
-	font-family:Lucida Console, Monospace;
-	background-image: url("imagini/bam3.jpg");
-	
-	text-align: center; 
-		
-}
-
-.twoColElsLtHdr #container { 
-	width: 1200px;  
-	
-	margin: auto auto;
-	
-	text-align: left;
-	} 
-	
-.twoColElsLtHdr #header { 
-	
-	padding: 10px 10px;
-	height: 100px;
-	} 
-	
-.twoColElsLtHdr #navigare { 
-	
-	padding: 10px 10px;
-	height: 50px;
-	font-size : 1em;
-	font-weight:bolder;
-	
-} 
-
-
-
-
-
-
-
-</style><!--[if IE]>
-<style type="text/css"> 
-
-.twoColElsLtHdr #sidebar1 { padding-top: 30px; }
-.twoColElsLtHdr #mainContent { zoom: 1; padding-top: 15px; }
-
-</style>
-<![endif]-->
+<link rel = "stylesheet" type = "text/css" href = "styles/meniu.css">
+<link rel = "stylesheet" type = "text/css" href = "styles/fundal.css">
 <title>Index</title>
 </head>
 
-<body class="twoColElsLtHdr">
-
-<div id="container">
-	<div id="header">
-		<h1 align="center"><font size="7" color="#0C090A"> Buy your own car </font></h1>
-	</div>
-   <div id="navigare" align="center">
-            <a href="index.php">Acasa</a>
-            
-            <a href="produse.html">Produse</a>
-            
-            <a href="contact.html">Contact</a>
-			
-			<a href="account.php">Setari cont</a>
-			
-			<a href="inregistrare.php">Inregistrare</a>
-			
-			<a href="login.php">Login</a>
-			
-			<a href="logout.php">Logout</a>
-    </div>
+<body>
+<div class = "header">
+<?php include "meniu.php" ?>
 </div>
-	
+<div class = "container">
+	<div id="content" class = "pane">
+		<img src="http://lorempixel.com/1009/800/cats"/>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et ante eu lacus mattis egestas. Ut auctor massa id leo semper, sit amet finibus risus molestie. Proin rhoncus, erat sit amet aliquam maximus, nisi leo varius arcu, ut egestas ante urna ac metus. In rhoncus enim sed sodales consectetur. Donec massa arcu, elementum eu consectetur ac, consectetur ac nibh. Ut aliquet tortor id leo lacinia laoreet. Aenean id laoreet risus, semper dictum ipsum. Praesent pulvinar vestibulum facilisis. Maecenas vel dolor a ipsum convallis elementum sed sed est.
+	</div>
+	<div id = "left" class = "pane">
+		<img src="http://lorempixel.com/180/300/nature"/>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et ante eu lacus mattis egestas. Ut auctor massa id leo semper, sit amet finibus risus molestie. Proin rhoncus, erat sit amet aliquam maximus, nisi leo varius arcu, ut egestas ante urna ac metus. In rhoncus enim sed sodales consectetur. Donec massa arcu, elementum eu consectetur ac, consectetur ac nibh. Ut aliquet tortor id leo lacinia laoreet. Aenean id laoreet risus, semper dictum ipsum. Praesent pulvinar vestibulum facilisis. Maecenas vel dolor a ipsum convallis elementum sed sed est.
+	</div>
+	<div id = "right" class = "pane">
+		<img src="http://lorempixel.com/180/500/food"/>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et ante eu lacus mattis egestas. Ut auctor massa id leo semper, sit amet finibus risus molestie. Proin rhoncus, erat sit amet aliquam maximus, nisi leo varius arcu, ut egestas ante urna ac metus. In rhoncus enim sed sodales consectetur. Donec massa arcu, elementum eu consectetur ac, consectetur ac nibh. Ut aliquet tortor id leo lacinia laoreet. Aenean id laoreet risus, semper dictum ipsum. Praesent pulvinar vestibulum facilisis. Maecenas vel dolor a ipsum convallis elementum sed sed est.
+	</div>
+</div>
+<div class = "footer"></div>
 </body>
 </html>

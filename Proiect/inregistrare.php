@@ -88,6 +88,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <style type="text/css"> 
 
 body  {
@@ -119,16 +120,6 @@ body  {
 	font-size : 1em;
 	font-weight:bolder;
 	
-} 
-
-.error
-{
-	color: #FF0000;
-}
-
-.succes
-{
-	color: #008000;
 }
 </style><!--[if IE]>
 <style type="text/css"> 
@@ -206,7 +197,7 @@ $(document).ready(function()
 		<td><input type = "password" name = "parola_confirm" maxlength = "10" placeholder = "Confirmă parola"></td>
 		<td><span class = "error"><?php echo " " . $parola_confirmErr; ?></span></td>
 	</tr>
-	<tr>
+	<tr align = "left">
 		<td><input type = "submit" name = "submit" value = "Înregistrează"></td>
 	</tr>
 	</table>
