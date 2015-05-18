@@ -1,8 +1,8 @@
 <?php
 //error_reporting(E_ALL); - Comentat fiindca afiseaza warning-uri fiindca se foloseste mysql
 $hostname="localhost";
-$username="admin";
-$password="admin";
+$username="root";
+$password="";
 $database="proiectcolectiv";
 // Recomand sa inlocuim mysql cu mysqli fiindca mysql ii deprecated. Nu l-am sters fiindca n-am vrut sa stric tot site-ul.
 $conexiune=mysql_connect($hostname,$username,$password)

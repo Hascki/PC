@@ -2,6 +2,11 @@
 {
 	color: #E6E68A;
 	min-width: 840px;
+	border-bottom-style: inset;
+	border-bottom-width: 10px;
+	border-bottom-color: #E6E68A;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 }
 
 .meniu ul
@@ -16,7 +21,7 @@
 
 .meniu ul #curenta
 {
-	background: #E6E68A;
+	background: #F5F5D0;
 	color: #30363D;
 }
 
@@ -57,19 +62,19 @@
 	height: 40px;
 }
 
-#acasa, #produse, #setari, #contact
+.leftBtn
 {
 	float: left;
 }
 
-#register, #login, #logout
+.rightBtn
 {
 	float: right;
 }
 
 .meniu a 
 {
-	color: #E6E68A;
+	color: #F5F5D0;
 	text-decoration: none;
 	display: block;
 	transition: .3s background-color;
