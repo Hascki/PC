@@ -82,7 +82,7 @@ function get_models($selMaker)
 	// Extrage modelele in functie de marca primita ca parametru
 	 global $conexiune;
 	$maker = mysqli_real_escape_string($conexiune,$selMaker);
-	$sql = "SELECT `modelid`, `modelname` FROM `modele` WHERE `makeid` = '$maker'";
+	$sql = "SELECT `modelid`, `modelname` FROM `modele` WHERE `makeid` = '$maker' and `Type`=1";
 	$result = mysqli_query($conexiune,$sql);
 	global $models;
 	$models = '<option value="0" selected>Selectati modelul</option>';
