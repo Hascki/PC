@@ -209,7 +209,7 @@ else if (isset($_POST['categorii'])&&isset($_POST['marci']) && !isset($_POST['mo
 	$selMaker=$_POST['marci'];
 }
 
-else if (isset($_POST['categorii'])&&isset($_POST['marci']) && !isset($_POST['modele'])&& $_POST['marci'] !== $_POST['lastSelMaker'])
+else if (isset($_POST['categorii'])&&isset($_POST['marci']) && !isset($_POST['modele'])&& $_POST['marci'] !== $_POST['lastSelMaker']&& $_POST['categorii'] === $_POST['lastSelCategory'])
 {echo "f3";
 	//
 	$categories = $_SESSION['categories'];
@@ -222,6 +222,18 @@ else if (isset($_POST['categorii'])&&isset($_POST['marci']) && !isset($_POST['mo
 	$_SESSION['models'] = $models;
 }
 
+/*else if (isset($_POST['categorii'])&&isset($_POST['marci']) && !isset($_POST['modele'])&& $_POST['marci'] !== $_POST['lastSelMaker']&& $_POST['categorii'] !== $_POST['lastSelCategory'])
+{echo "f3.1";
+	//
+	$categories = $_SESSION['categories'];
+	$makers = $_SESSION['makers'];
+	$selMaker = $_POST['marci'];
+	$selCategory = $_POST['categorii'];
+	$makers= change_selected($makers, $selMaker);
+	get_models($selMaker);
+	$_SESSION['makers'] = $makers;
+	$_SESSION['models'] = $models;
+}*/
 else if (isset($_POST['categorii'])&&isset($_POST['marci']) && !isset($_POST['modele'])&& $_POST['categorii'] !== $_POST['lastSelCategory'])
 {echo "f3.3";
 	//
@@ -244,9 +256,10 @@ else if ((isset($_POST['marci']) && isset($_POST['modele'])) && $_POST['marci'] 
 	$makers = $_SESSION['makers'];
 	$makers = change_selected($makers);
 }
-else if ((isset($_POST['marci']) && isset($_POST['modele'])) && $_POST['modele'] == 0)
+else if ((isset($_POST['categorii']))&&(isset($_POST['marci']) && isset($_POST['modele']))&&$_POST['modele'] == 0)
 {echo "f5";
 	// Daca este activa optiunea default din lista de modele.
+	$categories = $_SESSION['categories'];
 	$selMaker = $_POST['marci'];
 	$makers = $_SESSION['makers'];
 	$makers = change_selected($makers, $selMaker);
@@ -325,7 +338,7 @@ else
 			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
 			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
 			$col = mysqli_query($conexiune,$sql);
-			$col = mysqli_fetch_array($conexiune,$col);
+			$col = mysqli_fetch_array($col);
 			$rezultate .= "" . $col['culoare'] . "</td><td></td><td>" . $row['datafabricatie'] . "</td><td></td><td>";
 			$rezultate .= get_combustibil($row['combustibil']);
 			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer condiționat</th><td></td><th>Cutie</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";
