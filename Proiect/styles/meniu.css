@@ -2,11 +2,7 @@
 {
 	color: #E6E68A;
 	min-width: 840px;
-	border-bottom-style: inset;
-	border-bottom-width: 10px;
-	border-bottom-color: #E6E68A;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
+	margin-bottom: 10px;
 }
 
 .meniu ul
@@ -21,7 +17,7 @@
 
 .meniu ul #curenta
 {
-	background: #F5F5D0;
+	background: #E6E68A;
 	color: #30363D;
 }
 
@@ -74,7 +70,7 @@
 
 .meniu a 
 {
-	color: #F5F5D0;
+	color: #E6E68A;
 	text-decoration: none;
 	display: block;
 	transition: .3s background-color;
