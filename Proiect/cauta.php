@@ -97,11 +97,12 @@ $rezultate = "";
 
 function get_categories()
 {
+	global $conexiune;
 	$sql = "SELECT Type,CatName FROM categorie";
-	$result = mysql_query($sql);
+	$result = mysqli_query($conexiune,$sql);
 	global $categories;
 	$categories = '<option value = "0"> Alegeti categoria </option>';
-	while ($row = mysql_fetch_array($result)) 
+	while ($row = mysqli_fetch_array($result)) 
 	{
 		$categories.='<option value="' . $row["Type"] . '">' . $row["CatName"] . '</option>';
 	}
@@ -109,8 +110,9 @@ function get_categories()
 
 function get_makers($selCategory)
 {
+	global $conexiune;
 	// Extrage din baza de date marcile de masini
-	$category = mysql_real_escape_string($selCategory);
+	$category = mysqli_real_escape_string($conexiune,$selCategory);
 	$sql = "SELECT MakeId,Producator FROM marci";
 	
 	if ($category == 1)
@@ -124,11 +126,11 @@ function get_makers($selCategory)
 	elseif ($category == 9999){
 		$sql .= "";
 	}
-	$result = mysql_query($sql);
+	$result = mysqli_query($conexiune,$sql);
 	global $makers;
 	$makers = '<option value = "0"> Alegeti marca </option>';
 	//$makers .= '<option value="9999">Toate</option>';
-	while ($row = mysql_fetch_array($result)) 
+	while ($row = mysqli_fetch_array($result)) 
 	{
 		$makers.='<option value="' . $row["MakeId"] . '">' . $row["Producator"] . '</option>';
 	}
@@ -137,14 +139,15 @@ function get_makers($selCategory)
  
 function get_models($selMaker)
 {
+	global $conexiune;
 	// Extrage modelele in functie de marca primita ca parametru
-	$maker = mysql_real_escape_string($selMaker);
+	$maker = mysqli_real_escape_string($conexiune,$selMaker);
 	$sql = "SELECT `modelid`, `modelname` FROM `modele` WHERE `makeid` = '$maker'";
-	$result = mysql_query($sql);
+	$result = mysqli_query($conexiune,$sql);
 	global $models;
 	$models = '<option value="0" selected>Selectati modelul</option>';
 	$models .= '<option value="9999">Toate</option>';
-	While ($row = mysql_fetch_array($result))
+	While ($row = mysqli_fetch_array($result))
 		$models .= '<option value="' . $row["modelid"] . '"> ' . $row["modelname"] . ' </option>';
 }
 
@@ -300,9 +303,9 @@ else
 	$_SESSION['categories']=$categories;
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
-	$selCategory = mysql_real_escape_string($selCategory);
-	$selMaker = mysql_real_escape_string($selMaker);
-	$selModel = mysql_real_escape_string($selModel);
+	$selCategory = mysqli_real_escape_string($conexiune,$selCategory);
+	$selMaker = mysqli_real_escape_string($conexiune,$selMaker);
+	$selModel = mysqli_real_escape_string($conexiune,$selModel);
 	echo $selMaker;
 	$_SESSION['selMaker']=$selMaker;
 	$_SESSION['selModel']=$selModel;
@@ -311,18 +314,18 @@ else
 	if ($selModel != 9999)
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";
 		$sql .=" ORDER by Promovare ASC";
-	$result = mysql_query($sql);
-	if (mysql_num_rows($result) === 0)
+	$result = mysqli_query($conexiune,$sql);
+	if (mysqli_num_rows($result) === 0)
 		$rezultate = "<tr><td>Ne pare rau, nu a fost gasit niciun anunt dupa criteriile de cautare selectate!</td></tr>";
 	else
 	{
-		while ($row = mysql_fetch_array($result))
+		while ($row = mysqli_fetch_array($result))
 		{
 			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
 			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
 			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
-			$col = mysql_query($sql);
-			$col = mysql_fetch_array($col);
+			$col = mysqli_query($conexiune,$sql);
+			$col = mysqli_fetch_array($conexiune,$col);
 			$rezultate .= "" . $col['culoare'] . "</td><td></td><td>" . $row['datafabricatie'] . "</td><td></td><td>";
 			$rezultate .= get_combustibil($row['combustibil']);
 			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer condiționat</th><td></td><th>Cutie</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";

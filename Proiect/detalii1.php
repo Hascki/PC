@@ -81,16 +81,16 @@ $selModel=$_SESSION['selModel'];
 	if ($selModel != 9999)
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";
 		$sql .=" ORDER by Promovare ASC";
-	$result = mysql_query($sql);
+	$result = mysqli_query($conexiune,$sql);
 	do{
-	$row = mysql_fetch_array($result);
+	$row = mysqli_fetch_array($result);
    }while ($row['idanunt']!=$_SESSION['idanunt']);
 		
 			$rezultat .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
 			$rezultat .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
 			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
-			$col = mysql_query($sql);
-			$col = mysql_fetch_array($col);
+			$col = mysqli_query($conexiune,$sql);
+			$col = mysqli_fetch_array($col);
 			$rezultat .= "" . $col['culoare'] . "</td><td></td><td>" . $row['datafabricatie'] . "</td><td></td><td>";
 			$rezultat .= get_combustibil($row['combustibil']);
 			$rezultat .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer condiționat</th><td></td><th>Cutie</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Preț(€)</th></tr><tr>";
