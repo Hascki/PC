@@ -60,8 +60,9 @@ return $r;
 
 
 $selCategory = $selMaker = $selModel = ""; //Marca selectata/Model selectat
-$stareListaCategorii = $stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
- $categories = $makers = $models = "0";
+$stareListaCombustibil = $stareListaCategorii = $stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
+$categories = $makers = $models = "0";
+$combustibil = "";
 $rezultate = "";
 
 function get_categories()
@@ -145,7 +146,7 @@ function change_selected($optionList, $selected = '0')
 	
 }
 
-if (!isset($_POST['categorii'])&&!isset($_POST['marci']) && !isset($_POST['modele']))
+if (!isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']))
 {
 echo "f1";
 	// Prima data cand se intra pe pagina
@@ -153,11 +154,11 @@ echo "f1";
 	$_SESSION['categories'] = $categories;
 }
 
-else if (isset($_POST['categorii'])&&!isset($_POST['marci']) && !isset($_POST['modele']))
+else if (isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']))
 {echo "f2";
 	//
 	$categories = $_SESSION['categories'];
-	$selCategory = $_POST['categorii'];
+	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
 	get_makers($selCategory);
 	$_SESSION['categories'] = $categories;
@@ -166,84 +167,84 @@ else if (isset($_POST['categorii'])&&!isset($_POST['marci']) && !isset($_POST['m
 	//$stareListaModele = "disabled";
 }
 
-else if (isset($_POST['categorii'])&&isset($_POST['marci']) && !isset($_POST['modele'])&& $_POST['categorii'] !== $_POST['lastSelCategory']&&$_POST['categorii']!=0)
+else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['modele'])&& $_GET['categorii'] !== $_GET['lastSelCategory']&&$_GET['categorii']!=0)
 {echo "f3";
 	//
 	$categories = $_SESSION['categories'];
-	$selCategory = $_POST['categorii'];
+	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
 	get_makers($selCategory);
 	$_SESSION['categories'] = $categories;
 	$_SESSION['makers'] = $makers;
-	$selMaker=$_POST['marci'];
+	$selMaker=$_GET['marci'];
 }
 
-else if (isset($_POST['categorii'])&&isset($_POST['marci']) && !isset($_POST['modele'])&& $_POST['marci'] !== $_POST['lastSelMaker'])
+else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['modele'])&& $_GET['marci'] !== $_GET['lastSelMaker'])
 {echo "f4";
 	//
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
-	$selMaker = $_POST['marci'];
-	$selCategory = $_POST['categorii'];
+	$selMaker = $_GET['marci'];
+	$selCategory = $_GET['categorii'];
 	$makers= change_selected($makers, $selMaker);
 	get_models($selMaker);
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
 }
 
-else if (isset($_POST['categorii'])&&isset($_POST['marci']) && isset($_POST['modele'])&& $_POST['categorii'] !== $_POST['lastSelCategory'])
+else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele'])&& $_GET['categorii'] !== $_GET['lastSelCategory'])
 {echo "f5";
 	//
 	$categories = $_SESSION['categories'];
-	$selCategory = $_POST['categorii'];
+	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
 	get_makers($selCategory);
 	$_SESSION['categories'] = $categories;
 	$_SESSION['makers'] = $makers;
-	$selMaker=$_POST['marci'];
+	$selMaker=$_GET['marci'];
 }
 
-else if (isset($_POST['categorii'])&&isset($_POST['marci']) && isset($_POST['modele'])&& $_POST['marci'] !== $_POST['lastSelMaker']&& $_POST['marci'] != 0)
+else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele'])&& $_GET['marci'] !== $_GET['lastSelMaker']&& $_GET['marci'] != 0)
 {echo "f6";
 	//
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
-	$selMaker = $_POST['marci'];
-	$selCategory = $_POST['categorii'];
+	$selMaker = $_GET['marci'];
+	$selCategory = $_GET['categorii'];
 	$makers= change_selected($makers, $selMaker);
 	get_models($selMaker);
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
 }
 
-else if (isset($_POST['categorii'])&&(isset($_POST['marci'])) && $_POST['categorii'] == 0)
+else if (isset($_GET['categorii'])&&(isset($_GET['marci'])) && $_GET['categorii'] == 0)
 {echo "f7";
 	
 	$categories = $_SESSION['categories'];
-	$selCategory = $_POST['categorii'];
+	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
 	$_SESSION['categories'] = $categories;
 }
 
-else if (isset($_POST['categorii'])&&(isset($_POST['marci']) && isset($_POST['modele'])) && $_POST['marci'] == 0)
+else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['marci'] == 0)
 {echo "f8";
 	// Daca se alege prima optiune din lista marcilor se dezactiveaza lista de modele. Un fel de buton de restart.
 	$categories = $_SESSION['categories'];
-	$selCategory = $_POST['categorii'];
+	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
 	get_makers($selCategory);
 	$_SESSION['categories'] = $categories;
 	$_SESSION['makers'] = $makers;
-	$selMaker=$_POST['marci'];
+	$selMaker=$_GET['marci'];
 }
 
-else if (isset($_POST['categorii'])&&(isset($_POST['marci']) && isset($_POST['modele'])) && $_POST['modele'] == 0)
+else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['modele'] == 0)
 {echo "f9";
 	// Daca este activa optiunea default din lista de modele.
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
-	$selMaker = $_POST['marci'];
-	$selCategory = $_POST['categorii'];
+	$selMaker = $_GET['marci'];
+	$selCategory = $_GET['categorii'];
 	$makers= change_selected($makers, $selMaker);
 	get_models($selMaker);
 	$_SESSION['makers'] = $makers;
@@ -256,13 +257,13 @@ else
 	// Aici se ajunge cand s-a ales o marca si un model si se poate cauta in tabelul de anunturi.
 	// Daca numarul de randuri este 0 inseamna ca nu exista nici un anunt care sa respecte cerintele selectate
 	// si se va afisa un mesaj.
-	if ((isset($_POST['marci'])))
-	$selMaker = $_POST['marci'];
-	if ((isset($_POST['modele'])))
-	$selModel = $_POST['modele'];
+	if ((isset($_GET['marci'])))
+	$selMaker = $_GET['marci'];
+	if ((isset($_GET['modele'])))
+	$selModel = $_GET['modele'];
 	global $rezultate;
-	if ((isset($_POST['categorii'])))
-	$selCategory = $_POST['categorii'];
+	if ((isset($_GET['categorii'])))
+	$selCategory = $_GET['categorii'];
 	if ((isset($_SESSION['categories'])))
 	$categories = $_SESSION['categories'];
 	if ((isset($_SESSION['makers'])))
@@ -279,6 +280,7 @@ else
 	$selModel = mysqli_real_escape_string($conexiune,$selModel);
 	$_SESSION['selMaker']=$selMaker;
 	$_SESSION['selModel']=$selModel;
+	
 	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`,`pozeanunturi`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
 	// Daca nu s-a ales optiunea Toate
 	if ($selModel != 9999)
@@ -332,7 +334,7 @@ else
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
-<form name="autoturisme" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" >
+<form name="autoturisme" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="get" >
 	<div id="categorii">
 		<select name="categorii" onchange = "this.form.submit();">
 			<?php  echo $categories; ?>
@@ -348,6 +350,7 @@ else
 			<?php echo $models; ?>
 		</select>
 	</div>
+	
 	<input type = "hidden" name = "lastSelCategory" value = "<?php echo $selCategory; ?>">
 	<input type = "hidden" name = "lastSelMaker" value = "<?php echo $selMaker; ?>">
 </form>

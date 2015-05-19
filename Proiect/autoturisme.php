@@ -113,34 +113,34 @@ function change_selected($optionList, $selected = '0')
 	
 }
 
-if (!isset($_POST['marci']) && !isset($_POST['modele']))
+if (!isset($_GET['marci']) && !isset($_GET['modele']))
 {
 	// Prima data cand se intra pe pagina
 	get_makers();
 	$_SESSION['makers'] = $makers;
 	$stareListaModele = "disabled";
 }
-else if (isset($_POST['marci']) && !isset($_POST['modele']))
+else if (isset($_GET['marci']) && !isset($_GET['modele']))
 {
 	// Daca s-a ales un model iar lista de modele era dezactivata
 	$makers = $_SESSION['makers'];
-	$selMaker = $_POST['marci'];
+	$selMaker = $_GET['marci'];
 	$makers = change_selected($makers, $selMaker);
 	get_models($selMaker);
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
 }
-else if ((isset($_POST['marci']) && isset($_POST['modele'])) && $_POST['marci'] == 0)
+else if ((isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['marci'] == 0)
 {
 	// Daca se alege prima optiune din lista marcilor se dezactiveaza lista de modele. Un fel de buton de restart.
 	$stareListaModele = "disabled";
 	$makers = $_SESSION['makers'];
 	$makers = change_selected($makers);
 }
-else if ((isset($_POST['marci']) && isset($_POST['modele'])) && $_POST['modele'] == 0)
+else if ((isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['modele'] == 0)
 {
 	// Daca este activa optiunea default din lista de modele.
-	$selMaker = $_POST['marci'];
+	$selMaker = $_GET['marci'];
 	$makers = $_SESSION['makers'];
 	$makers = change_selected($makers, $selMaker);
 	$models = $_SESSION['models'];
@@ -148,10 +148,10 @@ else if ((isset($_POST['marci']) && isset($_POST['modele'])) && $_POST['modele']
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
 }
-else if ((isset($_POST['marci']) && isset($_POST['modele']) && isset($_POST['lastSelMaker'])) && $_POST['marci'] !== $_POST['lastSelMaker'])
+else if ((isset($_GET['marci']) && isset($_GET['modele']) && isset($_GET['lastSelMaker'])) && $_GET['marci'] !== $_GET['lastSelMaker'])
 {
 	// Cand se trece de la o marca la alta sa se reseteze lista de modele, id-ul marcii selectate.
-	$selMaker = $_POST['marci'];
+	$selMaker = $_GET['marci'];
 	$makers = $_SESSION['makers'];
 	$makers = change_selected($makers, $selMaker);
 	get_models($selMaker);
@@ -163,8 +163,8 @@ else
 	// Aici se ajunge cand s-a ales o marca si un model si se poate cauta in tabelul de anunturi.
 	// Daca numarul de randuri este 0 inseamna ca nu exista nici un anunt care sa respecte cerintele selectate
 	// si se va afisa un mesaj.
-	$selMaker = $_POST['marci'];
-	$selModel = $_POST['modele'];
+	$selMaker = $_GET['marci'];
+	$selModel = $_GET['modele'];
 	$makers = $_SESSION['makers'];
 	$models = $_SESSION['models'];
 	$models = change_selected($models, $selModel);
@@ -227,7 +227,7 @@ else
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
-<form name="autoturisme" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" >
+<form name="autoturisme" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="get" >
 	<div id="lista_marci1">
 		<select name="marci" onchange = "this.form.submit();">
 			<?php  echo $makers; ?>
