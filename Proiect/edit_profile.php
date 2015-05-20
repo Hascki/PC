@@ -26,10 +26,10 @@
 		else
 		{
 			$query = "UPDATE `utilizatori` SET `UserName` = ? WHERE `username` = ? ";
-			if ($stmt = mysqli_prepare($conexiune2, $query))
+			if ($stmt = mysqli_prepare($conexiune, $query))
 			{
-				$numeContNou = mysqli_real_escape_string($conexiune2, $_POST['numeCont']);
-				$numeContVechi = mysqli_real_escape_string($conexiune2, $_SESSION['login']);
+				$numeContNou = mysqli_real_escape_string($conexiune, $_POST['numeCont']);
+				$numeContVechi = mysqli_real_escape_string($conexiune, $_SESSION['login']);
 				mysqli_stmt_bind_param($stmt, "ss", $numeContNou, $numeContVechi);
 				mysqli_stmt_execute($stmt);
 				if (mysqli_stmt_affected_rows($stmt) === 1)
@@ -62,10 +62,10 @@
 		else
 		{
 			$query = "UPDATE `utilizatori` SET `emailadd` = ? WHERE `username` = ?";
-			if ($stmt = mysqli_prepare($conexiune2, $query))
+			if ($stmt = mysqli_prepare($conexiune, $query))
 			{
-				$emailNou = mysqli_real_escape_string($conexiune2, $_POST['email']);
-				$numeCont = mysqli_real_escape_string($conexiune2, $_SESSION['login']);
+				$emailNou = mysqli_real_escape_string($conexiune, $_POST['email']);
+				$numeCont = mysqli_real_escape_string($conexiune, $_SESSION['login']);
 				mysqli_stmt_bind_param($stmt, "ss", $emailNou, $numeCont);
 				mysqli_stmt_execute($stmt);
 				if (mysqli_stmt_affected_rows($stmt) === 1)
@@ -87,9 +87,9 @@
 	{
 		//Daca s-a apasat pe butonul de reset al profilului
 		$query = "UPDATE `profiles` SET `nume` = NULL, `prenume` = NULL, `telefon` = NULL, `judet` = NULL, `localitate` = NULL, `strada` = NULL, `bloc` = NULL, `numar` = NULL, `scara` = NULL, `etaj` = NULL, `apartament` = NULL WHERE `profileid` = ?";
-			if ($stmt = mysqli_prepare($conexiune2, $query))
+			if ($stmt = mysqli_prepare($conexiune, $query))
 			{
-				$userID = mysqli_real_escape_string($conexiune2, $_SESSION['userID']);
+				$userID = mysqli_real_escape_string($conexiune, $_SESSION['userID']);
 				mysqli_stmt_bind_param($stmt, "s", $userID);
 				mysqli_stmt_execute($stmt);
 			}
@@ -114,7 +114,7 @@
 			if (!empty($_POST['numePers']))
 			{
 				$query .= " `nume` = ?";
-				$parameters[] = mysqli_real_escape_string($conexiune2, trim($_POST['numePers']));
+				$parameters[] = mysqli_real_escape_string($conexiune, trim($_POST['numePers']));
 				$paramsTypes .= 's';
 			}
 			//Se ocupa cu modificarea prenumelui din profil
@@ -123,7 +123,7 @@
 				if (strrpos($query, '?') !== false)
 					$query .= ",";
 				$query .= " `prenume` = ?";
-				$parameters[] = mysqli_real_escape_string($conexiune2, trim($_POST['prenume']));
+				$parameters[] = mysqli_real_escape_string($conexiune, trim($_POST['prenume']));
 				$paramsTypes .= 's';
 			}
 			//Se ocupa cu modificarea numarului de telefon din profil
@@ -156,7 +156,7 @@
 				if (strrpos($query, '?') !== false)
 					$query .= ",";
 				$query .= " `localitate` = ?";
-				$parameters[] = mysqli_real_escape_string($conexiune2, trim($_POST['localitate']));
+				$parameters[] = mysqli_real_escape_string($conexiune, trim($_POST['localitate']));
 				$paramsTypes .= 's';
 			}
 			//Se ocupa cu modificarea strazii din profil
@@ -165,7 +165,7 @@
 				if (strrpos($query, '?') !== false)
 					$query .= ",";
 				$query .= " `strada` = ?";
-				$parameters[] = mysqli_real_escape_string($conexiune2, trim($_POST['strada']));
+				$parameters[] = mysqli_real_escape_string($conexiune, trim($_POST['strada']));
 				$paramsTypes .= 's';
 			}
 			//Se ocupa cu modificarea numarului strazii din profil
@@ -187,7 +187,7 @@
 				if (strrpos($query, '?') !== false)
 					$query .= ",";
 				$query .= " `bloc` = ?";
-				$parameters[] = mysqli_real_escape_string($conexiune2, trim($_POST['bloc']));
+				$parameters[] = mysqli_real_escape_string($conexiune, trim($_POST['bloc']));
 				$paramsTypes .= 's';
 			}
 			//Se ocupa cu modificarea scarii din profil
@@ -196,7 +196,7 @@
 				if (strrpos($query, '?') !== false)
 					$query .= ",";
 				$query .= " `scara` = ?";
-				$parameters[] = mysqli_real_escape_string($conexiune2, trim($_POST['scara']));
+				$parameters[] = mysqli_real_escape_string($conexiune, trim($_POST['scara']));
 				$paramsTypes .= 's';
 			}
 			//Se ocupa cu modificarea etajului din profil
@@ -266,7 +266,7 @@
 			}
 			
 			$query .= " WHERE `profileid` = ?";
-			$parameters[] = mysqli_real_escape_string($conexiune2, $_SESSION['userID']);
+			$parameters[] = mysqli_real_escape_string($conexiune, $_SESSION['userID']);
 			$paramsTypes .= 's';
 			
 			$n = count($parameters);
@@ -275,7 +275,7 @@
 				$paramsArray[] = & $parameters[$i];
 			if (strlen(implode($errorsArray)) === 0)
 			{
-				if ($stmt = mysqli_prepare($conexiune2, $query))
+				if ($stmt = mysqli_prepare($conexiune, $query))
 				{
 					call_user_func_array(array($stmt, 'bind_param'), $paramsArray);
 					if ($avatarUploaded)
@@ -308,9 +308,9 @@
 	}
 	
 	$query = "SELECT * FROM `profiles` WHERE `profileid` = ?";
-	if ($stmt = mysqli_prepare($conexiune2, $query))
+	if ($stmt = mysqli_prepare($conexiune, $query))
 	{
-		$userID = mysqli_real_escape_string($conexiune2, $_SESSION['userID']);
+		$userID = mysqli_real_escape_string($conexiune, $_SESSION['userID']);
 		mysqli_stmt_bind_param($stmt, "s", $userID);
 		mysqli_stmt_execute($stmt);
 	}
@@ -319,7 +319,7 @@
 	
 	$judete = "<option value = '0'>Alege judetul</option>";
 	$query = "SELECT `judetid`, `numejudet` FROM `judete` WHERE 1";
-	$sql = mysqli_query($conexiune2, $query);
+	$sql = mysqli_query($conexiune, $query);
 	while ($row = mysqli_fetch_array($sql))
 	{
 		$judete .= "<option value = '" . $row[0] . "'";

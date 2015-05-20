@@ -9,7 +9,7 @@
 		header("location:index.php");
 		exit;
 	}
-	$pagCurenta = "account";
+	$pagCurenta = basename(__FILE__, '.php');
 ?>
 <!DOCTYPE html>
 <html>

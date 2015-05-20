@@ -1,14 +1,14 @@
 <?php
 	require_once "conexiune.php";
 	$query = "SELECT `emailadd` FROM `utilizatori` WHERE `emailadd` = ?";
-	$email = mysqli_real_escape_string($conexiune2, $_POST['email']);
+	$email = mysqli_real_escape_string($conexiune, $_POST['email']);
 	if (empty($email) || !filter_var($_POST["email"], FILTER_VALIDATE_EMAIL))
 		echo "Emailul introdus nu este valid!";
 	else
 	{
-		if ($stmt = mysqli_prepare($conexiune2, $query))
+		if ($stmt = mysqli_prepare($conexiune, $query))
 		{
-			$email = mysqli_real_escape_string($conexiune2, $_POST['email']);
+			$email = mysqli_real_escape_string($conexiune, $_POST['email']);
 			mysqli_stmt_bind_param($stmt, "s", $email);
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_store_result($stmt);

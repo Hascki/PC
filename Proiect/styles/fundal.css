@@ -20,14 +20,10 @@ body
 	margin-bottom: 10px;
 } 
 
-.header
-{
-	/*margin-bottom: 10px;*/
-}
-
 .footer
 {
 	clear: both;
+	height: 40px;
 	padding-top: 5px;
 	background-color: #30363D;
 }

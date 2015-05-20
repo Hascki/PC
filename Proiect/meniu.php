@@ -1,34 +1,24 @@
 <?php
-	$arrayPagCurenta = array("acasa" => 0, "produse" => 0, "cont" => 0, "inregistrare" => 0, "login" => 0);
-	$arrayLeftBtns = array("acasa" => "", "produse" => "", "cont" => "");
-	$arrayRightBtns = array("logout" => "<li class = \"rightBtn\"><a href = \"logout.php\">Logout</a></li>", "login" => "", "inregistrare" => "");
+	$arrayLeftBtns = array("acasa" => "", "produse" => "", "promotii" => "", "addAnunt" => "", "cont" => "");
+	$arrayRightBtns = array("logout" => "class = \"rightBtn\"><a href = \"logout.php\">Logout</a>", "login" => "", "inregistrare" => "");
 	if ($pagCurenta === "index")
-	{
-		$arrayPagCurenta['acasa'] = 1;
 		$arrayLeftBtns['acasa'] = "id = \"curenta\" ";
-	}
 	else if ($pagCurenta === "produse")
-	{
-		$arrayPagCurenta['produse'] = 1;
 		$arrayLeftBtns['produse'] = "id = \"curenta\" ";
-	}
+	else if ($pagCurenta === "promotii")
+		$arrayLeftBtns['promotii'] = "id = \"curenta\" ";
+	else if ($pagCurenta === "adauga_anunt")
+		$arrayLeftBtns['addAnunt'] = "id = \"curenta\" ";
 	else if ($pagCurenta === "account" || $pagCurenta === "edit_profile")
-	{
-		$arrayPagCurenta['cont'] = 1;
 		$arrayLeftBtns['cont'] = "id = \"curenta\" ";
-	}
 	else if ($pagCurenta === "inregistrare")
-	{
-		$arrayPagCurenta['inregistrare'] = 1;
 		$arrayRightBtns['inregistrare'] = "id = \"curenta\" ";
-	}
 	else if ($pagCurenta === "login")
-	{
-		$arrayPagCurenta = 1;
 		$arrayRightBtns['login'] .= "id = \"curenta\" ";
-	}
 	$arrayLeftBtns['acasa'] .= "class = \"leftBtn\"><a href = \"index.php\">Acasă</a>";
 	$arrayLeftBtns['produse'] .= "class = \"leftBtn\"><a href = \"produse.php\">Produse</a>";
+	$arrayLeftBtns['promotii'] .= "class = \"leftBtn\"><a href = \"promotii.php\">Promotii</a>";
+	$arrayLeftBtns['addAnunt'] .= "class = \"leftBtn\"><a href = \"adauga_anunt.php\">Adauga anunt</a>";
 	$arrayLeftBtns['cont'] .= "class = \"leftBtn\"><a href = \"account.php\">Cont</a>";
 	$arrayRightBtns['login'] .= "class = \"rightBtn\"><a href = \"login.php\">Login</a>";
 	$arrayRightBtns['inregistrare'] .= "class = \"rightBtn\"><a href = \"inregistrare.php\">Înregistrare</a>";
@@ -40,6 +30,7 @@
 		echo "
 			<li " . $arrayLeftBtns['acasa'] . "</li>
 			<li " . $arrayLeftBtns['produse'] . "</li>
+			<li " . $arrayLeftBtns['promotii'] . "</li>
 			<li " . $arrayRightBtns['login'] . "</li>
 			<li " . $arrayRightBtns['inregistrare'] . "</li>";
 	}
@@ -48,6 +39,8 @@
 		echo "
 			<li " . $arrayLeftBtns['acasa'] . "</li>
 			<li " . $arrayLeftBtns['produse'] . "</li>
+			<li " . $arrayLeftBtns['promotii'] . "</li>
+			<li " . $arrayLeftBtns['addAnunt'] . "</li>
 			<li " . $arrayLeftBtns['cont'] . "</li>
 			<li " . $arrayRightBtns['logout'] . "</li>";
 	}

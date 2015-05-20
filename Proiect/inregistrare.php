@@ -42,9 +42,9 @@
 		}
 		if (!$eroare)
 		{
-			$email = mysqli_real_escape_string($conexiune2, $email);
+			$email = mysqli_real_escape_string($conexiune, $email);
 			$cerere = "SELECT `emailadd` FROM `utilizatori` WHERE `emailadd` = '$email'";
-			$rez = mysqli_query($conexiune2, $cerere);
+			$rez = mysqli_query($conexiune, $cerere);
 			if (mysqli_num_rows($rez) != 0)
 			{
 				$emailErr = "Adresa de email este folosita deja! Va rugăm incercați alta adresa de email.";
@@ -53,11 +53,11 @@
 			{
 				$nume = substr($email, 0, strlen($email) - strlen(substr(strrev($email), 0, strpos(strrev($email), '@'))) - 1);
 				$parola = md5($parola);
-				$email = mysqli_real_escape_string($conexiune2, $email);
-				$nume = mysqli_real_escape_string($conexiune2, $nume);
-				$parola = mysqli_real_escape_string($conexiune2, $parola);
+				$email = mysqli_real_escape_string($conexiune, $email);
+				$nume = mysqli_real_escape_string($conexiune, $nume);
+				$parola = mysqli_real_escape_string($conexiune, $parola);
 				$cerere = "INSERT INTO `utilizatori` (`UserId`, `UserName`, `Password`, `EmailAdd`, `Type`) VALUES (NULL, '$nume', '$parola', '$email', '2')";
-				$sql = mysqli_query($conexiune2, $cerere);
+				$sql = mysqli_query($conexiune, $cerere);
 				if ($sql === false)
 				{
 					$mesaj =  "S-a produs o eroare. Va rugăm incercați din nou.<br>";
@@ -65,13 +65,13 @@
 				else 
 				{
 					$interogare = "SELECT `userid`, `emailadd` FROM `utilizatori` WHERE `emailadd` = '$email' AND `password` = '$parola'";
-					$select = mysqli_query($conexiune2, $interogare);
+					$select = mysqli_query($conexiune, $interogare);
 					if (mysqli_num_rows($select) === 1)
 					{
 						$row = mysqli_fetch_array($select);
 						
 						$cerere = "INSERT INTO `proiectcolectiv`.`profiles` (`ProfileId`, `Nume`, `Prenume`, `Telefon`, `AdresaEmail`, `Localitate`, `Strada`, `Bloc`, `Numar`, `Scara`, `Etaj`, `Apartament`, `Avatar`) VALUES ('$row[0]', NULL, NULL, NULL, '$row[1]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
-						$sql = mysqli_query($conexiune2, $cerere);
+						$sql = mysqli_query($conexiune, $cerere);
 						if ($sql === false)
 							$mesaj = "Eroare la inserarea in tabelul profiles!<br>";
 						else $mesaj = "V-ați înregistrat cu succes. Veți fi redirecționat către pagina de login în câteva momente.";

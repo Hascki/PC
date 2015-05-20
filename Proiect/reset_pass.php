@@ -37,11 +37,11 @@
 		{
 			if (strlen($nume) !== (strlen($nume) - strlen(substr(strrev($nume), 0, strpos(strrev($nume), '@')))))
 				$isEmail = true;
-			$nume = mysqli_real_escape_string($conexiune2, $nume);
+			$nume = mysqli_real_escape_string($conexiune, $nume);
 			if ($isEmail)
 				$cerere = "SELECT * FROM `utilizatori` WHERE `emailadd` = '$nume'";
 			else $cerere = "SELECT * FROM `utilizatori` WHERE `username` = '$nume'";
-			$rez = mysqli_query($conexiune2, $cerere);
+			$rez = mysqli_query($conexiune, $cerere);
 			if (mysqli_num_rows($rez) === 0)
 			{
 				$numeErr = "Numele sau adresa introdusă nu a fost găsită! Dacă nu aveți cont va rugăm să vă <a /Proiect/href = 'register.php'>înregistrați</a>.";
@@ -49,13 +49,13 @@
 			else
 			{
 				$parola = md5($parola);
-				$parola = mysqli_real_escape_string($conexiune2, $parola);
+				$parola = mysqli_real_escape_string($conexiune, $parola);
 				if ($isEmail)
 				{
 					$cerere = "UPDATE `utilizatori` SET `Password`='$parola' WHERE `emailadd` = '$nume'";
 				}
 				else $cerere = "UPDATE `utilizatori` SET `Password`='$parola' WHERE `username` = '$nume'";
-				$sql = mysqli_query($conexiune2, $cerere);
+				$sql = mysqli_query($conexiune, $cerere);
 				if ($sql === false)
 				{
 					$mesaj = "S-a produs o eroare. Va rugăm încercați din nou.";

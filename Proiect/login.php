@@ -36,13 +36,13 @@
 			*/
 			if (filter_var($nume, FILTER_VALIDATE_EMAIL))
 				$isEmail = true;
-			$nume = mysqli_real_escape_string($conexiune2, $nume);
-			$parola = mysqli_real_escape_string($conexiune2, $parola);
+			$nume = mysqli_real_escape_string($conexiune, $nume);
+			$parola = mysqli_real_escape_string($conexiune, $parola);
 			$parola = md5($parola);
 			if ($isEmail)
 				$cerere = "SELECT * FROM `utilizatori` WHERE `emailadd` = '$nume' AND `password` = '$parola'";
 			else $cerere = "SELECT * FROM `utilizatori` WHERE `username` = '$nume' AND `password` = '$parola'";
-			$rez = mysqli_query($conexiune2, $cerere);
+			$rez = mysqli_query($conexiune, $cerere);
 			if (mysqli_num_rows($rez) === 1)
 			{
 				$rez = mysqli_fetch_array($rez);
