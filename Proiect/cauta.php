@@ -60,20 +60,37 @@ return $r;
 
 $ok=1;
 $stareCauta = "hidden";
-$selCategory = $selMaker = $selModel = ""; //Marca selectata/Model selectat
-$stareListaCombustibil = $stareListaCategorii = $stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
+$selCategory = $selMaker = $selModel = $selCombustibil= $selCuloare=""; //Marca selectata/Model selectat
+$stareListaCategorii = $stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
 $categories = $makers = $models = "0";
-$combustibil = "";
+$combustibil = "0";
+$culori = "0";
 $rezultate = "";
 
 function set_filtre()
 {
 	global $combustibil;
-	$combustibil = '<option value = "0"> Combustibil </option>';
-	$combustibil .= '<option value = "1"> Benzina </option>';
-	$combustibil .= '<option value = "2"> Motorina </option>';
-	$combustibil .= '<option value = "3"> Hibrid </option>';
-	$_SESSION['combustibil']=$combustibil;
+	$combustibil = '<option value="0"> Combustibil </option>';
+	$combustibil .= '<option value="1"> Benzina </option>';
+	$combustibil .= '<option value="2"> Motorina </option>';
+	$combustibil .= '<option value="3"> Hibrid </option>';
+	$combustibil .= '<option value="4"> Electric </option>';
+	global $culori;
+	$culori = '<option value="0"> Culori </option>';
+	$culori .= '<option value="1"> Alb </option>';
+	$culori .= '<option value="2"> Albastru </option>';
+	$culori .= '<option value="3"> Argintiu </option>';
+	$culori .= '<option value="4"> Auriu </option>';
+	$culori .= '<option value="5"> Bej </option>';
+	$culori .= '<option value="6"> Galben </option>';
+	$culori .= '<option value="7"> Gri </option>';
+	$culori .= '<option value="8"> Maro </option>';
+	$culori .= '<option value="9"> Negru </option>';
+	$culori .= '<option value="10"> Portocaliu </option>';
+	$culori .= '<option value="11"> Rosu </option>';
+	$culori .= '<option value="12"> Verde </option>';
+	$culori .= '<option value="13"> Violet </option>';
+	
 }
 
 function get_categories()
@@ -166,6 +183,8 @@ echo "f1";
 	get_categories();
 	$_SESSION['categories'] = $categories;
 	$ok=0;
+	if(isset($_SESSION['cauta']))
+	 unset($_SESSION['cauta'] );
 }
 
 else if (isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']))
@@ -178,6 +197,8 @@ else if (isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['mode
 	$_SESSION['categories'] = $categories;
 	$_SESSION['makers'] = $makers;
 	$selMaker = "0";
+	if(isset($_SESSION['cauta']))
+	 unset($_SESSION['cauta'] );
 	$ok=0;
 	//$stareListaModele = "disabled";
 }
@@ -192,6 +213,8 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['model
 	$_SESSION['categories'] = $categories;
 	$_SESSION['makers'] = $makers;
 	$selMaker=$_GET['marci'];
+	if(isset($_SESSION['cauta']))
+	 unset($_SESSION['cauta'] );
 	$ok=0;
 }
 
@@ -207,6 +230,7 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['model
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
 	$stareCauta = "submit";
+	$_SESSION['cauta']='cauta';
 	$ok=0;
 	
 }
@@ -222,6 +246,8 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele
 	$_SESSION['makers'] = $makers;
 	$selMaker=$_GET['marci'];
 	$ok=0;
+	if(isset($_SESSION['cauta']))
+	 unset($_SESSION['cauta'] );
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele'])&& $_GET['marci'] !== $_GET['lastSelMaker']&& $_GET['marci'] != 0)
@@ -238,6 +264,7 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele
 	$stareCauta = "submit";
 	$_SESSION['cauta']='cauta';
 	$ok=0;
+	
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci'])) && $_GET['categorii'] == 0)
@@ -247,6 +274,8 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci'])) && $_GET['categorii'
 	$categories= change_selected($categories, $selCategory);
 	$_SESSION['categories'] = $categories;
 	$ok=0;
+	if(isset($_SESSION['cauta']))
+	 unset($_SESSION['cauta'] );
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['marci'] == 0)
@@ -259,6 +288,8 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['model
 	$_SESSION['categories'] = $categories;
 	$_SESSION['makers'] = $makers;
 	$selMaker=$_GET['marci'];
+	if(isset($_SESSION['cauta']))
+	 unset($_SESSION['cauta'] );
 	$ok=0;
 }
 
@@ -274,6 +305,7 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['model
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
 	$stareCauta = "submit";
+	$_SESSION['cauta']='cauta';
 	$ok=0;
 }
 
@@ -282,6 +314,7 @@ echo "f10";
 if(isset($_GET['modele'])&& $_GET['modele'] != 0){
 set_filtre();
 $_SESSION['combustibil']=$combustibil;
+$_SESSION['culori']=$culori;
 //$combustibil=$_SESSION['combustibil'];
 //echo $_GET['combustibil'];
 //$selCombustibil=$_GET['combustibil'];
@@ -295,6 +328,7 @@ $selMaker = $_GET['marci'];
 $selModel = $_GET['modele'];
 $models = change_selected($models, $selModel);
 $_SESSION['models'] = $models;
+
 if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
 }
@@ -303,7 +337,10 @@ echo '<script language="javascript">';
 echo 'alert("Pentru a cauta trebuie sa alegeti un model din lista de modele!")';
 echo '</script>';
 }
+$_SESSION['lastSelModel']=$_GET['modele'];
 $stareCauta = "submit";
+if(isset($_SESSION['cauta']))
+	 unset($_SESSION['cauta'] );
 //$selModel = $_GET['modele'];
 //$makers= change_selected($makers, $selMaker);
 //$_SESSION['makers'] = $makers;
@@ -320,6 +357,24 @@ $selCategory = $_GET['categorii'];
 $stareCauta="submit";
 }
 */
+
+
+else if($ok==1 && !isset($_SESSION['cauta'])&&$_GET['modele']!=$_GET['lastSelModel']){
+$selCategory=$_GET['categorii'];
+$selMaker=$_GET['marci'];
+$selModel=$_GET['modele'];
+$categories = $_SESSION['categories'];
+$makers = $_SESSION['makers'];
+$models = $_SESSION['models'];
+$models = change_selected($models, $selModel);
+$_SESSION['models']=$models;
+$combustibil = $_SESSION['combustibil'];
+$culori=$_SESSION['culori'];
+//$_SESSION['cauta']='cauta';
+
+$stareCauta="submit";
+}
+
 else
 {echo "f11";
 	// Aici se ajunge cand s-a ales o marca si un model si se poate cauta in tabelul de anunturi.
@@ -345,6 +400,25 @@ else
 	$_SESSION['categories']=$categories;
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
+	$culori = $_SESSION['culori'];
+	echo $_GET['culoare'];
+	if ((isset($_GET['culoare']))){//&&!(isset($_SESSION['lastSelCuloare']))))//||((isset($_GET['culoare']))&&(isset($_SESSION['lastSelCuloare']))&&$_SESSION['lastSelCuloare']!=0)){
+	echo $_GET['culoare']."    ";
+	
+	$selCuloare = $_GET['culoare'];
+	$culori = change_selected($culori, $selCuloare);
+	$_SESSION['culori'] = $culori;
+	//$_SESSION['lastSelCuloare']=$selCuloare;
+	}
+	if ((isset($_GET['combustibil']))){
+	$combustibil = $_SESSION['combustibil'];
+	$selCombustibil = $_GET['combustibil'];
+	$combustibil = change_selected($combustibil, $selCombustibil);
+	$_SESSION['combustibil'] = $combustibil;
+	}
+	$combustibil=$_SESSION['combustibil'];
+	$culori=$_SESSION['culori'];
+	$_SESSION['combustibil']=$combustibil;
 	$selCategory = mysqli_real_escape_string($conexiune,$selCategory);
 	$selMaker = mysqli_real_escape_string($conexiune,$selMaker);
 	$selModel = mysqli_real_escape_string($conexiune,$selModel);
@@ -421,13 +495,19 @@ else
 			<?php echo $models; ?>
 		</select>
 	</div>
+	<div id = "culoare">
+		<select name = "culoare" >
+			<?php echo $culori; ?>
+		</select>
+	</div>
 	<div id = "combustibil">
-		<select name = "combustibil" <?php echo $stareListaCombustibil ?> onchange = "this.form.submit();">
+		<select name = "combustibil" >
 			<?php echo $combustibil; ?>
 		</select>
 	</div>
 	<input type = "hidden" name = "lastSelCategory" value = "<?php echo $selCategory; ?>">
 	<input type = "hidden" name = "lastSelMaker" value = "<?php echo $selMaker; ?>">
+	<input type = "hidden" name = "lastSelModel" value = "<?php echo $selModel; ?>">
 	<input type="<?php echo $stareCauta; ?>" name="cauta" value="Cauta">
 </form>
 <div id = "rezultate">
