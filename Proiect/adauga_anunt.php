@@ -39,7 +39,7 @@
 $(document).ready(function()
 {
 	// Cand se schimba categoria
-	$("#categorii").on("change", function()
+	$("#categorie").on("change", function()
 	{
 		if ($(this).val() !== "0")
 		{
@@ -83,6 +83,7 @@ $(document).ready(function()
 			}
 			$("#marcaModel").prop("disabled", false);
 			$("#dateVehicul").prop("disabled", false);
+			$("#VIN").prop("disabled", false);
 			$("#infoGen").prop("disabled", false);
 			$("#dotari").prop("disabled", false);
 			$("#descriere").prop("disabled", false);
@@ -95,6 +96,7 @@ $(document).ready(function()
 		{
 			$("#marcaModel").prop("disabled", true);
 			$("#dateVehicul").prop("disabled", true);
+			$("#VIN").prop("disabled", true);
 			$("#infoGen").prop("disabled", true);
 			$("#dotari").prop("disabled", true);
 			$("#descriere").prop("disabled", true);
@@ -114,7 +116,7 @@ $(document).ready(function()
 	{
 		if ($(this).val() !== "0")
 		{
-			$.getJSON("getModels.php", {marca: $(this).val(), tip:$("#categorii").val()}, function(rez)
+			$.getJSON("getModels.php", {marca: $(this).val(), tip:$("#categorie").val()}, function(rez)
 			{
 				var options = "<option value = 0>Selectati</option>";
 				for (var i = 0;i < rez.length;i++)
@@ -145,15 +147,14 @@ $(document).ready(function()
 		//Reguli de validare
 		rules:
 		{
-			categorii: {selectNotDefault: "0"},
+			categorie: {selectNotDefault: "0"},
 			marca: {selectNotDefault: "0"},
 			model: {selectNotDefault: "0"},
 			stil: {selectNotDefault: "0"},
 			fabricatie: 
 			{
 				required: true,
-				minlength: 4,
-				min: 1900
+				range: [1900, parseInt((new Date).getFullYear())]
 			},
 			combustibil: {selectNotDefault: "0"},
 			culoare: {selectNotDefault: "0"},
@@ -172,15 +173,14 @@ $(document).ready(function()
 		// Mesaje de eroare
 		messages:
 		{
-			categorii: {selectNotDefault: "Selectati o categorie de autovehicul!"},
+			categorie: {selectNotDefault: "Selectati o categorie de autovehicul!"},
 			marca: {selectNotDefault: "Selectati o marca!"},
 			model: {selectNotDefault: "Selectati un model!"},
 			stil: {selectNotDefault: "Selectati stilul autovehiculului!"},
 			fabricatie:
 			{
 				required: "Introduceti anul fabricatiei!",
-                minlength: "Anul nu are 4 caractere!",
-				min: "An invalid!"
+				range: "Anul introdus este invalid!"
 			},
 			combustibil: {selectNotDefault: "Selectati tipul de combustibil!"},
 			culoare: {selectNotDefault: "Selectati culoare autovehiculului!"},
@@ -196,43 +196,66 @@ $(document).ready(function()
 				min: "Pretul nu poate fi mai mic ca 1"
 			}
 		},
+		//Schimbare clase CSS de evidentiere a casutelor ce sunt gresite/valide
+		errorClass: "inputError",
+		validClass: "inputValid",// Nu se foloseste
+		invalidHandler:function(e, validator)
+		{
+			//Afiseaza numarul de erori
+			var errors = validator.numberOfInvalids();
+			if (errors > 0)
+				$("#sumarErori").text(errors + " camp(uri) sunt invalide!");
+			else $("#sumarErori").text("");
+		},
+		errorPlacement: function(error, element){},// Supraincarcarea functiei de plasare a mesajelor de eroare pt a nu le afisa
+		highlight: function(element, errorClass)// Subliniere casute gresite
+		{
+			$(element).addClass(errorClass);
+		},
+		unhighlight: function(element, errorClass)// Revenire la stilul normal daca casuta este valida
+		{
+			$(element).removeClass(errorClass);
+		},
 		// Daca totul e in regula se trimit datele
 		submitHandler: function(form)
 		{
-			var r = confirm("Esti sigur ca vrei sa postezi anuntul?\nOdata postat el nu mai poate fi modificat.");
+			var r = confirm("Sigur doriti sa postati anuntul?\nDupa ce anuntul va fi postat nu ve-ti mai putea face modificari.");
 			if (r === true)
-				$("#anunt").submit();
-			/*
-			var posting = $.post("checkAnunt.php", $form.serialize());
-			posting.done(function(data)
 			{
-				console.log(data);
-			});
-			*/
-			/*
-			console.log(form);
-			var $form = $(this);
-			var serializedData = $form.serialize();
-			request = $.ajax(
-			{
-				url: "checkAnunt.php",
-				type: $form.attr("method"),
-				data: serializedData
-			});
-			request.done(function(response, textStatus, jqXHR)
-			{
-				console.log(textStatus);
-				alert(response);
-			});
-			request.fail(function(jqXHR, textStatus, errorThrown)
-			{
-				console.error("Eroare: " + textStatus, errorThrown);
-			});
-			*/
+				request = $.ajax(
+				{
+					url: "checkAnunt.php",
+					type: "POST",
+					data: new FormData($("#anunt")[0]),
+					processData: false,
+					contentType:false
+				});
+				request.done(function(response, textStatus, jqXHR)
+				{
+					console.log($("#anunt :input"));
+					$("#anunt :input").prop("disabled", true);
+					console.log(textStatus + "\n" + response);
+					alert("Anuntul dvs. a fost adaugat cu succes! Ve-ti fi redirectionat cate pagina principala dupa ce apasati Ok.");
+					window.location.replace("index.php");
+				});
+				request.fail(function(jqXHR, textStatus, errorThrown)
+				{
+					console.error("Eroare: " + textStatus, errorThrown);
+					alert("S-a produs o eroare! Va rugam sa asteptati cateva minute iar apoi sa incercati din nou. Daca problemele persista va rugam sa ne contactati folosind datele de contact de pe pagina About.");
+				});
+			}
 		}
 	});
 });
 </script>
+<style type = "text/css">
+.inputError
+{
+	border: 3px solid #c24949;
+	border-radius: 5px;
+	background: #ffbcbc;
+}
+</style>
 <title>Adauga anunt</title>
 </head>
 
@@ -242,12 +265,13 @@ $(document).ready(function()
 </div>
 <div class = "container">
 	<div id="content" class = "pane">
-		<span>Campurile ingrosate si marcate cu * sunt obligatorii!</span>
-		<form id = "anunt" name = "anunt" action = "checkAnunt.php" method = "POST" enctype="multipart/form-data" style = "padding-bottom: 20px">
+		<p>Campurile ingrosate si marcate cu * sunt obligatorii!</p><br>
+		<span id = "sumarErori" class = "error"></span>
+		<form id = "anunt" name = "anunt" action = "checkAnunt.php" method = "POST" style = "padding-bottom: 20px">
 			<!-- Categorii -->
 			<div style = "display: block;padding-top: 10px;padding-bottom: 10px">
-				<label for = "categorii"><b>Categoria anuntului*</b></label><br>
-				<select id = "categorii" name = "categorii" class = "required">
+				<label for = "categorie"><b>Categoria anuntului*</b></label><br>
+				<select id = "categorie" name = "categorie" >
 					<?php echo $categorii ?>
 				</select>
 			</div>
@@ -257,13 +281,13 @@ $(document).ready(function()
 				<legend>Marca si modelul</legend>
 					<div style = "display: inline-block;padding-right: 20px">
 						<label for = "marca"><b>Marca*</b></label><br>
-						<select id = "marca"  name = "marca" class = "required" style = "width: 150px">
+						<select id = "marca"  name = "marca"  style = "width: 150px">
 							<option value = 0>Selectati</option>
 						</select>
 					</div>
 					<div style = "display: inline-block;padding-right: 20px;">
 						<label for = "model"><b>Modelul*</b></label><br>
-						<select id = "model" name = "model" class = "required" style = "width: 150px">
+						<select id = "model" name = "model"  style = "width: 150px">
 							<option value = 0>Selectati</option>
 						</select>
 					</div>
@@ -274,23 +298,23 @@ $(document).ready(function()
 				<legend>Date vehicul</legend>
 				<div style = "display: inline-block;text-align: left;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "stil"><b>Stil*</b></label><br>
-					<select id = "stil" name = "stil" class = "required" style = "width: 105px">
+					<select id = "stil" name = "stil"  style = "width: 105px">
 						<option value = 0>Selectati</option>
 					</select>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "fabricatie"><b>Anul fabricarii*</b></label><br>
-					<input type = "text" maxlength = "4" size = "4" id = "fabricatie" name = "fabricatie" class = "required">
+					<input type = "text" maxlength = "4" size = "4" id = "fabricatie" name = "fabricatie" >
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "combustibil"><b>Combustibil*</b></label><br>
-					<select id = "combustibil" name = "combustibil" class = "required">
+					<select id = "combustibil" name = "combustibil" >
 						<option value = 0>Selectati</option>
 					</select>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "culoare"><b>Culoare*</b></label><br>
-					<select id = "culoare" name = "culoare" class = "required">
+					<select id = "culoare" name = "culoare" >
 						<?php echo $culori; ?>
 					</select>
 				</div>
@@ -333,11 +357,11 @@ $(document).ready(function()
 				<legend>Informatii despre starea generala si exploatarea vehiculului</legend>
 				<div style = "display: inline-block;padding-right: 20px;">
 					<label for = "rulaj"><b>Rulaj*</b></label><br>
-					<input type = "text" id = "rulaj" name = "rulaj" class = "required">
+					<input type = "text" id = "rulaj" name = "rulaj" >
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;">
 					<label for = "clasaEuro"><b>Norma Euro*</b></label><br>
-					<select id = "clasaEuro" name = "clasaEuro" class = "required">
+					<select id = "clasaEuro" name = "clasaEuro" >
 						<?php echo $clasaEuro; ?>
 					</select>
 				</div>
@@ -393,13 +417,13 @@ $(document).ready(function()
 			<div style = "display: block;padding-top: 10px;padding-bottom: 5px">
 				<label>Adauga poza la anunt</label><br>
 				<input type = "file" accept = "image/*" id = "poza" name = "poza" disabled><br>
-				<p>Adaugarea unei poze la anunt nu este necesara, dar daca adaugi una vei creste sansele vanzarii autovehiculului.</p>
+				<p>Adaugarea unei poze la anunt nu este necesara, dar daca adaugi una vei creste sansele vanzarii autovehiculului.<b> Poza poate avea o dimensiune de maxim 6 MB!</b></p>
 			</div>
 			<!-- End Poza -->
 			<!-- Pret -->
 			<div style = "display: block;padding-top: 5px;padding-bottom: 10px">
 				<label><b>Pret* <u title = "Pretul trebuie sa fie in Euro">?</u></b></label><br>
-				<input type = "text" id = "pret" name = "pret" class = "required" disabled>
+				<input type = "text" id = "pret" name = "pret"  disabled>
 			</div>
 			<!-- End Pret -->
 			<!-- Promovare -->
@@ -413,9 +437,9 @@ $(document).ready(function()
 				<p>
 					Sunt disponibile 3 pachete de promovare a anunturilor:
 					<ol>
-						<li>Pachetul <b>Basic</b> nu are beneficii speciale</li>
-						<li>Pachetul <b>Premium</b>: Afisarea anuntului la inceputul listei</li>
-						<li>Pachetul <b>Gold</b>: Afisarea anuntului la inceputul listei + evidentierea anuntului cu o culoare atractiva</li>
+						<li>Pachetul <b>Basic</b> (gratuit) nu are beneficii speciale</li>
+						<li>Pachetul <b>Premium</b> (50 Lei): Afisarea anuntului la inceputul listei</li>
+						<li>Pachetul <b>Gold</b> (100 Lei): Afisarea anuntului la inceputul listei + evidentierea anuntului cu o culoare atractiva</li>
 					</ol>
 				</p>
 				

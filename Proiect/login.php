@@ -48,6 +48,7 @@
 				$rez = mysqli_fetch_array($rez);
 				$nume = $_SESSION["login"] = $rez[1];
 				$_SESSION['userID'] = $rez[0];
+				$_SESSION['userType'] = $rez[4];
 				header("location:index.php");
 			}
 			else
@@ -55,6 +56,7 @@
 				$mesaj =  "Numele sau parola sunt incorecte! Daca nu v-ați creat un cont vă puteți înregistra <a href = \"inregistrare.php\">aici</a>.";
 				$_SESSION["login"] = "";
 				$_SESSION["userID"] = "";
+				$_SESSION['userType'] = "";
 			}
 			mysqli_free_result($rez);
 		}
