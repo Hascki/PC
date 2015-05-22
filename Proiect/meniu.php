@@ -1,4 +1,6 @@
 <?php
+	if (!isset($_SESSION))
+		session_start;
 	$arrayLeftBtns = array("acasa" => "", "produse" => "", "promotii" => "", "addAnunt" => "", "cont" => "");
 	$arrayRightBtns = array("logout" => "class = \"rightBtn\"><a href = \"logout.php\">Logout</a>", "login" => "", "inregistrare" => "");
 	if ($pagCurenta === "index")
@@ -40,7 +42,11 @@
 			<li " . $arrayLeftBtns['acasa'] . "</li>
 			<li " . $arrayLeftBtns['produse'] . "</li>
 			<li " . $arrayLeftBtns['promotii'] . "</li>
-			<li " . $arrayLeftBtns['addAnunt'] . "</li>
+			";
+		if (isset($_SESSION['userType']) && $_SESSION['userType'] !== "3")
+			echo "
+			<li " . $arrayLeftBtns['addAnunt'] . "</li>";
+		echo "
 			<li " . $arrayLeftBtns['cont'] . "</li>
 			<li " . $arrayRightBtns['logout'] . "</li>";
 	}

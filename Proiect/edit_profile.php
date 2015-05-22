@@ -86,7 +86,13 @@
 	else if (!isset($_POST['modifDatePers']) && count($_POST) === 11)
 	{
 		//Daca s-a apasat pe butonul de reset al profilului
-		$query = "UPDATE `profiles` SET `nume` = NULL, `prenume` = NULL, `telefon` = NULL, `judet` = NULL, `localitate` = NULL, `strada` = NULL, `bloc` = NULL, `numar` = NULL, `scara` = NULL, `etaj` = NULL, `apartament` = NULL WHERE `profileid` = ?";
+		$fp = fopen(dirname(__FILE__) . "/imagini/defaultProfile.png", "r");
+		$data = "";
+		while (!feof($fp))
+			$data .= fread($fp, 23269);
+		fclose($fp);
+		$data = mysqli_real_escape_string($conexiune, $data);
+		$query = "UPDATE `profiles` SET `nume` = NULL, `prenume` = NULL, `telefon` = NULL, `judet` = NULL, `localitate` = NULL, `strada` = NULL, `bloc` = NULL, `numar` = NULL, `scara` = NULL, `etaj` = NULL, `apartament` = NULL, `avatar` = '" . $data . "' WHERE `profileid` = ?";
 			if ($stmt = mysqli_prepare($conexiune, $query))
 			{
 				$userID = mysqli_real_escape_string($conexiune, $_SESSION['userID']);
@@ -140,15 +146,16 @@
 				else $errorsArray["tel"] = "Rubrica numar telefon nu contine un numar de telefon!";
 			}
 			//Se ocupa cu modificarea judetului din profil
-			if (($_POST['judet']) == 0)
-				$errorsArray["judet"] = "Trebuie ales un judet!";
-			else
+			if (isset($_POST['judet']))
 			{
-				if (strrpos($query, '?') !== false)
+				if ($_POST['judet'] !== "0")
+				{
+					if (strrpos($query, '?') !== false)
 						$query .= ",";
 					$query .= " `judet` = ?";
 					$parameters[] = intval($_POST['judet']);
 					$paramsTypes .= 'i';
+				}
 			}
 			//Se ocupa cu modificarea localitatii din profil
 			if (!empty($_POST['localitate']))
@@ -239,7 +246,7 @@
 					$tmpName = $_FILES['avatar']['tmp_name'];
 					$avatarSize = $_FILES['avatar']['size'];
 					$avatarType = $_FILES['avatar']['type'];
-					if ($avatarSize >= 6000000)
+					if ($avatarSize > 6291456)
 					{
 						$avatarError = true;
 						$errorsArray['avatar'] = "Poza este prea mare!";
@@ -306,7 +313,6 @@
 			}
 		}
 	}
-	
 	$query = "SELECT * FROM `profiles` WHERE `profileid` = ?";
 	if ($stmt = mysqli_prepare($conexiune, $query))
 	{
@@ -341,47 +347,60 @@
 <div class = "header">
 <?php include "meniu.php" ?>
 </div>
-<div>
-	<fieldset>
-		<legend>Modificare date ale contului</legend>
-		<form method = "POST" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" >
-			<label for = "numeCont">Numele contului:</label><br>
-			<input type = "text" id = "numeCont" name = "numeCont" value = "<?php echo $_SESSION['login']; ?>">
-			<input type = "submit" value = "Modifica numele contului" name = "modifNume">
-			<span <?php echo $tipMsgNumeCont ?>><?php echo $msgNumeCont ?></span>
-		</form>
-		<form method = "POST" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" >
-			<label for = "email">Email:</label><br>
-			<input type = "email" id = "email" name = "email" value = "<?php echo $profil[4] ?>">
-			<input type = "submit" value = "Modifica emailul" name = "modifEmail">
-			<span <?php echo $tipMsgEmail ?>><?php echo $msgEmail ?></span>
-		</form>
-		<label for = "resetPass">Resetare parolă:</label><br>
-		<input id = "resetPass" type = "button" value = "Schimbă parola" onclick = "window.location.href = 'reset_pass.php'">
-	</fieldset>
-	<fieldset>
-		<legend>Modificare date personale</legend>
-		<form method = "POST" enctype="multipart/form-data" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" >
-			Rubricile marcate cu * sunt obligatorii!<br>
-			<label for = "nume">Nume:</label><input type = "text" id = "nume" name = "numePers" value = "<?php $profil[1] === NULL ? print("") : print($profil[1]) ?>"><br>
-			<label for = "prenume">Prenume:</label><input type = "text" id = "prenume" name = "prenume" value = "<?php $profil[2] === NULL ? print("") : print($profil[2]) ?>"><br>
-			<label for = "nrTel">Nr. telefon:</label><input type = "tel" id = "nrTel" name = "nrTel" value = "<?php $profil[3] === NULL ? print("") : print($profil[3]) ?>"><span <?php echo $errorColor ?>><?php echo $errorsArray['tel'] ?></span><br>
-			<label for = "judet">Judet:</label><select name = "judet" id = "judet"><?php echo $judete; ?></select>*  <span <?php echo $errorColor ?>><?php echo $errorsArray['judet'] ?></span><br>
-			<label for = "localitate">Localitate:</label><input type = "text" id = "localitate" name = "localitate" value = "<?php $profil[6] === NULL ? print("") : print($profil[6]) ?>"><br>
-			<label for = "strada">Strada:</label>
-			<input type = "text" id = "strada" name = "strada" value = "<?php $profil[7] === NULL ? print("") : print($profil[7]) ?>">
-			<label for = "nrStr">Nr:</label>
-			<input type = "text" id = "nr." size = "4" maxlength = "4" name = "nrStr" value = "<?php $profil[9] === NULL ? print("") : print($profil[9]) ?>"><span <?php echo $errorColor ?>><?php echo $errorsArray['nrStr'] ?></span><br>
-			<label for = "bloc">Bloc:</label><input type = "text" id = "bloc" size = "5" name = "bloc" value = "<?php $profil[8] === NULL ? print("") : print($profil[8]) ?>">
-			<label for = "scara">Scara</label><input type = "text" id = "scara" size = "5" name = "scara" value = "<?php $profil[10] === NULL ? print("") : print($profil[10]) ?>"><br>
-			<label for = "etaj">Etaj:</label><input type = "text" id = "etaj" size = "3" maxlength = "3" name = "etaj" value = "<?php $profil[11] === NULL ? print("") : print($profil[11]) ?>"><span <?php echo $errorColor ?>><?php echo $errorsArray['etaj'] ?></span><br>
-			<label for = "apt">Apartament:</label><input type = "text" id = "apt" size = "3" maxlength = "3" name = "apt" value = "<?php $profil[12] === NULL ? print("") : print($profil[12]) ?>"><span <?php echo $errorColor ?>><?php echo $errorsArray['ap'] ?></span><br>
-			<label for = "avatar">Avatar:</label><input type = "file" accept = "image/*" id = "avatar" name = "avatar"><span <?php echo $errorColor ?>><?php echo $errorsArray['avatar'] ?></span><br>Dimensiunea maxima a avatarului: 6 MB<br>
-			<input type = "submit" value = "Modifica" name = "modifDatePers">
-			<input type = "button" value = "Reseteaza profilul" name = "resetDatePers" onclick = "this.form.submit();">
-			<br><span <?php echo $tipMsgDatePers ?>><?php echo $msgDatePers ?></span>
-		</form>
-	</fieldset>
+<div class = "container">
+	<div id="content" class = "pane">
+		<div>
+			<fieldset>
+				<legend>Modificare date ale contului</legend>
+				<form method = "POST" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" >
+					<label for = "numeCont">Numele contului:</label><br>
+					<input type = "text" id = "numeCont" name = "numeCont" value = "<?php echo $_SESSION['login']; ?>">
+					<input type = "submit" value = "Modifica numele contului" name = "modifNume">
+					<span <?php echo $tipMsgNumeCont ?>><?php echo $msgNumeCont ?></span>
+				</form>
+				<form method = "POST" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" >
+					<label for = "email">Email:</label><br>
+					<input type = "email" id = "email" name = "email" value = "<?php echo $profil[4] ?>">
+					<input type = "submit" value = "Modifica emailul" name = "modifEmail">
+					<span <?php echo $tipMsgEmail ?>><?php echo $msgEmail ?></span>
+				</form>
+				<label for = "resetPass">Resetare parolă:</label><br>
+				<input id = "resetPass" type = "button" value = "Schimbă parola" onclick = "window.location.href = 'reset_pass.php'">
+			</fieldset>
+			<fieldset>
+				<legend>Modificare date personale</legend>
+				<form method = "POST" enctype="multipart/form-data" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" >
+					Rubricile marcate cu * sunt obligatorii!<br>
+					<label for = "nume">Nume:</label><input type = "text" id = "nume" name = "numePers" value = "<?php $profil[1] === NULL ? print("") : print($profil[1]) ?>"><br>
+					<label for = "prenume">Prenume:</label><input type = "text" id = "prenume" name = "prenume" value = "<?php $profil[2] === NULL ? print("") : print($profil[2]) ?>"><br>
+					<label for = "nrTel">Nr. telefon:</label><input type = "tel" id = "nrTel" name = "nrTel" value = "<?php $profil[3] === NULL ? print("") : print($profil[3]) ?>"><span <?php echo $errorColor ?>><?php echo $errorsArray['tel'] ?></span><br>
+					<label for = "judet">Judet:</label><select name = "judet" id = "judet"><?php echo $judete; ?></select><span <?php echo $errorColor ?>><?php echo $errorsArray['judet'] ?></span><br>
+					<label for = "localitate">Localitate:</label><input type = "text" id = "localitate" name = "localitate" value = "<?php $profil[6] === NULL ? print("") : print($profil[6]) ?>"><br>
+					<label for = "strada">Strada:</label>
+					<input type = "text" id = "strada" name = "strada" value = "<?php $profil[7] === NULL ? print("") : print($profil[7]) ?>">
+					<label for = "nrStr">Nr:</label>
+					<input type = "text" id = "nr." size = "4" maxlength = "4" name = "nrStr" value = "<?php $profil[9] === NULL ? print("") : print($profil[9]) ?>"><span <?php echo $errorColor ?>><?php echo $errorsArray['nrStr'] ?></span><br>
+					<label for = "bloc">Bloc:</label><input type = "text" id = "bloc" size = "5" name = "bloc" value = "<?php $profil[8] === NULL ? print("") : print($profil[8]) ?>">
+					<label for = "scara">Scara</label><input type = "text" id = "scara" size = "5" name = "scara" value = "<?php $profil[10] === NULL ? print("") : print($profil[10]) ?>"><br>
+					<label for = "etaj">Etaj:</label><input type = "text" id = "etaj" size = "3" maxlength = "3" name = "etaj" value = "<?php $profil[11] === NULL ? print("") : print($profil[11]) ?>"><span <?php echo $errorColor ?>><?php echo $errorsArray['etaj'] ?></span><br>
+					<label for = "apt">Apartament:</label><input type = "text" id = "apt" size = "3" maxlength = "3" name = "apt" value = "<?php $profil[12] === NULL ? print("") : print($profil[12]) ?>"><span <?php echo $errorColor ?>><?php echo $errorsArray['ap'] ?></span><br>
+					<label for = "avatar">Avatar:</label><input type = "file" accept = "image/*" id = "avatar" name = "avatar"><span <?php echo $errorColor ?>><?php echo $errorsArray['avatar'] ?></span><br>Dimensiunea maxima a avatarului: 6 MB<br>
+					<input type = "submit" value = "Modifica" name = "modifDatePers">
+					<input type = "button" value = "Reseteaza profilul" name = "resetDatePers" onclick = "this.form.submit();">
+					<br><span <?php echo $tipMsgDatePers ?>><?php echo $msgDatePers ?></span>
+				</form>
+			</fieldset>
+		</div>
+	</div>
+	<div id = "left" class = "pane">
+		
+	</div>
+	<div id = "right" class = "pane">
+		
+	</div>
+</div>
+<div class = "footer">
+	<a href = "about.php">About</a><br>
 </div>
 </body>
 </html>

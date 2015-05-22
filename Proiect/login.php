@@ -75,32 +75,43 @@
 <div class = "header">
 <?php include "meniu.php" ?>
 </div>
-<div>
-<form name = "form_login" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method = "post">
-	<table>
-		<tr>
-			<td>
-				<input type = "text" name = "nume" maxlength = "30" placeholder = "Nume sau Email" value = "<?php echo $nume ?>">
-				<span class = "error"><?php echo $numeErr ?></span>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type = "password" name = "parola" maxlength = "10" placeholder = "Parola">
-				<span class = "error"><?php echo $parolaErr ?></span>
-			</td>
-		</tr>
-		<tr>
-			<td colspan = "2">Ți-ai uitat parola? Reseteaz-o <a href = "reset_pass.php">aici</a>.</td>
-		</tr>
-		<tr>
-			<td colspan = "2"><input type = "submit" name = "submit" value = "Login"></td>
-		</tr>
-	</table>
-</form>
+<div class = "container">
+	<div id="content" class = "pane">
+		<form name = "form_login" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method = "post">
+			<table>
+				<tr>
+					<td>
+						<input type = "text" name = "nume" maxlength = "30" placeholder = "Nume sau Email" value = "<?php echo $nume ?>">
+						<span class = "error"><?php echo $numeErr ?></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type = "password" name = "parola" maxlength = "10" placeholder = "Parola">
+						<span class = "error"><?php echo $parolaErr ?></span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan = "2">Ți-ai uitat parola? Reseteaz-o <a href = "reset_pass.php">aici</a>.</td>
+				</tr>
+				<tr>
+					<td colspan = "2"><input type = "submit" name = "submit" value = "Login"></td>
+				</tr>
+			</table>
+		</form>
+		<div>
+			<?php echo $mesaj ?>
+		</div>
+	</div>
+	<div id = "left" class = "pane">
+		
+	</div>
+	<div id = "right" class = "pane">
+		
+	</div>
 </div>
-<div align = "left">
-	<?php echo $mesaj ?>
+<div class = "footer">
+	<a href = "about.php">About</a><br>
 </div>
 </body>
 </html>

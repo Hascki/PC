@@ -25,6 +25,14 @@
 	$clasaEuro = "<option value = 0> Selectati </option>";
 	while ($row = mysqli_fetch_array($sql))
 		$clasaEuro .= "<option value = " . $row['EcoId'] . ">" . $row['EuroName'] . "</option>";
+	$query = "SELECT `sold` FROM `utilizatori` WHERE `username` = '" . $_SESSION['login'] ."' AND `userid` = '" . $_SESSION['userID'] . "'";
+	$sql = mysqli_query($conexiune, $query);
+	if ($sql !== false && mysqli_num_rows($sql) === 1)
+	{
+		 $row = mysqli_fetch_array($sql);
+		 $sold = $row['sold'];
+	}
+	else $sold = 100;
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +46,7 @@
 <script>
 $(document).ready(function()
 {
+	var filesize = 0;
 	// Cand se schimba categoria
 	$("#categorie").on("change", function()
 	{
@@ -66,9 +75,9 @@ $(document).ready(function()
 				$("#divNrLocuri").css("display", "inline-block");
 				$("#divMMA").css("display", "inline-block");
 				$("#dotari").css("display", "block");
-				var options = "<option value = 0>Selectati</option><option value = 1>Manuala</option><option value = 2>Secventiala</option><option value = 3>Automata</option>";
+				var options = "<option value = 1>Manuala</option><option value = 2>Secventiala</option><option value = 3>Automata</option>";
 				$("#distributie").html(options);
-				options = "<option value = 0>Selectati</option><option value = 1>Benzina</option><option value = 2>Motorina</option><option value = 3>Electrica</option><option value = 4>Hibrid</option>";
+				options = "<option value = 0>Selectati</option><option value = 1>Benzina</option><option value = 2>Motorina</option><option value = 3>Hibrid</option><option value = 4>Electric</option>";
 				$("#combustibil").html(options);
 			}
 			else 
@@ -76,9 +85,9 @@ $(document).ready(function()
 				$("#divNrLocuri").css("display", "none");
 				$("#divMMA").css("display", "none");
 				$("#dotari").css("display", "none");
-				var options = "<option value = 0>Selectati</option><option value = 4>lant</option><option value = 5>cardan</option><option value = 6>curea</option>";
+				var options = "<option value = 4>Lant</option><option value = 5>Cardan</option><option value = 6>Curea</option>";
 				$("#distributie").html(options);
-				options = "<option value = 0>Selectati</option><option value = 1>Benzina</option><option value = 2>Motorina</option><option value = 3>Electrica</option>";
+				options = "<option value = 0>Selectati</option><option value = 1>Benzina</option><option value = 2>Motorina</option><option value = 4>Electric</option>";
 				$("#combustibil").html(options);
 			}
 			$("#marcaModel").prop("disabled", false);
@@ -140,6 +149,26 @@ $(document).ready(function()
 	$.validator.addMethod("selectNotDefault", function(value, element, arg)
 	{
 		return arg !== value;
+	});
+	// Verificare dimensiune poza
+	$("#poza").on("change", function()
+	{
+		$("#resetPoza").prop("disabled", false);
+		filesize = this.files[0].size;
+		if (filesize > 6291456)
+		{
+			alert("Imaginea selectata pentru upload este mai mare ca 6MB!. Pana nu veti adauga o poza mai mica nu veti putea posta anuntul!");
+			$("#submit").prop("disabled", true);
+		}
+		else $("#submit").prop("disabled", false);
+	});
+	// Sterge poza
+	$("#resetPoza").click(function()
+	{
+		$("#poza").wrap("<form>").parent('form').trigger('reset');
+		$("#poza").unwrap();
+		$("#resetPoza").prop("disabled", true);
+		$("#submit").prop("disabled", false);
 	});
 	// Validare formular
 	$("#anunt").validate(
@@ -219,9 +248,10 @@ $(document).ready(function()
 		// Daca totul e in regula se trimit datele
 		submitHandler: function(form)
 		{
-			var r = confirm("Sigur doriti sa postati anuntul?\nDupa ce anuntul va fi postat nu ve-ti mai putea face modificari.");
+			var r = confirm("Sigur doriti sa postati anuntul?\nDupa ce anuntul va fi postat nu veti mai putea face modificari.");
 			if (r === true)
 			{
+				
 				request = $.ajax(
 				{
 					url: "checkAnunt.php",
@@ -230,19 +260,45 @@ $(document).ready(function()
 					processData: false,
 					contentType:false
 				});
+				$("#anunt :input").prop("disabled", true);
 				request.done(function(response, textStatus, jqXHR)
 				{
-					console.log($("#anunt :input"));
-					$("#anunt :input").prop("disabled", true);
-					console.log(textStatus + "\n" + response);
-					alert("Anuntul dvs. a fost adaugat cu succes! Ve-ti fi redirectionat cate pagina principala dupa ce apasati Ok.");
-					window.location.replace("index.php");
+					console.log(response);
+					if (response.returnType === "succes")
+					{
+						alert("Anuntul dvs. a fost adaugat cu succes!\nVe-ti fi redirectionat cate pagina principala dupa ce apasati Ok.");
+						window.location.replace("index.php");
+					}
+					else
+					{
+						var rasp = $.map(response, function(el){return el;});
+						var n = response.errNum;
+						var errSys = false;
+						var alertStr = "Au aparut urmatoarele erori:\n";
+						for (var i = 0;i < n;i++)
+						{
+							if (rasp[2 + i] !== "Eroare la inserarea in tabel!" || rasp[2 + i] !== "Poza aleasa nu a putut fii uploadata!" || rasp[2 + i] !== "Poza default nu a putut fii uploadata!" || rasp[2 + i] !== "Datele nu au fost trimise cum trebuie!")
+								alertStr += rasp[2 + i] + "\n";
+							else
+							{
+								console.log(rasp[2 + i]);
+								errSys = true;
+							}
+						}
+						if (!errSys)
+						{
+							alertStr += "\n Va trebui sa remediati problemele daca doriti sa va postati anuntul!";
+							alert(alertStr);
+						}
+						else alert("S-a produs o eroare la salvarea anuntului!\nVa rugam sa asteptati cateva minute iar apoi sa incercati din nou. Daca problemele persista va rugam sa ne contactati folosind datele de contact de pe pagina About.");
+					}
 				});
 				request.fail(function(jqXHR, textStatus, errorThrown)
 				{
 					console.error("Eroare: " + textStatus, errorThrown);
-					alert("S-a produs o eroare! Va rugam sa asteptati cateva minute iar apoi sa incercati din nou. Daca problemele persista va rugam sa ne contactati folosind datele de contact de pe pagina About.");
+					alert("S-a produs o eroare!\nVa rugam sa asteptati cateva minute iar apoi sa incercati din nou. Daca problemele persista va rugam sa ne contactati folosind datele de contact de pe pagina About.");
 				});
+				$("#anunt :input").prop("disabled", false);
 			}
 		}
 	});
@@ -325,7 +381,7 @@ $(document).ready(function()
 				<div style = "display: inline-block;text-align: left;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "putere">Putere <b><u title = "Valoarea va fi automat recalculata in kW sau CP.">?</u></b></label><br>
 					<input type = "text" id = "putere" name = "putere" maxlength = "4" size = "4">
-					<input type = "radio" id = "putereKW" name = "tipPutere" value = "kW">kW
+					<input type = "radio" id = "putereKW" name = "tipPutere" value = "kW" checked>kW
 					<input type = "radio" id = "putereCP" name = "tipPutere" value = "CP">CP
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
@@ -417,6 +473,7 @@ $(document).ready(function()
 			<div style = "display: block;padding-top: 10px;padding-bottom: 5px">
 				<label>Adauga poza la anunt</label><br>
 				<input type = "file" accept = "image/*" id = "poza" name = "poza" disabled><br>
+				<input type = "button" id = "resetPoza" name = "resetPoza" value = "Sterge poza" disabled></br>
 				<p>Adaugarea unei poze la anunt nu este necesara, dar daca adaugi una vei creste sansele vanzarii autovehiculului.<b> Poza poate avea o dimensiune de maxim 6 MB!</b></p>
 			</div>
 			<!-- End Poza -->
@@ -431,8 +488,8 @@ $(document).ready(function()
 				<label>Promovare</label><br>
 				<select id = "promovare" name = "promovare" disabled>
 					<option value = 2>Basic</option>
-					<option value = 1>Premium</option>
-					<option value = 0>Gold</option>
+					<option value = 1<?php if ($sold < 50) echo " disabled" ?>>Premium</option>
+					<option value = 0<?php if ($sold < 100) echo " disabled" ?>>Gold</option>
 				</select>
 				<p>
 					Sunt disponibile 3 pachete de promovare a anunturilor:
@@ -441,8 +498,8 @@ $(document).ready(function()
 						<li>Pachetul <b>Premium</b> (50 Lei): Afisarea anuntului la inceputul listei</li>
 						<li>Pachetul <b>Gold</b> (100 Lei): Afisarea anuntului la inceputul listei + evidentierea anuntului cu o culoare atractiva</li>
 					</ol>
+					<strong>Daca nu aveti destui bani in sold nu veti putea selecta pachetele Premium sau Gold!</strong>
 				</p>
-				
 			</div>
 			<!-- End Promovare -->
 			<input type = "submit" id = "submit" name = "submit" value = "Adauga anunt" disabled>

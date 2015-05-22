@@ -56,28 +56,26 @@
 				$email = mysqli_real_escape_string($conexiune, $email);
 				$nume = mysqli_real_escape_string($conexiune, $nume);
 				$parola = mysqli_real_escape_string($conexiune, $parola);
-				$cerere = "INSERT INTO `utilizatori` (`UserId`, `UserName`, `Password`, `EmailAdd`, `Type`) VALUES (NULL, '$nume', '$parola', '$email', '2')";
+				$tip = intval($_POST['tipCont']);
+				$cerere = "INSERT INTO `utilizatori` (`UserId`, `UserName`, `Password`, `EmailAdd`, `Type`) VALUES (NULL, '$nume', '$parola', '$email', $tip)";
 				$sql = mysqli_query($conexiune, $cerere);
 				if ($sql === false)
 				{
-					$mesaj =  "S-a produs o eroare. Va rugăm incercați din nou.<br>";
+					$mesaj =  "S-a produs o eroare. Va rugăm să incercați din nou.<br>";
 				}
-				else 
+				else
 				{
-					$interogare = "SELECT `userid`, `emailadd` FROM `utilizatori` WHERE `emailadd` = '$email' AND `password` = '$parola'";
-					$select = mysqli_query($conexiune, $interogare);
-					if (mysqli_num_rows($select) === 1)
-					{
-						$row = mysqli_fetch_array($select);
-						
-						$cerere = "INSERT INTO `proiectcolectiv`.`profiles` (`ProfileId`, `Nume`, `Prenume`, `Telefon`, `AdresaEmail`, `Localitate`, `Strada`, `Bloc`, `Numar`, `Scara`, `Etaj`, `Apartament`, `Avatar`) VALUES ('$row[0]', NULL, NULL, NULL, '$row[1]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
-						$sql = mysqli_query($conexiune, $cerere);
-						if ($sql === false)
-							$mesaj = "Eroare la inserarea in tabelul profiles!<br>";
-						else $mesaj = "V-ați înregistrat cu succes. Veți fi redirecționat către pagina de login în câteva momente.";
-					}
-					else $mesaj = "Eroare la SELECT din profiles!";
-					mysqli_free_result($select);
+					$id = mysqli_insert_id($conexiune);
+					$fp = fopen(dirname(__FILE__) . "/imagini/defaultProfile.png", "r");
+					$data = "";
+					while (!feof($fp))
+						$data .= fread($fp, 23269);
+					fclose($fp);
+					$data = mysqli_real_escape_string($conexiune, $data);
+					$cerere = "INSERT INTO `profiles` (`ProfileId`, `Nume`, `Prenume`, `Telefon`, `AdresaEmail`, `Localitate`, `Strada`, `Bloc`, `Numar`, `Scara`, `Etaj`, `Apartament`, `Avatar`) VALUES ($id, NULL, NULL, NULL, '$email', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '" . $data . "');";
+					$sql = mysqli_query($conexiune, $cerere);
+					if ($sql !== false)
+						$mesaj = "V-ați înregistrat cu succes. Veți fi redirecționat către pagina de login în câteva momente.";
 					header("refresh: 5;url = login.php");
 				}
 			}
@@ -122,32 +120,62 @@ $(document).ready(function()
 <title>Înregistrare</title>
 </head>
 
-<body class="twoColElsLtHdr">
+<body>
 <div class = "header">
 <?php include "meniu.php" ?>
 </div>
-<?php echo $mesaj ?>
-<form name = "form_inregistrare" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method = "post">
-	<table>
-	<tr>
-		<td><input id = "email" type = "email" name = "email" maxlength = "30" value = "<?php echo $email ?>" placeholder = "Email utilizator"></td>
-		<td><span class = "error"><?php echo " " . $emailErr; ?></span></td>
-	</tr>
-	<tr>
-		<td><input type = "password" name = "parola" maxlength = "10" placeholder = "Parolă"></td>
-		<td><span class = "error"><?php echo " " . $parolaErr; ?></span></td>
-	</tr>
-	<tr>
-		<td><input type = "password" name = "parola_confirm" maxlength = "10" placeholder = "Confirmă parola"></td>
-		<td><span class = "error"><?php echo " " . $parola_confirmErr; ?></span></td>
-	</tr>
-	<tr align = "left">
-		<td><input type = "submit" name = "submit" value = "Înregistrează"></td>
-	</tr>
-	</table>
-</form>
-<div align = "left">
-	<br>Parola poate avea maxim 10 caractere!
+<div class = "container">
+	<div id="content" class = "pane">
+		<?php echo $mesaj ?>
+		<form name = "form_inregistrare" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method = "post">
+		<table>
+		<tr>
+			<td>
+				<label for = "email">Email</label><br>
+				<input id = "email" type = "email" name = "email" maxlength = "30" value = "<?php echo $email ?>">
+				</td>
+			<td><span class = "error"><?php echo " " . $emailErr; ?></span></td>
+		</tr>
+		<tr>
+			
+			<td>
+				<label for = "parola">Parolă</label><br>
+				<input type = "password" name = "parola" maxlength = "10">
+			</td>
+			<td><span class = "error"><?php echo " " . $parolaErr; ?></span></td>
+		</tr>
+		<tr>
+			<td>
+				<label for = "parola_confirm">Confirmă parola</label><br>
+				<input type = "password" name = "parola_confirm" maxlength = "10">
+			</td>
+			<td><span class = "error"><?php echo " " . $parola_confirmErr; ?></span></td>
+		</tr>
+		<tr>
+			<td colspan = "2">
+				<span>Alegeti tipul contului:</span><br>
+				<input type = "radio" id = "tipContCumparator" name = "tipCont" value = "3" checked>Cumparator<br>
+				<input type = "radio" id = "tipContVanzator" name = "tipCont" value = "2">Vanzator
+			</td>
+		</tr>
+		<tr align = "left">
+			<td><input type = "submit" name = "submit" value = "Înregistrează"></td>
+		</tr>
+		</table>
+		</form>
+		<div>
+			<br>Parola poate avea maxim 10 caractere!
+		</div>
+	</div>
+	<div id = "left" class = "pane">
+	
+	</div>
+	<div id = "right" class = "pane">
+	
+	</div>
+</div>
+<div class = "footer">
+	<a href = "about.php">About</a><br>
 </div>
 </body>
 </html>
