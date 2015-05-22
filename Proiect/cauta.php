@@ -57,6 +57,20 @@ $r="Automat";
 }
 return $r;
 }
+function get_bit_fields($field)
+{
+$r='';
+if($field=="0")
+{
+$r="NU";
+}
+elseif($field=="1")
+{
+$r="DA";
+}
+return $r;
+}
+
 
 $ok=1;
 $stareCauta = "hidden";
@@ -178,7 +192,7 @@ function change_selected($optionList, $selected = '0')
 
 if (!isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']))
 {
-echo "f1";
+//echo "f1";
 	// Prima data cand se intra pe pagina
 	get_categories();
 	$_SESSION['categories'] = $categories;
@@ -188,7 +202,7 @@ echo "f1";
 }
 
 else if (isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']))
-{echo "f2";
+{//echo "f2";
 	//
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
@@ -204,7 +218,7 @@ else if (isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['mode
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['modele'])&& $_GET['categorii'] !== $_GET['lastSelCategory']&&$_GET['categorii']!=0)
-{echo "f3";
+{//echo "f3";
 	//
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
@@ -219,7 +233,7 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['model
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['modele'])&& $_GET['marci'] !== $_GET['lastSelMaker'])
-{echo "f4";
+{//echo "f4";
 	//
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
@@ -236,7 +250,7 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['model
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele'])&& $_GET['categorii'] !== $_GET['lastSelCategory'])
-{echo "f5";
+{//echo "f5";
 	//
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
@@ -251,7 +265,7 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele'])&& $_GET['marci'] !== $_GET['lastSelMaker']&& $_GET['marci'] != 0)
-{echo "f6";
+{//echo "f6";
 	//
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
@@ -268,7 +282,7 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci'])) && $_GET['categorii'] == 0)
-{echo "f7";
+{//echo "f7";
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
@@ -279,7 +293,7 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci'])) && $_GET['categorii'
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['marci'] == 0)
-{echo "f8";
+{//echo "f8";
 	// Daca se alege prima optiune din lista marcilor se dezactiveaza lista de modele. Un fel de buton de restart.
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
@@ -294,7 +308,7 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['model
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['modele'] == 0)
-{echo "f9";
+{//echo "f9";
 	// Daca este activa optiunea default din lista de modele.
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
@@ -310,7 +324,7 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['model
 }
 
 else if($ok==1 && isset($_SESSION['cauta'])){
-echo "f10";
+//echo "f10";
 if(isset($_GET['modele'])&& $_GET['modele'] != 0){
 set_filtre();
 $_SESSION['combustibil']=$combustibil;
@@ -376,7 +390,7 @@ $stareCauta="submit";
 }
 
 else
-{echo "f11";
+{//echo "f11";
 	// Aici se ajunge cand s-a ales o marca si un model si se poate cauta in tabelul de anunturi.
 	// Daca numarul de randuri este 0 inseamna ca nu exista nici un anunt care sa respecte cerintele selectate
 	// si se va afisa un mesaj.
@@ -401,9 +415,9 @@ else
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
 	$culori = $_SESSION['culori'];
-	echo $_GET['culoare'];
+	//echo $_GET['culoare'];
 	if ((isset($_GET['culoare']))){//&&!(isset($_SESSION['lastSelCuloare']))))//||((isset($_GET['culoare']))&&(isset($_SESSION['lastSelCuloare']))&&$_SESSION['lastSelCuloare']!=0)){
-	echo $_GET['culoare']."    ";
+	//echo $_GET['culoare']."    ";
 	
 	$selCuloare = $_GET['culoare'];
 	$culori = change_selected($culori, $selCuloare);
@@ -425,7 +439,7 @@ else
 	$_SESSION['selMaker']=$selMaker;
 	$_SESSION['selModel']=$selModel;
 	
-	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`,`pozeanunturi`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
+	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`,`pozeanunturi`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`='$selCategory' and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
 	// Daca nu s-a ales optiunea Toate
 	if ($selModel != 9999)
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";
@@ -434,7 +448,8 @@ else
 	if (mysqli_num_rows($result) === 0)
 		$rezultate = "<tr><td>Ne pare rau, nu a fost gasit niciun anunt dupa criteriile de cautare selectate!</td></tr>";
 	else
-	{
+	{$rezultate .= "<tr><td height='150' colspan='13'></td></tr>";
+	if($selCategory==1){
 		while ($row = mysqli_fetch_array($result))
 		{
 			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
@@ -449,8 +464,45 @@ else
 			$rezultate .= "".get_distributie($row['distributie'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
 			$rezultate .= "<td align='center'>".$row['EuroName']. "</td><td></td><td>";
 			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
-			$rezultate .="<td border = '0'><form action='detalii1.php' method=POST><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
+			$rezultate .="<td border = '0'><form action='detalii1.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
 		}
+	}
+	elseif($selCategory==2){
+		while ($row = mysqli_fetch_array($result))
+			{
+			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
+			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
+			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
+			$col = mysqli_query($conexiune,$sql);
+			$col = mysqli_fetch_array($col);
+			$rezultate .= "" . $col['culoare'] . "</td><td></td><td>" . $row['datafabricatie'] . "</td><td></td><td>";
+			$rezultate .= get_combustibil($row['combustibil']);
+			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Regulator de viteză</th><td></td><th>ABS</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";
+			$rezultate .= "<td height = '60' align='center'>".get_bit_fields($row['RV'])."</td><td></td><td td align='center'>";
+			$rezultate .= "".get_bit_fields($row['ABS'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
+			$rezultate .= "<td align='center'>".$row['EuroName']. "</td><td></td><td>";
+			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
+			$rezultate .="<td border = '0'><form action='detalii2.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii2' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
+			}
+	}
+	elseif($selCategory==3){
+		while ($row = mysqli_fetch_array($result))
+			{
+			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
+			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
+			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
+			$col = mysqli_query($conexiune,$sql);
+			$col = mysqli_fetch_array($col);
+			$rezultate .= "" . $col['culoare'] . "</td><td></td><td>" . $row['datafabricatie'] . "</td><td></td><td>";
+			$rezultate .= get_combustibil($row['combustibil']);
+			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Cârlig de remorcare</th><td></td><th>Tracțiune integrală</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";
+			$rezultate .= "<td height = '60' align='center'>".get_bit_fields($row['Carlig'])."</td><td></td><td td align='center'>";
+			$rezultate .= "".get_bit_fields($row['Integrala'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
+			$rezultate .= "<td align='center'>".$row['EuroName']. "</td><td></td><td>";
+			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
+			$rezultate .="<td border = '0'><form action='detalii3.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii3' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
+			}
+	}
 	}
 	$stareCauta = "submit";
 	
@@ -461,19 +513,37 @@ else
 <head>
 <style type="text/css"> 
 
-
+#categorii
+{
+	position: relative;
+    top: 10px;
+	
+}
 
 #lista_marci
 {
-	position: fixed;
-    top: 20px;
-	left:30px;
+	position: relative;
+    top: 90px;
+	
 }
 #lista_modele
 {
+	position: relative;
+    top: 130px;
+	
+}
+
+#culoare
+{
 	position: fixed;
-    top: 60px;
-	left:25px;
+    top: 18px;
+	left:350px;
+}
+#combustibil
+{
+	position: fixed;
+    top: 70px;
+	left:350px;
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -485,12 +555,12 @@ else
 			<?php  echo $categories; ?>
 		</select>
 	</div>
-	<div id="lista_marci1">
+	<div id="lista_marci">
 		<select name="marci" <?php echo $stareListaMarci ?> onchange = "this.form.submit();">
 			<?php  echo $makers; ?>
 		</select>
 	</div>
-	<div id = "lista_modele1">
+	<div id = "lista_modele">
 		<select name = "modele" <?php echo $stareListaModele ?> onchange = "this.form.submit();">
 			<?php echo $models; ?>
 		</select>
