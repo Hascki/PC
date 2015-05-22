@@ -370,7 +370,6 @@
 			<fieldset>
 				<legend>Modificare date personale</legend>
 				<form method = "POST" enctype="multipart/form-data" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" >
-					Rubricile marcate cu * sunt obligatorii!<br>
 					<label for = "nume">Nume:</label><input type = "text" id = "nume" name = "numePers" value = "<?php $profil[1] === NULL ? print("") : print($profil[1]) ?>"><br>
 					<label for = "prenume">Prenume:</label><input type = "text" id = "prenume" name = "prenume" value = "<?php $profil[2] === NULL ? print("") : print($profil[2]) ?>"><br>
 					<label for = "nrTel">Nr. telefon:</label><input type = "tel" id = "nrTel" name = "nrTel" value = "<?php $profil[3] === NULL ? print("") : print($profil[3]) ?>"><span <?php echo $errorColor ?>><?php echo $errorsArray['tel'] ?></span><br>

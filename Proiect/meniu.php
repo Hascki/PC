@@ -1,7 +1,7 @@
 <?php
 	if (!isset($_SESSION))
 		session_start;
-	$arrayLeftBtns = array("acasa" => "", "produse" => "", "promotii" => "", "addAnunt" => "", "cont" => "");
+	$arrayLeftBtns = array("acasa" => "", "produse" => "", "promotii" => "", "addAnunt" => "", "cont" => "", "admin" => "");
 	$arrayRightBtns = array("logout" => "class = \"rightBtn\"><a href = \"logout.php\">Logout</a>", "login" => "", "inregistrare" => "");
 	if ($pagCurenta === "index")
 		$arrayLeftBtns['acasa'] = "id = \"curenta\" ";
@@ -13,6 +13,8 @@
 		$arrayLeftBtns['addAnunt'] = "id = \"curenta\" ";
 	else if ($pagCurenta === "account" || $pagCurenta === "edit_profile")
 		$arrayLeftBtns['cont'] = "id = \"curenta\" ";
+	else if ($pagCurenta === "administrare")
+		$arrayLeftBtns['admin'] = "id = \"curenta\" ";
 	else if ($pagCurenta === "inregistrare")
 		$arrayRightBtns['inregistrare'] = "id = \"curenta\" ";
 	else if ($pagCurenta === "login")
@@ -22,6 +24,7 @@
 	$arrayLeftBtns['promotii'] .= "class = \"leftBtn\"><a href = \"promotii.php\">Promotii</a>";
 	$arrayLeftBtns['addAnunt'] .= "class = \"leftBtn\"><a href = \"adauga_anunt.php\">Adauga anunt</a>";
 	$arrayLeftBtns['cont'] .= "class = \"leftBtn\"><a href = \"account.php\">Cont</a>";
+	$arrayLeftBtns['admin'] .= "class = \"leftBtn\"><a href = \"administrare.php\">Administrare</a>";
 	$arrayRightBtns['login'] .= "class = \"rightBtn\"><a href = \"login.php\">Login</a>";
 	$arrayRightBtns['inregistrare'] .= "class = \"rightBtn\"><a href = \"inregistrare.php\">Înregistrare</a>";
 	echo
@@ -47,8 +50,12 @@
 			echo "
 			<li " . $arrayLeftBtns['addAnunt'] . "</li>";
 		echo "
-			<li " . $arrayLeftBtns['cont'] . "</li>
-			<li " . $arrayRightBtns['logout'] . "</li>";
+			<li " . $arrayLeftBtns['cont'] . "</li>";
+		if (isset($_SESSION['userType']) && $_SESSION['userType'] === "1")
+			echo "
+			<li " . $arrayLeftBtns['admin'] . "</li>";
+		echo
+			"<li " . $arrayRightBtns['logout'] . "</li>";
 	}
 	echo "
 		</ul>

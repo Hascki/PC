@@ -25,7 +25,8 @@
 	$clasaEuro = "<option value = 0> Selectati </option>";
 	while ($row = mysqli_fetch_array($sql))
 		$clasaEuro .= "<option value = " . $row['EcoId'] . ">" . $row['EuroName'] . "</option>";
-	$query = "SELECT `sold` FROM `utilizatori` WHERE `username` = '" . $_SESSION['login'] ."' AND `userid` = '" . $_SESSION['userID'] . "'";
+	//$query = "SELECT `sold` FROM `utilizatori` WHERE `username` = '" . $_SESSION['login'] ."' AND `userid` = '" . $_SESSION['userID'] . "'";
+	$query = "SELECT `sold` FROM `profiles`, `utilizatori` WHERE `profiles`.`profileid` = `utilizatori`.`userid` AND `profileid` = '" . $_SESSION['userID'] ."' AND `username` = '" . $_SESSION['login'] ."'";
 	$sql = mysqli_query($conexiune, $query);
 	if ($sql !== false && mysqli_num_rows($sql) === 1)
 	{
