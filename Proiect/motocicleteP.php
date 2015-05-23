@@ -22,41 +22,20 @@ $r="Hibrid";
 return $r;
 }
 
-function get_distributie($field)
-{
-$r='';
-if($field=="1")
-{
-$r="Manuala";
-}
-elseif($field=="2")
-{
-$r="Secventiala";
-}
-elseif($field=="3")
-{
-$r="Automata";
-}
-return $r;
-}
-
-function get_climatizare($field)
+function get_bit_fields($field)
 {
 $r='';
 if($field=="0")
 {
-$r="Nu are";
+$r="NU";
 }
 elseif($field=="1")
 {
-$r="Manual";
-}
-elseif($field=="2")
-{
-$r="Automat";
+$r="DA";
 }
 return $r;
 }
+
 
 
 $selMaker = $selModel = ""; //Marca selectata/Model selectat
@@ -67,7 +46,7 @@ $rezultate = "";
 function get_makers()
 {
 	// Extrage din baza de date marcile de masini
-	$sql = "SELECT MakeId,Producator FROM marci where Auto=1";
+	$sql = "SELECT MakeId,Producator FROM marci where Moto=1";
     global $conexiune;
 	$result = mysqli_query($conexiune,$sql);
 	global $makers;
@@ -82,7 +61,7 @@ function get_models($selMaker)
 	// Extrage modelele in functie de marca primita ca parametru
 	 global $conexiune;
 	$maker = mysqli_real_escape_string($conexiune,$selMaker);
-	$sql = "SELECT `modelid`, `modelname` FROM `modele` WHERE `makeid` = '$maker' and `Type`=1";
+	$sql = "SELECT `modelid`, `modelname` FROM `modele` WHERE `makeid` = '$maker' and `Type`=2";
 	$result = mysqli_query($conexiune,$sql);
 	global $models;
 	$models = '<option value="0" selected>Selectati modelul</option>';
@@ -174,7 +153,7 @@ else
 	$selModel = mysqli_real_escape_string($conexiune,$selModel);
 	$_SESSION['selMaker']=$selMaker;
 	$_SESSION['selModel']=$selModel;
-	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`,`pozeanunturi`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
+	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`,`pozeanunturi`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=2 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
 	// Daca nu s-a ales optiunea Toate
 	if ($selModel != 9999)
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";
@@ -193,12 +172,12 @@ else
 			$col = mysqli_fetch_array($col);
 			$rezultate .= "" . $col['culoare'] . "</td><td></td><td>" . $row['datafabricatie'] . "</td><td></td><td>";
 			$rezultate .= get_combustibil($row['combustibil']);
-			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer condiționat</th><td></td><th>Transmisie</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";
-			$rezultate .= "<td height = '60' align='center'>".get_climatizare($row['climatizare'])."</td><td></td><td td align='center'>";
-			$rezultate .= "".get_distributie($row['distributie'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
+			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Regulator de viteză</th><td></td><th>ABS</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";
+			$rezultate .= "<td height = '60' align='center'>".get_bit_fields($row['RV'])."</td><td></td><td td align='center'>";
+			$rezultate .= "".get_bit_fields($row['ABS'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
 			$rezultate .= "<td align='center'>".$row['EuroName']. "</td><td></td><td>";
 			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
-			$rezultate .="<td border = '0'><form action='detalii1.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
+			$rezultate .="<td border = '0'><form action='detalii2P.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii2' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
 		}
 	}
 	

@@ -18,17 +18,17 @@
 <?php include "meniu.php" ?>
 </div>
 <div id="sidebar1">
-<h3><a href="autoturisme.php" target="mf">Autoturisme</a><br>
+<h3><a href="autoturismeP.php" target="mf">Autoturisme</a><br>
 &nbsp;</h3>
 
-<h3><a href="moto.html" target="mf">Motociclete</a><br>
+<h3><a href="motocicleteP.php" target="mf">Motociclete</a><br>
 &nbsp;</h3>
 
-<h3><a href="atv.html" target="mf">Atv-uri</a><br>
+<h3><a href="atv-uriP.php" target="mf">Atv-uri</a><br>
 &nbsp;</h3>
 
 
-<h3><a href="cauta.php" target="mf">Cautare</a><br>
+<h3><a href="cautaP.php" target="mf">Cautare</a><br>
 &nbsp;</h3>
 </div>
 
