@@ -108,7 +108,10 @@ $selModel=$_SESSION['selModel'];
 			$rezultat .="<tr><th height='40' align='center'>Cârlig de remorcare</th><th></th><th>ABS</th><th></th><th>ESP</th><th></th><th>Tracțiune integrală</th><th></th><th></th><th></th><th>Faruri Xenon</th></tr>";
 			$rezultat .="<tr align='center'><td height='20'>".get_bit_fields($row['Carlig'])."</td><td></td><td>".get_bit_fields($row['ABS'])."</td><td></td><td>".get_bit_fields($row['ESP'])."</td><td></td><td>".get_bit_fields($row['Integrala'])."</td><td></td><td></td><td></td><td>".get_bit_fields($row['Xenon'])."</td></tr>";
 			$rezultat .="<tr><th height='120' >Descriere vehicul</th><td colspan='7' id='t'></td>";
-			
+			$rezultat .="<tr><td height='40' colspan='13'></td></tr>";
+			$rezultat .="<tr><th align='center' rowspan='3'>Adăugare preț promoțional</th><th align='left' colspan='2'>Introduceți prețul promoțional:<form action='modificaPret.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=text name='pretp'></th></tr>";
+			$rezultat .="<tr><th  align='left' colspan='2'>Data de la care începe promoția: <input type=text name='datai'></th><td rowspan='2' align='right'><input type=submit name='modifica' value='Actualizează' ></td></tr>";
+			$rezultat .="<tr><th align='left' colspan='2'>Data la care expiră promoția:  <input type=text name='datae'></th></form></td></tr>";
 ?>
 
 
@@ -139,7 +142,7 @@ border: 1px solid black;
 <body>
 
 <div id = "rezultate">
-	<table style = "width:100%" >
+	<table style = "width:100%" border='1'>
 		<?php echo $rezultat ?>
 	</table>
 </div>
