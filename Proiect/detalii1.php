@@ -73,7 +73,7 @@ return $r;
 }
 
 
-$_SESSION['idanunt']=$_POST['idAnunt'];
+$_SESSION['idanunt']=$_GET['idAnunt'];
 $rezultat = "";
 $selMaker=$_SESSION['selMaker'];
 $selModel=$_SESSION['selModel'];
