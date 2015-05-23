@@ -9,11 +9,11 @@ function get_combustibil($field)
 $r='';
 if($field=="1")
 {
-$r="Benzina";
+$r="Benzină";
 }
 elseif($field=="2")
 {
-$r="Motorina";
+$r="Motorină";
 }
 elseif($field=="3")
 {
@@ -27,15 +27,15 @@ function get_distributie($field)
 $r='';
 if($field=="1")
 {
-$r="Manuala";
+$r="Manuală";
 }
 elseif($field=="2")
 {
-$r="Secventiala";
+$r="Secvențială";
 }
 elseif($field=="3")
 {
-$r="Automata";
+$r="Automată";
 }
 return $r;
 }
@@ -193,7 +193,7 @@ else
 			$col = mysqli_fetch_array($col);
 			$rezultate .= "" . $col['culoare'] . "</td><td></td><td>" . $row['datafabricatie'] . "</td><td></td><td>";
 			$rezultate .= get_combustibil($row['combustibil']);
-			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer condiționat</th><td></td><th>Transmisie</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";
+			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer condiționat</th><td></td><th>Transmisie</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Preț(€)</th></tr><tr>";
 			$rezultate .= "<td height = '60' align='center'>".get_climatizare($row['climatizare'])."</td><td></td><td td align='center'>";
 			$rezultate .= "".get_distributie($row['distributie'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
 			$rezultate .= "<td align='center'>".$row['EuroName']. "</td><td></td><td>";
