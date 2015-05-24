@@ -74,23 +74,22 @@ return $r;
 
 $ok=1;
 $stareCauta = "hidden";
-$selCategory = $selMaker = $selModel = $selCombustibil= $selCuloare=""; //Marca selectata/Model selectat
+$selPoluare=$selClimatizare=$selDistributie=$selCategory = $selMaker = $selModel = $selCombustibil= $selCuloare=""; //Marca selectata/Model selectat
 $stareListaCategorii = $stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
-$categories = $makers = $models = "0";
-$combustibil = "0";
-$culori = "0";
+$categories = $makers = $models = "";
+$combustibil =$distributie =$culori =$climatizare =$poluare="";
 $rezultate = "";
 
 function set_filtre()
 {
 	global $combustibil;
-	$combustibil = '<option value="0"> Combustibil </option>';
+	$combustibil = '<option value="99"> Combustibil </option>';
 	$combustibil .= '<option value="1"> Benzina </option>';
 	$combustibil .= '<option value="2"> Motorina </option>';
 	$combustibil .= '<option value="3"> Hibrid </option>';
 	$combustibil .= '<option value="4"> Electric </option>';
 	global $culori;
-	$culori = '<option value="0"> Culori </option>';
+	$culori = '<option value="99"> Culori </option>';
 	$culori .= '<option value="1"> Alb </option>';
 	$culori .= '<option value="2"> Albastru </option>';
 	$culori .= '<option value="3"> Argintiu </option>';
@@ -104,7 +103,25 @@ function set_filtre()
 	$culori .= '<option value="11"> Rosu </option>';
 	$culori .= '<option value="12"> Verde </option>';
 	$culori .= '<option value="13"> Violet </option>';
-	
+	global $distributie;
+	$distributie = '<option value="99"> Transmisie </option>';
+	$distributie .= '<option value="1"> Manuala </option>';
+	$distributie .= '<option value="2"> Secventiala </option>';
+	$distributie .= '<option value="3"> Automata </option>';
+	global $climatizare;
+	$climatizare = '<option value="99"> Aer conditionat </option>';
+	$climatizare .= '<option value="0"> Fara </option>';
+	$climatizare .= '<option value="1"> Manual </option>';
+	$climatizare .= '<option value="2"> Automat </option>';
+	global $poluare;
+	$poluare = '<option value="99"> Norma poluare </option>';
+	$poluare .= '<option value="1"> Non-Euro</option>';
+	$poluare .= '<option value="2"> Euro1 </option>';
+	$poluare .= '<option value="3"> Euro2 </option>';
+	$poluare .= '<option value="4"> Euro3 </option>';
+	$poluare .= '<option value="5"> Euro4 </option>';
+	$poluare .= '<option value="6"> Euro5 </option>';
+	$poluare.= '<option value="7"> Hibrid </option>';
 }
 
 function get_categories()
@@ -327,13 +344,11 @@ else if($ok==1 && isset($_SESSION['cauta'])){
 //echo "f10";
 if(isset($_GET['modele'])&& $_GET['modele'] != 0){
 set_filtre();
+$_SESSION['poluare']=$poluare;
 $_SESSION['combustibil']=$combustibil;
 $_SESSION['culori']=$culori;
-//$combustibil=$_SESSION['combustibil'];
-//echo $_GET['combustibil'];
-//$selCombustibil=$_GET['combustibil'];
-//$combustibil= change_selected($combustibil, $selCombustibil);
-//$_SESSION['combustibil']=$combustibil;
+$_SESSION['distributie']=$distributie;
+$_SESSION['climatizare']=$climatizare;
 $categories = $_SESSION['categories'];
 $makers = $_SESSION['makers'];
 $models = $_SESSION['models'];
@@ -346,31 +361,18 @@ $_SESSION['models'] = $models;
 if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
 }
-else{
+/*else{
 echo '<script language="javascript">';
 echo 'alert("Pentru a cauta trebuie sa alegeti un model din lista de modele!")';
 echo '</script>';
 }
+*/
 $_SESSION['lastSelModel']=$_GET['modele'];
 $stareCauta = "submit";
 if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
-//$selModel = $_GET['modele'];
-//$makers= change_selected($makers, $selMaker);
-//$_SESSION['makers'] = $makers;
-//echo $makers;
-//$models = $_SESSION['models'];
-}
 
-/*else if($ok==1&&$stareCauta="hidden")
-{
-$categories = $_SESSION['categories'];
-$makers = $_SESSION['makers'];
-$models = $_SESSION['models'];
-$selCategory = $_GET['categorii'];
-$stareCauta="submit";
 }
-*/
 
 
 else if($ok==1 && !isset($_SESSION['cauta'])&&$_GET['modele']!=$_GET['lastSelModel']){
@@ -384,6 +386,9 @@ $models = change_selected($models, $selModel);
 $_SESSION['models']=$models;
 $combustibil = $_SESSION['combustibil'];
 $culori=$_SESSION['culori'];
+$distributie=$_SESSION['distributie'];
+$climatizare=$_SESSION['climatizare'];
+$poluare=$_SESSION['poluare'];
 //$_SESSION['cauta']='cauta';
 
 $stareCauta="submit";
@@ -409,6 +414,7 @@ else
 	$makers = $_SESSION['makers'];
 	if ((isset($_SESSION['models'])))
 	$models = $_SESSION['models'];
+	$categories = change_selected($categories, $selCategory);
 	$makers = change_selected($makers, $selMaker);
 	$models = change_selected($models, $selModel);
 	$_SESSION['categories']=$categories;
@@ -430,12 +436,42 @@ else
 	$combustibil = change_selected($combustibil, $selCombustibil);
 	$_SESSION['combustibil'] = $combustibil;
 	}
+	
+	if ((isset($_GET['distributie']))){
+	$distributie = $_SESSION['distributie'];
+	$selDistributie = $_GET['distributie'];
+	$distributie = change_selected($distributie, $selDistributie);
+	$_SESSION['distributie'] = $distributie;
+	}
+	
+	if ((isset($_GET['climatizare']))){
+	$climatizare = $_SESSION['climatizare'];
+	$selClimatizare = $_GET['climatizare'];
+	$climatizare = change_selected($climatizare, $selClimatizare);
+	$_SESSION['climatizare'] = $climatizare;
+	}
+	if ((isset($_GET['poluare']))){
+	$poluare = $_SESSION['poluare'];
+	$selPoluare = $_GET['poluare'];
+	$poluare = change_selected($poluare, $selPoluare);
+	$_SESSION['poluare'] = $poluare;
+	}
+	
+	$poluare = $_SESSION['poluare'];
+	$climatizare = $_SESSION['climatizare'];
+	$distributie=$_SESSION['distributie'];
 	$combustibil=$_SESSION['combustibil'];
 	$culori=$_SESSION['culori'];
 	$_SESSION['combustibil']=$combustibil;
+	
+	$selPoluare = mysqli_real_escape_string($conexiune,$selPoluare);
+	$selClimatizare = mysqli_real_escape_string($conexiune,$selClimatizare);
 	$selCategory = mysqli_real_escape_string($conexiune,$selCategory);
 	$selMaker = mysqli_real_escape_string($conexiune,$selMaker);
 	$selModel = mysqli_real_escape_string($conexiune,$selModel);
+	$selCombustibil = mysqli_real_escape_string($conexiune,$selCombustibil);
+	$selCuloare = mysqli_real_escape_string($conexiune,$selCuloare);
+	$selDistributie = mysqli_real_escape_string($conexiune,$selDistributie);
 	$_SESSION['selMaker']=$selMaker;
 	$_SESSION['selModel']=$selModel;
 	
@@ -443,7 +479,18 @@ else
 	// Daca nu s-a ales optiunea Toate
 	if ($selModel != 9999)
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";
-		$sql .=" ORDER by Promovare ASC";
+	if ($selCombustibil != 99)
+	$sql .= " AND `produse`.`Combustibil` = '$selCombustibil'";
+	if ($selDistributie != 99)
+	$sql .= " AND `produse`.`Distributie` = '$selDistributie'";
+	if ($selCuloare != 99)
+	$sql .= " AND `produse`.`Culoare` = '$selCuloare'";
+	//echo $selClimatizare;
+	if ($selClimatizare != 99)
+	$sql .= " AND `produse`.`Climatizare` = '$selClimatizare'";
+	if ($selPoluare != 99)
+	$sql .= " AND `produse`.`clasaeuro` = '$selPoluare'";
+	$sql .=" ORDER by Promovare ASC";
 	$result = mysqli_query($conexiune,$sql);
 	if (mysqli_num_rows($result) === 0)
 		$rezultate = "<tr><td>Ne pare rau, nu a fost gasit niciun anunt dupa criteriile de cautare selectate!</td></tr>";
@@ -545,6 +592,25 @@ else
     top: 70px;
 	left:350px;
 }
+#distributie
+{
+	position: fixed;
+    top: 122px;
+	left:350px;
+}
+#climatizare
+{
+	position: fixed;
+    top: 174px;
+	left:350px;
+}
+#poluare
+{
+	position: fixed;
+    top: 18px;
+	left:520px;
+}
+
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
@@ -573,6 +639,21 @@ else
 	<div id = "combustibil">
 		<select name = "combustibil" >
 			<?php echo $combustibil; ?>
+		</select>
+	</div>
+	<div id = "distributie">
+		<select name = "distributie" >
+			<?php echo $distributie; ?>
+		</select>
+	</div>
+	<div id = "climatizare">
+		<select name = "climatizare" >
+			<?php echo $climatizare; ?>
+		</select>
+	</div>
+	<div id = "poluare">
+		<select name = "poluare" >
+			<?php echo $poluare; ?>
 		</select>
 	</div>
 	<input type = "hidden" name = "lastSelCategory" value = "<?php echo $selCategory; ?>">
