@@ -71,7 +71,8 @@ $r="DA";
 return $r;
 }
 
-
+if(isset($_SESSION['div']))
+	 unset($_SESSION['div'] );
 $ok=1;
 $stareCauta = "hidden";
 $selPoluare=$selClimatizare=$selDistributie=$selCategory = $selMaker = $selModel = $selCombustibil= $selCuloare=""; //Marca selectata/Model selectat
@@ -81,7 +82,7 @@ $combustibil =$distributie =$culori =$climatizare =$poluare="";
 $rezultate = "";
 
 function set_filtre()
-{
+{	
 	global $combustibil;
 	$combustibil = '<option value="99"> Combustibil </option>';
 	$combustibil .= '<option value="1"> Benzina </option>';
@@ -216,6 +217,8 @@ if (!isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']
 	$ok=0;
 	if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
+	 if(isset($_SESSION['div']))
+	 unset($_SESSION['div'] );
 }
 
 else if (isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']))
@@ -230,6 +233,8 @@ else if (isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['mode
 	$selMaker = "0";
 	if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
+	 if(isset($_SESSION['div']))
+	 unset($_SESSION['div'] );
 	$ok=0;
 	//$stareListaModele = "disabled";
 }
@@ -246,6 +251,8 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['model
 	$selMaker=$_GET['marci'];
 	if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
+	 if(isset($_SESSION['div']))
+	 unset($_SESSION['div'] );
 	$ok=0;
 }
 
@@ -262,6 +269,8 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['model
 	$_SESSION['models'] = $models;
 	$stareCauta = "submit";
 	$_SESSION['cauta']='cauta';
+	if(isset($_SESSION['div']))
+	 unset($_SESSION['div'] );
 	$ok=0;
 	
 }
@@ -279,6 +288,8 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele
 	$ok=0;
 	if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
+	 if(isset($_SESSION['div']))
+	 unset($_SESSION['div'] );
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele'])&& $_GET['marci'] !== $_GET['lastSelMaker']&& $_GET['marci'] != 0)
@@ -294,6 +305,8 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele
 	$_SESSION['models'] = $models;
 	$stareCauta = "submit";
 	$_SESSION['cauta']='cauta';
+	if(isset($_SESSION['div']))
+	 unset($_SESSION['div'] );
 	$ok=0;
 	
 }
@@ -307,6 +320,8 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci'])) && $_GET['categorii'
 	$ok=0;
 	if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
+	 if(isset($_SESSION['div']))
+	 unset($_SESSION['div'] );
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['marci'] == 0)
@@ -321,6 +336,8 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['model
 	$selMaker=$_GET['marci'];
 	if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
+	 if(isset($_SESSION['div']))
+	 unset($_SESSION['div'] );
 	$ok=0;
 }
 
@@ -337,6 +354,8 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['model
 	$_SESSION['models'] = $models;
 	$stareCauta = "submit";
 	$_SESSION['cauta']='cauta';
+	if(isset($_SESSION['div']))
+	 unset($_SESSION['div'] );
 	$ok=0;
 }
 
@@ -344,6 +363,13 @@ else if($ok==1 && isset($_SESSION['cauta'])){
 //echo "f10";
 if(isset($_GET['modele'])&& $_GET['modele'] != 0){
 set_filtre();
+$_SESSION['div']="<div id='pret'>Pret(€)
+	<div>
+	<input type='number' name='mic' id='input1'> <input type='number' name='mare' id='input1'>
+	 <div>
+	  &nbsp &nbsp &nbsp  de la  &nbsp &nbsp &nbsp &nbsp pana la
+	</div>
+	</div></div>";
 $_SESSION['poluare']=$poluare;
 $_SESSION['combustibil']=$combustibil;
 $_SESSION['culori']=$culori;
@@ -392,6 +418,12 @@ $poluare=$_SESSION['poluare'];
 //$_SESSION['cauta']='cauta';
 
 $stareCauta="submit";
+$_SESSION['div']="<div id='pret'>
+	<input type='number' name='mic' id='input1'> <input type='number' name='mare' id='input1'>
+	 <div>
+	  &nbsp &nbsp &nbsp  de la  &nbsp &nbsp &nbsp &nbsp pana la
+	</div>
+	</div>";
 }
 
 else
@@ -490,6 +522,10 @@ else
 	$sql .= " AND `produse`.`Climatizare` = '$selClimatizare'";
 	if ($selPoluare != 99)
 	$sql .= " AND `produse`.`clasaeuro` = '$selPoluare'";
+	$mic=$_GET['mic'];
+	$mare=$_GET['mare'];
+	if($mic!="")
+	$sql .=" AND `pret` BETWEEN '$mic.' AND '$mare.'";
 	$sql .=" ORDER by Promovare ASC";
 	$result = mysqli_query($conexiune,$sql);
 	if (mysqli_num_rows($result) === 0)
@@ -552,6 +588,12 @@ else
 	}
 	}
 	$stareCauta = "submit";
+	$_SESSION['div']="<div id='pret'>
+	<input type='number' name='mic' id='input1'> <input type='number' name='mare' id='input1'>
+	 <div>
+	  &nbsp &nbsp &nbsp  de la  &nbsp &nbsp &nbsp &nbsp pana la
+	</div>
+	</div>";
 	
 }
 ?>
@@ -610,7 +652,20 @@ else
     top: 18px;
 	left:520px;
 }
-
+#pret
+{
+	position: fixed;
+    top: 51px;
+	left:520px;
+}
+#input1
+{
+	width:70px;
+}
+#input2
+{
+	width:70px;
+}
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
@@ -656,6 +711,12 @@ else
 			<?php echo $poluare; ?>
 		</select>
 	</div>
+	<?php if (isset($_SESSION["div"]))echo $_SESSION["div"]; ?>
+	<!div id="pret">
+	<!input type="number" name="mic" id="input1"> <!input type="number" name="mare" id="input1">
+	 <!div>
+	<!/div>
+	<!/div>
 	<input type = "hidden" name = "lastSelCategory" value = "<?php echo $selCategory; ?>">
 	<input type = "hidden" name = "lastSelMaker" value = "<?php echo $selMaker; ?>">
 	<input type = "hidden" name = "lastSelModel" value = "<?php echo $selModel; ?>">
