@@ -72,7 +72,15 @@ $r="DA";
 return $r;
 }
 
-
+$query = "SELECT `sold` FROM `utilizatori` WHERE `username` = '" . $_SESSION['login'] ."' AND `userid` = '" . $_SESSION['userID'] . "'";
+$sql = mysqli_query($conexiune, $query);
+if ($sql !== false && mysqli_num_rows($sql) === 1)
+	{
+		 $row = mysqli_fetch_array($sql);
+		 $sold = $row['sold'];
+	}
+	else $sold = 100;
+	
 $_SESSION['idanunt']=$_GET['idAnunt'];
 $rezultat = "";
 $selMaker=$_SESSION['selMaker'];
@@ -146,6 +154,23 @@ border: 1px solid black;
 		<?php echo $rezultat ?>
 	</table>
 </div>
+<div style = "display: block;padding-top: 5px;padding-bottom: 10px">
+				<label>Promovare</label><br>
+				<select id = "promovare" name = "promovare" disabled>
+					<option value = 2>Basic</option>
+					<option value = 1<?php if ($sold < 50) echo " disabled" ?>>Premium</option>
+					<option value = 0<?php if ($sold < 100) echo " disabled" ?>>Gold</option>
+				</select>
+				<p>
+					Sunt disponibile 3 pachete de promovare a anunturilor:
+					<ol>
+						<li>Pachetul <b>Basic</b> (gratuit) nu are beneficii speciale</li>
+						<li>Pachetul <b>Premium</b> (50 Lei): Afisarea anuntului la inceputul listei</li>
+						<li>Pachetul <b>Gold</b> (100 Lei): Afisarea anuntului la inceputul listei + evidentierea anuntului cu o culoare atractiva</li>
+					</ol>
+					<strong>Daca nu aveti destui bani in sold nu veti putea selecta pachetele Premium sau Gold!</strong>
+				</p>
+				</div>
 
 </body>
 </html>
