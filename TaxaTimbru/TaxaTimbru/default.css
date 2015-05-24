@@ -1,0 +1,92 @@
+body{
+	padding:0px;
+	margin:0px;
+	font-family:Roboto, Arial, Helvetica, sans-serif;
+	font-size:14px;
+	background:#FFFFFF;
+	color:#222;
+}
+#txm-calculator{
+	margin:auto;
+	width:100%;
+	max-width:300px;
+}
+#txm_label{
+	background: #0080c0;
+	color: #FFFFFF;
+	font-size: 20px;
+	font-weight: 300;
+	line-height: 1.3em;
+	margin: 0 0 13px 0;
+	padding: 8px 10px;
+}
+
+#txm-calculator label{
+	display:block;
+	margin-bottom:12px;
+}
+
+#txm-calculator label.last { margin-bottom:13px;}
+
+#txm-calculator .half.left { width:41%; margin-right:4%; float:left;}
+#txm-calculator .half.right { width:55%; float:left;}
+
+label span{
+	display:block;
+	margin-bottom:2px;
+	font-size:13px;
+}
+label input, label select{
+	width:100%;
+	border:1px solid #ddd;
+	padding:5px;
+	background:#fafafa;
+	color:#999;
+	font-size:16px;
+	margin:0px;
+	box-sizing:border-box;
+	border-radius:2px;
+}
+
+label input:focus, label select:focus{
+	border:1px solid #62b0f7;
+	color:#222;
+}
+button{
+	float:left;
+	width:40%;
+	border:1px solid #d93d00;
+	background:#f24400;
+	border-radius:2px;
+	color:#FFFFFF;
+	height:42px;
+	cursor:pointer;
+	font-size:14px;
+	font-weight:800;
+	text-transform:uppercase;
+	box-sizing:border-box;
+	font-family:Roboto, Arial, Helvetica, sans-serif;
+}
+#calcul{
+	float:right;
+	overflow:hidden;
+	width:58%;
+	height:42px;
+	color:#333;
+	padding:0;
+}
+#calcul strong{
+	display:block;
+	text-align:right;
+	font-weight:normal;
+	font-size:12px;
+	line-height:12px;
+	letter-spacing:0.5px;
+}
+#taxa{
+	text-align:right;
+	color:#111;	
+	width:100%;
+	font-size:22px;
+	line-height:26px;
+}
