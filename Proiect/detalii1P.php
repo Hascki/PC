@@ -86,7 +86,7 @@ $selModel=$_SESSION['selModel'];
 	$row = mysqli_fetch_array($result);
    }while ($row['idanunt']!=$_SESSION['idanunt']);
 		
-			$rezultat .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
+			$rezultat .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th width='300'>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
 			$rezultat .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
 			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
 			$col = mysqli_query($conexiune,$sql);
@@ -110,8 +110,8 @@ $selModel=$_SESSION['selModel'];
 			$rezultat .="<tr><th height='120' >Descriere vehicul</th><td colspan='7' id='t'></td>";
 			$rezultat .="<tr><td height='40' colspan='13'></td></tr>";
 			$rezultat .="<tr><th align='center' rowspan='3'>Adăugare preț promoțional</th><th align='left' colspan='2'>Introduceți prețul promoțional:<form action='modificaPret.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=text name='pretp'></th></tr>";
-			$rezultat .="<tr><th  align='left' colspan='2'>Data de la care începe promoția: <input type=text name='datai'></th><td rowspan='2' align='right'><input type=submit name='modifica' value='Actualizează' ></td></tr>";
-			$rezultat .="<tr><th align='left' colspan='2'>Data la care expiră promoția:  <input type=text name='datae'></th></form></td></tr>";
+			$rezultat .="<tr><th  align='left' colspan='2'>Data de la care începe promoția:(zi-luna-an) <input type=text name='datai'></th><td rowspan='2' align='right'><input type=submit name='modifica' value='Actualizează' ></td></tr>";
+			$rezultat .="<tr><th align='left' colspan='2'>Data la care expiră promoția:(zi-luna-an)   <input type=text name='datae'></th></form></td></tr>";
 ?>
 
 
