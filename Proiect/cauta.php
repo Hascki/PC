@@ -82,11 +82,11 @@ return $r;
 	</div>";
 $ok=1;
 $stareCauta = "hidden";
-$selScauneInc=$selRegulatorV=$selInchidere=$selIncalzire=$selPoluare=$selClimatizare=$selDistributie=$selCategory = $selMaker = $selModel = $selCombustibil= $selCuloare=""; //Marca selectata/Model selectat
+$selSenzori=$selNavigatie=$selGeamuriEl=$selScauneInc=$selRegulatorV=$selInchidere=$selIncalzire=$selPoluare=$selClimatizare=$selDistributie=$selCategory = $selMaker = $selModel = $selCombustibil= $selCuloare=""; //Marca selectata/Model selectat
 $stareListaCategorii = $stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
 $categories = $makers = $models = "";
 $div="";
-$scauneInc=$regulatorV=$inchidere=$incalzire=$combustibil =$distributie =$culori =$climatizare =$poluare="";
+$senzori=$navigatie=$geamuriEl=$scauneInc=$regulatorV=$inchidere=$incalzire=$combustibil =$distributie =$culori =$climatizare =$poluare="";
 $rezultate = "";
 
 function set_filtre()
@@ -147,6 +147,18 @@ function set_filtre()
 	$scauneInc = '<option value="9"> Scaune incalzite </option>';
 	$scauneInc .= '<option value="0"> Nu</option>';
 	$scauneInc .= '<option value="1"> Da </option>';
+	global $geamuriEl;
+	$geamuriEl = '<option value="9"> Geamuri electrice </option>';
+	$geamuriEl .= '<option value="0"> Nu</option>';
+	$geamuriEl .= '<option value="1"> Da </option>';
+	global $navigatie;
+	$navigatie = '<option value="9"> Sistem navigatie </option>';
+	$navigatie .= '<option value="0"> Nu</option>';
+	$navigatie .= '<option value="1"> Da </option>';
+	global $senzori;
+	$senzori = '<option value="9"> Senzori de parcare </option>';
+	$senzori .= '<option value="0"> Nu</option>';
+	$senzori .= '<option value="1"> Da </option>';
 }
 
 function get_categories()
@@ -389,6 +401,9 @@ if(isset($_GET['modele'])&& $_GET['modele'] != 0){
 set_filtre();
 global $div;
 $div=$_SESSION['div'];
+$_SESSION['senzori']=$senzori;
+$_SESSION['navigatie']=$navigatie;
+$_SESSION['geamuriEl']=$geamuriEl;
 $_SESSION['scauneInc']=$scauneInc;
 $_SESSION['regulatorV']=$regulatorV;
 $_SESSION['inchidere']=$inchidere;
@@ -442,6 +457,9 @@ $incalzire=$_SESSION['incalzire'];
 $inchidere=$_SESSION['inchidere'];
 $regulatorV=$_SESSION['regulatorV'];
 $scauneInc=$_SESSION['scauneInc'];
+$geamuriEl=$_SESSION['geamuriEl'];
+$navigatie=$_SESSION['navigatie'];
+$senzori=$_SESSION['senzori'];
 //$_SESSION['cauta']='cauta';
 $div=$_SESSION['div'];
 $stareCauta="submit";
@@ -532,11 +550,30 @@ else
 	$selScauneInc = $_GET['scauneInc'];
 	$scauneInc = change_selected($scauneInc, $selScauneInc);
 	$_SESSION['scauneInc'] = $scauneInc;
-	echo $_SESSION['scauneInc'];
+	}
+	if ((isset($_GET['geamuriEl']))){
+	$geamuriEl = $_SESSION['geamuriEl'];
+	$selGeamuriEl = $_GET['geamuriEl'];
+	$geamuriEl = change_selected($geamuriEl, $selGeamuriEl);
+	$_SESSION['geamuriEl'] = $geamuriEl;
+	}
+	if ((isset($_GET['navigatie']))){
+	$navigatie = $_SESSION['navigatie'];
+	$selNavigatie = $_GET['navigatie'];
+	$navigatie = change_selected($navigatie, $selNavigatie);
+	$_SESSION['navigatie'] = $navigatie;
+	}
+	if ((isset($_GET['senzori']))){
+	$senzori = $_SESSION['senzori'];
+	$selSenzori = $_GET['senzori'];
+	$senzori = change_selected($senzori, $selSenzori);
+	$_SESSION['senzori'] = $senzori;
 	}
 	
-	
-	$scauneInc = $_SESSION['$scauneInc'];
+	$senzori = $_SESSION['senzori'];
+	$navigatie = $_SESSION['navigatie'];
+	$geamuriEl = $_SESSION['geamuriEl'];
+	$scauneInc = $_SESSION['scauneInc'];
 	$regulatorV = $_SESSION['regulatorV'];
 	$inchidere = $_SESSION['inchidere'];
 	$incalzire = $_SESSION['incalzire'];
@@ -548,7 +585,9 @@ else
 	//$_SESSION['combustibil']=$combustibil;
 	
 	
-	
+	$selSenzori = mysqli_real_escape_string($conexiune,$selSenzori);
+	$selNavigatie = mysqli_real_escape_string($conexiune,$selNavigatie);
+	$selGeamuriEl = mysqli_real_escape_string($conexiune,$selGeamuriEl);
 	$selScauneInc = mysqli_real_escape_string($conexiune,$selScauneInc);
 	$selRegulatorV = mysqli_real_escape_string($conexiune,$selRegulatorV);
 	$selInchidere = mysqli_real_escape_string($conexiune,$selInchidere);
@@ -587,6 +626,12 @@ else
 	$sql .= " AND `produse`.`RV` = '$selRegulatorV'";
 	if ($selScauneInc != 9)
 	$sql .= " AND `produse`.`SIE` = '$selScauneInc'";
+	if ($selGeamuriEl != 9)
+	$sql .= " AND `produse`.`GE` = '$selGeamuriEl'";
+	if ($selNavigatie != 9)
+	$sql .= " AND `produse`.`Nav` = '$selNavigatie'";
+	if ($selSenzori != 9)
+	$sql .= " AND `produse`.`SP` = '$selSenzori'";
 	/*$mic=$_GET['mic'];
 	$mare=$_GET['mare'];
 	if($mic!="")
@@ -743,6 +788,24 @@ else
     top: 18px;
 	left:690px;
 }
+#geamuriEl
+{
+	position: fixed;
+    top: 70px;
+	left:690px;
+}
+#navigatie
+{
+	position: fixed;
+    top: 122px;
+	left:690px;
+}
+#senzori
+{
+	position: fixed;
+    top: 174px;
+	left:690px;
+}
 
 
 
@@ -819,6 +882,22 @@ else
 			<?php echo $scauneInc; ?>
 		</select>
 	</div>
+	<div id = "geamuriEl">
+		<select name = "geamuriEl" >
+			<?php echo $geamuriEl; ?>
+		</select>
+	</div>
+	<div id = "navigatie">
+		<select name = "navigatie" >
+			<?php echo $navigatie; ?>
+		</select>
+	</div>
+	<div id = "senzori">
+		<select name = "senzori" >
+			<?php echo $senzori; ?>
+		</select>
+	</div>
+	
 	
 	
 	<?php //echo $div; ?>
