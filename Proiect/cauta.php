@@ -104,7 +104,7 @@ return $r;
 	  </div>
 	</div>
 	</div>
-	<div id='div5'>Cilindree
+	<div id='div5'>Cilindree(cm³)
 	 <div>
 	<input type='number' name='miccil' id='input1'> <input type='number' name='marecil' id='input1'>
 	 <div>
@@ -794,17 +794,69 @@ else
 	$sql .= " AND `produse`.`Integrala` = '$selIntegrala'";
 	if ($selXenon != 9)
 	$sql .= " AND `produse`.`Xenon` = '$selXenon'";
-	/*$mic=$_GET['mic'];
+	
+	if(isset($_GET['mic'])&&isset($_GET['mare'])){
+	$mic=$_GET['mic'];
 	$mare=$_GET['mare'];
-	if($mic!="")
+	if($mic!=""&&$mare!=""&&$mic>0&&$mare>=$mic)
 	$sql .=" AND `pret` BETWEEN '$mic.' AND '$mare.'";
-	*/
+	elseif((($mic!=""&&$mare!="")&&($mic<=0||$mare<=0))||(($mic!=""||$mare!=""))){
+	echo '<script language="javascript">';
+	echo 'alert("Valorile de cautare pentru Pret nu sunt valide! Acestea trebuie sa fie mai mari decat 0!")';
+	echo '</script>';
+	}
+	}
+	if(isset($_GET['mick'])&&isset($_GET['marek'])){
+	$mick=$_GET['mick'];
+	$marek=$_GET['marek'];
+	if($mick!=""&&$marek!=""&&$mick>0&&$marek>=$mick)
+	$sql .=" AND `Kilometraj` BETWEEN '$mick.' AND '$marek.'";
+	elseif((($mick!=""&&$marek!="")&&($mick<=0||$marek<=0))||(($mick!=""||$marek!=""))){
+	echo '<script language="javascript">';
+	echo 'alert("Valorile de cautare pentru Kilometraj nu sunt valide! Acestea trebuie sa fie mai mari decat 0!")';
+	echo '</script>';
+	}
+	}
+	if(isset($_GET['micc'])&&isset($_GET['marec'])){
+	$micc=$_GET['micc'];
+	$marec=$_GET['marec'];
+	if($micc!=""&&$marec!=""&&$micc>0&&$marec>=$micc)
+	$sql .=" AND `CaiPutere` BETWEEN '$micc.' AND '$marec.'";
+	elseif((($micc!=""&&$marec!="")&&($micc<=0||$marec<=0))||(($micc!=""||$marec!=""))){
+	echo '<script language="javascript">';
+	echo 'alert("Valorile de cautare pentru Cai putere nu sunt valide! Acestea trebuie sa fie mai mari decat 0!")';
+	echo '</script>';
+	}
+	}
+	if(isset($_GET['mica'])&&isset($_GET['marea'])){
+	$mica=$_GET['mica'];
+	$marea=$_GET['marea'];
+	if($mica!=""&&$marea!=""&&$mica>0&&$marea>=$mica)
+	$sql .=" AND `DataFabricatie` BETWEEN '$mica.' AND '$marea.'";
+	elseif((($mica!=""&&$marea!="")&&($mica<=1873||$marea<=1873))||(($mica!=""||$marea!=""))){
+	echo '<script language="javascript">';
+	echo 'alert("Valorile de cautare pentru Anul fabricatiei nu sunt valide! Acestea trebuie sa fie mai mari decat 1872!")';
+	echo '</script>';
+	}
+	}
+	if(isset($_GET['miccil'])&&isset($_GET['marecil'])){
+	$miccil=$_GET['miccil'];
+	$marecil=$_GET['marecil'];
+	if($miccil!=""&&$marecil!=""&&$miccil>0&&$marecil>=$miccil)
+	$sql .=" AND `Capacitate` BETWEEN '$miccil.' AND '$marecil.'";
+	elseif((($miccil!=""&&$marecil!="")&&($miccil<=0||$marecil<=0))||(($miccil!=""||$marecil!=""))){
+	echo '<script language="javascript">';
+	echo 'alert("Valorile de cautare pentru Cilindree nu sunt valide! Acestea trebuie sa fie mai mari decat 0!")';
+	echo '</script>';
+	}
+	}
+	
 	$sql .=" ORDER by Promovare ASC";
 	$result = mysqli_query($conexiune,$sql);
 	if (mysqli_num_rows($result) === 0)
 		$rezultate = "<tr><td height='550'>Ne pare rau, nu a fost gasit niciun anunt dupa criteriile de cautare selectate!</td></tr>";
 	else
-	{$rezultate .= "<tr><td height='350' colspan='13'></td></tr>";
+	{$rezultate .= "<tr><td height='300' colspan='13'></td></tr>";
 	if($selCategory==1){
 		while ($row = mysqli_fetch_array($result))
 		{
