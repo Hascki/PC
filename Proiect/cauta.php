@@ -82,11 +82,11 @@ return $r;
 	</div>";
 $ok=1;
 $stareCauta = "hidden";
-$selSenzori=$selNavigatie=$selGeamuriEl=$selScauneInc=$selRegulatorV=$selInchidere=$selIncalzire=$selPoluare=$selClimatizare=$selDistributie=$selCategory = $selMaker = $selModel = $selCombustibil= $selCuloare=""; //Marca selectata/Model selectat
+$selXenon=$selIntegrala=$selESP=$selcarlig=$selABS=$selJante=$selTrapa=$selServo=$selSenzori=$selNavigatie=$selGeamuriEl=$selScauneInc=$selRegulatorV=$selInchidere=$selIncalzire=$selPoluare=$selClimatizare=$selDistributie=$selCategory = $selMaker = $selModel = $selCombustibil= $selCuloare=""; //Marca selectata/Model selectat
 $stareListaCategorii = $stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
 $categories = $makers = $models = "";
 $div="";
-$senzori=$navigatie=$geamuriEl=$scauneInc=$regulatorV=$inchidere=$incalzire=$combustibil =$distributie =$culori =$climatizare =$poluare="";
+$xenon=$integrala=$ESP=$carlig=$ABS=$jante=$trapa=$servo=$senzori=$navigatie=$geamuriEl=$scauneInc=$regulatorV=$inchidere=$incalzire=$combustibil =$distributie =$culori =$climatizare =$poluare="";
 $rezultate = "";
 
 function set_filtre()
@@ -159,6 +159,39 @@ function set_filtre()
 	$senzori = '<option value="9"> Senzori de parcare </option>';
 	$senzori .= '<option value="0"> Nu</option>';
 	$senzori .= '<option value="1"> Da </option>';
+	global $servo;
+	$servo = '<option value="9"> Servodirectie </option>';
+	$servo .= '<option value="0"> Nu</option>';
+	$servo .= '<option value="1"> Da </option>';
+	global $trapa;
+	$trapa = '<option value="9"> Trapa </option>';
+	$trapa .= '<option value="0"> Nu</option>';
+	$trapa .= '<option value="1"> Da </option>';
+	global $jante;
+	$jante = '<option value="9"> Jante aliaj </option>';
+	$jante .= '<option value="0"> Nu</option>';
+	$jante .= '<option value="1"> Da </option>';
+	global $ABS;
+	$ABS= '<option value="9"> ABS </option>';
+	$ABS .= '<option value="0"> Nu</option>';
+	$ABS .= '<option value="1"> Da </option>';
+	global $carlig;
+	$carlig= '<option value="9"> Carlig remorcare </option>';
+	$carlig.= '<option value="0"> Nu</option>';
+	$carlig.= '<option value="1"> Da </option>';
+	global $ESP;
+	$ESP= '<option value="9"> ESP </option>';
+	$ESP.= '<option value="0"> Nu</option>';
+	$ESP.= '<option value="1"> Da </option>';
+	global $integrala;
+	$integrala= '<option value="9"> Tractiune integrala </option>';
+	$integrala.= '<option value="0"> Nu</option>';
+	$integrala.= '<option value="1"> Da </option>';
+	global $xenon;
+	$xenon= '<option value="9"> Faruri xenon </option>';
+	$xenon.= '<option value="0"> Nu</option>';
+	$xenon.= '<option value="1"> Da </option>';
+	
 }
 
 function get_categories()
@@ -401,6 +434,14 @@ if(isset($_GET['modele'])&& $_GET['modele'] != 0){
 set_filtre();
 global $div;
 $div=$_SESSION['div'];
+$_SESSION['xenon']=$xenon;
+$_SESSION['integrala']=$integrala;
+$_SESSION['ESP']=$ESP;
+$_SESSION['carlig']=$carlig;
+$_SESSION['ABS']=$ABS;
+$_SESSION['jante']=$jante;
+$_SESSION['trapa']=$trapa;
+$_SESSION['servo']=$servo;
 $_SESSION['senzori']=$senzori;
 $_SESSION['navigatie']=$navigatie;
 $_SESSION['geamuriEl']=$geamuriEl;
@@ -460,6 +501,14 @@ $scauneInc=$_SESSION['scauneInc'];
 $geamuriEl=$_SESSION['geamuriEl'];
 $navigatie=$_SESSION['navigatie'];
 $senzori=$_SESSION['senzori'];
+$servo=$_SESSION['servo'];
+$trapa=$_SESSION['trapa'];
+$jante=$_SESSION['jante'];
+$ABS=$_SESSION['ABS'];
+$carlig=$_SESSION['carlig'];
+$ESP=$_SESSION['ESP'];
+$integrala=$_SESSION['integrala'];
+$xenon=$_SESSION['xenon'];
 //$_SESSION['cauta']='cauta';
 $div=$_SESSION['div'];
 $stareCauta="submit";
@@ -569,7 +618,63 @@ else
 	$senzori = change_selected($senzori, $selSenzori);
 	$_SESSION['senzori'] = $senzori;
 	}
+	if ((isset($_GET['servo']))){
+	$servo = $_SESSION['servo'];
+	$selServo = $_GET['servo'];
+	$servo = change_selected($servo, $selServo);
+	$_SESSION['servo'] = $servo;
+	}
+	if ((isset($_GET['trapa']))){
+	$trapa = $_SESSION['trapa'];
+	$selTrapa = $_GET['trapa'];
+	$trapa = change_selected($trapa, $selTrapa);
+	$_SESSION['trapa'] = $trapa;
+	}
+	if ((isset($_GET['jante']))){
+	$jante = $_SESSION['jante'];
+	$selJante = $_GET['jante'];
+	$jante = change_selected($jante, $selJante);
+	$_SESSION['jante'] = $jante;
+	}
+	if ((isset($_GET['ABS']))){
+	$ABS= $_SESSION['ABS'];
+	$selABS = $_GET['ABS'];
+	$ABS = change_selected($ABS, $selABS);
+	$_SESSION['ABS'] = $ABS;
+	}
+	if ((isset($_GET['carlig']))){
+	$carlig= $_SESSION['carlig'];
+	$selCarlig = $_GET['carlig'];
+	$carlig = change_selected($carlig, $selCarlig);
+	$_SESSION['carlig'] = $carlig;
+	}
+	if ((isset($_GET['ESP']))){
+	$ESP= $_SESSION['ESP'];
+	$selESP = $_GET['ESP'];
+	$ESP = change_selected($ESP, $selESP);
+	$_SESSION['ESP'] = $ESP;
+	}
+	if ((isset($_GET['integrala']))){
+	$integrala= $_SESSION['integrala'];
+	$selIntegrala = $_GET['integrala'];
+	$integrala = change_selected($integrala, $selIntegrala);
+	$_SESSION['integrala'] = $integrala;
+	}
+	if ((isset($_GET['xenon']))){
+	$xenon= $_SESSION['xenon'];
+	$selXenon = $_GET['xenon'];
+	$xenon = change_selected($xenon, $selXenon);
+	$_SESSION['xenon'] = $xenon;
+	}
 	
+	$xenon= $_SESSION['xenon'];
+	$integrala= $_SESSION['integrala'];
+	$ESP = $_SESSION['ESP'];
+	$carlig = $_SESSION['carlig'];
+	$ABS = $_SESSION['ABS'];
+	$jante = $_SESSION['jante'];
+	$trapa = $_SESSION['trapa'];
+	$servo = $_SESSION['servo'];
 	$senzori = $_SESSION['senzori'];
 	$navigatie = $_SESSION['navigatie'];
 	$geamuriEl = $_SESSION['geamuriEl'];
@@ -585,6 +690,14 @@ else
 	//$_SESSION['combustibil']=$combustibil;
 	
 	
+	$selXenon = mysqli_real_escape_string($conexiune,$selXenon);
+	$selIntegrala = mysqli_real_escape_string($conexiune,$selIntegrala);
+	$selESP = mysqli_real_escape_string($conexiune,$selESP);
+	$selCarlig = mysqli_real_escape_string($conexiune,$selCarlig);
+	$selABS = mysqli_real_escape_string($conexiune,$selABS);
+	$selJante = mysqli_real_escape_string($conexiune,$selJante);
+	$selTrapa = mysqli_real_escape_string($conexiune,$selTrapa);
+	$selServo = mysqli_real_escape_string($conexiune,$selServo);
 	$selSenzori = mysqli_real_escape_string($conexiune,$selSenzori);
 	$selNavigatie = mysqli_real_escape_string($conexiune,$selNavigatie);
 	$selGeamuriEl = mysqli_real_escape_string($conexiune,$selGeamuriEl);
@@ -632,6 +745,22 @@ else
 	$sql .= " AND `produse`.`Nav` = '$selNavigatie'";
 	if ($selSenzori != 9)
 	$sql .= " AND `produse`.`SP` = '$selSenzori'";
+	if ($selServo != 9)
+	$sql .= " AND `produse`.`Servo` = '$selServo'";
+	if ($selTrapa != 9)
+	$sql .= " AND `produse`.`TD` = '$selTrapa'";
+	if ($selJante != 9)
+	$sql .= " AND `produse`.`JA` = '$selJante'";
+	if ($selABS != 9)
+	$sql .= " AND `produse`.`ABS` = '$selABS'";
+	if ($selCarlig != 9)
+	$sql .= " AND `produse`.`Carlig` = '$selCarlig'";
+	if ($selESP != 9)
+	$sql .= " AND `produse`.`ESP` = '$selESP'";
+	if ($selIntegrala != 9)
+	$sql .= " AND `produse`.`Integrala` = '$selIntegrala'";
+	if ($selXenon != 9)
+	$sql .= " AND `produse`.`Xenon` = '$selXenon'";
 	/*$mic=$_GET['mic'];
 	$mare=$_GET['mare'];
 	if($mic!="")
@@ -806,7 +935,54 @@ else
     top: 174px;
 	left:690px;
 }
-
+#servo
+{
+	position: fixed;
+    top: 18px;
+	left:860px;
+}
+#trapa
+{
+	position: fixed;
+    top: 70px;
+	left:860px;
+}
+#jante
+{
+	position: fixed;
+    top: 122px;
+	left:860px;
+}
+#ABS
+{
+	position: fixed;
+    top: 174px;
+	left:860px;
+}
+#carlig
+{
+	position: fixed;
+    top: 18px;
+	left:1030px;
+}
+#ESP
+{
+	position: fixed;
+    top: 70px;
+	left:1030px;
+}
+#integrala
+{
+	position: fixed;
+    top: 122px;
+	left:1030px;
+}
+#xenon
+{
+	position: fixed;
+    top: 174px;
+	left:1030px;
+}
 
 
 #input1
@@ -897,6 +1073,47 @@ else
 			<?php echo $senzori; ?>
 		</select>
 	</div>
+	<div id = "servo">
+		<select name = "servo" >
+			<?php echo $servo; ?>
+		</select>
+	</div>
+	<div id = "trapa">
+		<select name = "trapa" >
+			<?php echo $trapa; ?>
+		</select>
+	</div>
+	<div id = "jante">
+		<select name = "jante" >
+			<?php echo $jante; ?>
+		</select>
+	</div>
+	<div id = "ABS">
+		<select name = "ABS" >
+			<?php echo $ABS; ?>
+		</select>
+	</div>
+	<div id = "carlig">
+		<select name = "carlig" >
+			<?php echo $carlig; ?>
+		</select>
+	</div>
+	<div id = "ESP">
+		<select name = "ESP" >
+			<?php echo $ESP; ?>
+		</select>
+	</div>
+	<div id = "integrala">
+		<select name = "integrala" >
+			<?php echo $integrala; ?>
+		</select>
+	</div>
+	<div id = "xenon">
+		<select name = "xenon" >
+			<?php echo $xenon; ?>
+		</select>
+	</div>
+	
 	
 	
 	
