@@ -23,11 +23,11 @@
 		<table>
 			<tr>
 				<td width="150"></td>
-				<td width="350">
-					Tel: 0747474747
-					E-mail: masini@yahoo.com
-					Fax:  0356805690
-					Adresa: Timisoara,Calea Aradului,nr 52
+				<td width="400">
+					Telefon: 0747474747<br>
+					E-mail: masini@yahoo.com<br>
+					Fax: 0356805690<br>
+					Adresa: Timisoara,Calea Aradului,nr 52<br>
 				</td>
 			</tr>
 		</table>
