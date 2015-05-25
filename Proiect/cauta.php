@@ -121,7 +121,7 @@ return $r;
 $ok=1;
 $stareCauta = "hidden";
 $selXenon=$selIntegrala=$selESP=$selcarlig=$selABS=$selJante=$selTrapa=$selServo=$selSenzori=$selNavigatie=$selGeamuriEl=$selScauneInc=$selRegulatorV=$selInchidere=$selIncalzire=$selPoluare=$selClimatizare=$selDistributie=$selCategory = $selMaker = $selModel = $selCombustibil= $selCuloare=""; //Marca selectata/Model selectat
-$stareListaCategorii = $stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
+$stareListaClimatizare=$stareListaDistributie=$stareListaIncalzire=$stareListaInchidere=$stareListaRegulatorV=$stareListaScauneInc=$stareListaGeamuriEl=$stareListaNavigatie=$stareListaSenzori=$stareListaServo=$stareListaTrapa=$stareListaJante=$stareListaABS=$stareListaCarlig=$stareListaESP=$stareListaIntegrala=$stareListaXenon=$stareListaCategorii = $stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
 $categories = $makers = $models = "";
 $div="";
 $xenon=$integrala=$ESP=$carlig=$ABS=$jante=$trapa=$servo=$senzori=$navigatie=$geamuriEl=$scauneInc=$regulatorV=$inchidere=$incalzire=$combustibil =$distributie =$culori =$climatizare =$poluare="";
@@ -315,6 +315,48 @@ function change_selected($optionList, $selected = '0')
 	
 }
 
+
+
+function verifica_categorie($selCategory){
+global $stareListaClimatizare,$stareListaDistributie,$stareListaIncalzire,$stareListaInchidere,$stareListaRegulatorV,$stareListaScauneInc,$stareListaGeamuriEl,$stareListaNavigatie,$stareListaSenzori,$stareListaServo,$stareListaTrapa,$stareListaJante,$stareListaABS,$stareListaCarlig,$stareListaESP,$stareListaIntegrala,$stareListaXenon;
+
+if($selCategory==2){
+		$stareListaClimatizare="disabled";
+		$stareListaDistributie="disabled";
+		$stareListaIncalzire="disabled";
+		$stareListaInchidere="disabled";
+		$stareListaScauneInc="disabled";
+		$stareListaGeamuriEl="disabled";
+		$stareListaNavigatie="disabled";
+		$stareListaSenzori="disabled";
+		$stareListaServo="disabled";
+		$stareListaTrapa="disabled";
+		$stareListaJante="disabled";
+		$stareListaCarlig="disabled";
+		$stareListaESP="disabled";
+		$stareListaIntegrala="disabled";
+		$stareListaXenon="disabled";
+		
+	}
+	elseif($selCategory==3){
+		$stareListaClimatizare="disabled";
+		$stareListaDistributie="disabled";
+		$stareListaIncalzire="disabled";
+		$stareListaInchidere="disabled";
+		$stareListaScauneInc="disabled";
+		$stareListaGeamuriEl="disabled";
+		$stareListaNavigatie="disabled";
+		$stareListaSenzori="disabled";
+		$stareListaServo="disabled";
+		$stareListaTrapa="disabled";
+		$stareListaJante="disabled";
+		$stareListaABS="disabled";
+		$stareListaESP="disabled";
+		$stareListaRegulatorV="disabled";
+		$stareListaXenon="disabled";
+	}
+}
+
 if (!isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']))
 {
 //echo "f1";
@@ -470,8 +512,8 @@ else if($ok==1 && isset($_SESSION['cauta'])){
 //echo "f10";
 if(isset($_GET['modele'])&& $_GET['modele'] != 0){
 set_filtre();
-global $div;
-$div=$_SESSION['div'];
+global $div1;
+$div=$_SESSION['div1'];
 $_SESSION['xenon']=$xenon;
 $_SESSION['integrala']=$integrala;
 $_SESSION['ESP']=$ESP;
@@ -500,16 +542,15 @@ $selMaker = $_GET['marci'];
 $selModel = $_GET['modele'];
 $models = change_selected($models, $selModel);
 $_SESSION['models'] = $models;
-
+verifica_categorie($selCategory);
 if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
 }
 
 $_SESSION['lastSelModel']=$_GET['modele'];
 $stareCauta = "submit";
-if(isset($_SESSION['cauta']))
-	 unset($_SESSION['cauta'] );
 $div=$_SESSION['div1'];
+//$stareListaClimatizare="disabled";
 }
 
 
@@ -545,7 +586,7 @@ $xenon=$_SESSION['xenon'];
 //$_SESSION['cauta']='cauta';
 $div=$_SESSION['div1'];
 $stareCauta="submit";
-
+verifica_categorie($selCategory);
 }
 
 else
@@ -575,6 +616,7 @@ else
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
 	$culori = $_SESSION['culori'];
+	verifica_categorie($selCategory);
 	//echo $_GET['culoare'];
 	if ((isset($_GET['culoare']))){//&&!(isset($_SESSION['lastSelCuloare']))))//||((isset($_GET['culoare']))&&(isset($_SESSION['lastSelCuloare']))&&$_SESSION['lastSelCuloare']!=0)){
 	//echo $_GET['culoare']."    ";
@@ -723,29 +765,45 @@ else
 	$culori=$_SESSION['culori'];
 	//$_SESSION['combustibil']=$combustibil;
 	
-	
+	if ((isset($_GET['xenon'])))
 	$selXenon = mysqli_real_escape_string($conexiune,$selXenon);
+	if ((isset($_GET['integrala'])))
 	$selIntegrala = mysqli_real_escape_string($conexiune,$selIntegrala);
+	if ((isset($_GET['ESP'])))
 	$selESP = mysqli_real_escape_string($conexiune,$selESP);
+	if ((isset($_GET['carlig'])))
 	$selCarlig = mysqli_real_escape_string($conexiune,$selCarlig);
+	if ((isset($_GET['ABS'])))
 	$selABS = mysqli_real_escape_string($conexiune,$selABS);
+	if ((isset($_GET['jante'])))
 	$selJante = mysqli_real_escape_string($conexiune,$selJante);
+	if ((isset($_GET['trapa'])))
 	$selTrapa = mysqli_real_escape_string($conexiune,$selTrapa);
+	if ((isset($_GET['servo'])))
 	$selServo = mysqli_real_escape_string($conexiune,$selServo);
+	if ((isset($_GET['senzori'])))
 	$selSenzori = mysqli_real_escape_string($conexiune,$selSenzori);
+	if ((isset($_GET['navigatie'])))
 	$selNavigatie = mysqli_real_escape_string($conexiune,$selNavigatie);
+	if ((isset($_GET['geamuriEl'])))
 	$selGeamuriEl = mysqli_real_escape_string($conexiune,$selGeamuriEl);
+	if ((isset($_GET['scauneInc'])))
 	$selScauneInc = mysqli_real_escape_string($conexiune,$selScauneInc);
+	if ((isset($_GET['regulatorV'])))
 	$selRegulatorV = mysqli_real_escape_string($conexiune,$selRegulatorV);
+	if ((isset($_GET['inchidere'])))
 	$selInchidere = mysqli_real_escape_string($conexiune,$selInchidere);
+	if ((isset($_GET['incalzire'])))
 	$selIncalzire = mysqli_real_escape_string($conexiune,$selIncalzire);
 	$selPoluare = mysqli_real_escape_string($conexiune,$selPoluare);
+	if ((isset($_GET['climatizare'])))
 	$selClimatizare = mysqli_real_escape_string($conexiune,$selClimatizare);
 	$selCategory = mysqli_real_escape_string($conexiune,$selCategory);
 	$selMaker = mysqli_real_escape_string($conexiune,$selMaker);
 	$selModel = mysqli_real_escape_string($conexiune,$selModel);
 	$selCombustibil = mysqli_real_escape_string($conexiune,$selCombustibil);
 	$selCuloare = mysqli_real_escape_string($conexiune,$selCuloare);
+	if ((isset($_GET['distributie'])))
 	$selDistributie = mysqli_real_escape_string($conexiune,$selDistributie);
 	$_SESSION['selMaker']=$selMaker;
 	$_SESSION['selModel']=$selModel;
@@ -756,44 +814,44 @@ else
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";
 	if ($selCombustibil != 99)
 	$sql .= " AND `produse`.`Combustibil` = '$selCombustibil'";
-	if ($selDistributie != 99)
+	if ($selDistributie != 99&&(isset($_GET['distributie'])))
 	$sql .= " AND `produse`.`Distributie` = '$selDistributie'";
 	if ($selCuloare != 99)
 	$sql .= " AND `produse`.`Culoare` = '$selCuloare'";
 	//echo $selClimatizare;
-	if ($selClimatizare != 99)
+	if ($selClimatizare != 99&&(isset($_GET['climatizare'])))
 	$sql .= " AND `produse`.`Climatizare` = '$selClimatizare'";
 	if ($selPoluare != 99)
 	$sql .= " AND `produse`.`clasaeuro` = '$selPoluare'";
-	if ($selIncalzire != 9)
+	if ($selIncalzire != 9&&(isset($_GET['incalzire'])))
 	$sql .= " AND `produse`.`SIA` = '$selIncalzire'";
-	if ($selInchidere != 9)
+	if ($selInchidere != 9&&(isset($_GET['inchidere'])))
 	$sql .= " AND `produse`.`IC` = '$selInchidere'";
-	if ($selRegulatorV != 9)
+	if ($selRegulatorV != 9&&(isset($_GET['regulatorV'])))
 	$sql .= " AND `produse`.`RV` = '$selRegulatorV'";
-	if ($selScauneInc != 9)
+	if ($selScauneInc != 9&&(isset($_GET['scauneInc'])))
 	$sql .= " AND `produse`.`SIE` = '$selScauneInc'";
-	if ($selGeamuriEl != 9)
+	if ($selGeamuriEl != 9&&(isset($_GET['geamuriEl'])))
 	$sql .= " AND `produse`.`GE` = '$selGeamuriEl'";
-	if ($selNavigatie != 9)
+	if ($selNavigatie != 9&&(isset($_GET['navigatie'])))
 	$sql .= " AND `produse`.`Nav` = '$selNavigatie'";
-	if ($selSenzori != 9)
+	if ($selSenzori != 9&&(isset($_GET['senzori'])))
 	$sql .= " AND `produse`.`SP` = '$selSenzori'";
-	if ($selServo != 9)
+	if ($selServo != 9&&(isset($_GET['servo'])))
 	$sql .= " AND `produse`.`Servo` = '$selServo'";
-	if ($selTrapa != 9)
+	if ($selTrapa != 9&&(isset($_GET['trapa'])))
 	$sql .= " AND `produse`.`TD` = '$selTrapa'";
-	if ($selJante != 9)
+	if ($selJante != 9&&(isset($_GET['jante'])))
 	$sql .= " AND `produse`.`JA` = '$selJante'";
-	if ($selABS != 9)
+	if ($selABS != 9&&(isset($_GET['ABS'])))
 	$sql .= " AND `produse`.`ABS` = '$selABS'";
-	if ($selCarlig != 9)
+	if ((isset($_GET['carlig']))&&$selCarlig != 9)
 	$sql .= " AND `produse`.`Carlig` = '$selCarlig'";
-	if ($selESP != 9)
+	if ((isset($_GET['ESP']))&&$selESP != 9)
 	$sql .= " AND `produse`.`ESP` = '$selESP'";
-	if ($selIntegrala != 9)
+	if ((isset($_GET['integrala']))&&$selIntegrala != 9)
 	$sql .= " AND `produse`.`Integrala` = '$selIntegrala'";
-	if ($selXenon != 9)
+	if ((isset($_GET['xenon']))&&$selXenon != 9)
 	$sql .= " AND `produse`.`Xenon` = '$selXenon'";
 	
 	if(isset($_GET['mic'])&&isset($_GET['mare'])){
@@ -895,6 +953,7 @@ else
 			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
 			$rezultate .="<td border = '0'><form action='detalii2.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii2' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
 			}
+			
 	}
 	elseif($selCategory==3){
 		while ($row = mysqli_fetch_array($result))
@@ -1144,12 +1203,12 @@ else
 		</select>
 	</div>
 	<div id = "distributie">
-		<select name = "distributie" >
+		<select name = "distributie" <?php echo $stareListaDistributie ?> >
 			<?php echo $distributie; ?>
 		</select>
 	</div>
 	<div id = "climatizare">
-		<select name = "climatizare" >
+		<select name = "climatizare" <?php echo $stareListaClimatizare ?>>
 			<?php echo $climatizare; ?>
 		</select>
 	</div>
@@ -1159,90 +1218,83 @@ else
 		</select>
 	</div>
 	<div id = "incalzire">
-		<select name = "incalzire" >
+		<select name = "incalzire" <?php echo $stareListaIncalzire ?>>
 			<?php echo $incalzire; ?>
 		</select>
 	</div>
-	<div id = "inchidere">
-		<select name = "inchidere" >
+	<div id = "inchidere" >
+		<select name = "inchidere" <?php echo $stareListaInchidere ?>>
 			<?php echo $inchidere; ?>
 		</select>
 	</div>
 	<div id = "regulatorV">
-		<select name = "regulatorV" >
+		<select name = "regulatorV" <?php echo $stareListaRegulatorV ?>>
 			<?php echo $regulatorV; ?>
 		</select>
 	</div>
-	<div id = "scauneInc">
-		<select name = "scauneInc" >
+	<div id = "scauneInc" >
+		<select name = "scauneInc" <?php echo $stareListaScauneInc ?>>
 			<?php echo $scauneInc; ?>
 		</select>
 	</div>
-	<div id = "geamuriEl">
-		<select name = "geamuriEl" >
+	<div id = "geamuriEl" >
+		<select name = "geamuriEl" <?php echo $stareListaGeamuriEl ?>>
 			<?php echo $geamuriEl; ?>
 		</select>
 	</div>
-	<div id = "navigatie">
-		<select name = "navigatie" >
+	<div id = "navigatie" >
+		<select name = "navigatie" <?php echo $stareListaNavigatie ?>>
 			<?php echo $navigatie; ?>
 		</select>
 	</div>
 	<div id = "senzori">
-		<select name = "senzori" >
+		<select name = "senzori" <?php echo $stareListaSenzori ?>>
 			<?php echo $senzori; ?>
 		</select>
 	</div>
 	<div id = "servo">
-		<select name = "servo" >
+		<select name = "servo" <?php echo $stareListaServo ?>>
 			<?php echo $servo; ?>
 		</select>
 	</div>
 	<div id = "trapa">
-		<select name = "trapa" >
+		<select name = "trapa" <?php echo $stareListaTrapa ?>>
 			<?php echo $trapa; ?>
 		</select>
 	</div>
 	<div id = "jante">
-		<select name = "jante" >
+		<select name = "jante" <?php echo $stareListaJante ?>>
 			<?php echo $jante; ?>
 		</select>
 	</div>
 	<div id = "ABS">
-		<select name = "ABS" >
+		<select name = "ABS" <?php echo $stareListaABS ?>>
 			<?php echo $ABS; ?>
 		</select>
 	</div>
 	<div id = "carlig">
-		<select name = "carlig" >
+		<select name = "carlig" <?php echo $stareListaCarlig ?>>
 			<?php echo $carlig; ?>
 		</select>
 	</div>
 	<div id = "ESP">
-		<select name = "ESP" >
+		<select name = "ESP" <?php echo $stareListaESP ?>>
 			<?php echo $ESP; ?>
 		</select>
 	</div>
-	<div id = "integrala">
-		<select name = "integrala" >
+	<div id = "integrala" >
+		<select name = "integrala" <?php echo $stareListaIntegrala ?>>
 			<?php echo $integrala; ?>
 		</select>
 	</div>
 	<div id = "xenon">
-		<select name = "xenon" >
+		<select name = "xenon" <?php echo $stareListaXenon ?>>
 			<?php echo $xenon; ?>
 		</select>
 	</div>
+	
 	<?php echo $div; ?>
 	
-	
-	
-	
-	<!div id="pret">
-	<!input type="number" name="mic" id="input1"> <!input type="number" name="mare" id="input1">
-	 <!div>
-	<!/div>
-	<!/div>
 	<input type = "hidden" name = "lastSelCategory" value = "<?php echo $selCategory; ?>">
 	<input type = "hidden" name = "lastSelMaker" value = "<?php echo $selMaker; ?>">
 	<input type = "hidden" name = "lastSelModel" value = "<?php echo $selModel; ?>">
