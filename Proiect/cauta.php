@@ -504,12 +504,7 @@ $_SESSION['models'] = $models;
 if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
 }
-/*else{
-echo '<script language="javascript">';
-echo 'alert("Pentru a cauta trebuie sa alegeti un model din lista de modele!")';
-echo '</script>';
-}
-*/
+
 $_SESSION['lastSelModel']=$_GET['modele'];
 $stareCauta = "submit";
 if(isset($_SESSION['cauta']))
@@ -550,6 +545,7 @@ $xenon=$_SESSION['xenon'];
 //$_SESSION['cauta']='cauta';
 $div=$_SESSION['div1'];
 $stareCauta="submit";
+
 }
 
 else
@@ -806,7 +802,7 @@ else
 	//$_SESSION['mic']=$mic;
 	//$_SESSION['mare']=$mare;
 	if($mic!=""&&$mare!=""&&$mic>0&&$mare>=$mic)
-	$sql .=" AND `pret` BETWEEN '$mic.' AND '$mare.'";
+	$sql .=" AND `pret` BETWEEN '$mic' AND '$mare'";
 	elseif((($mic!=""&&$mare!="")&&($mic<=0||$mare<=0))||(($mic!=""||$mare!=""))){
 	echo '<script language="javascript">';
 	echo 'alert("Valorile de cautare pentru Pret nu sunt valide! Acestea trebuie sa fie mai mari decat 0!")';
@@ -817,7 +813,7 @@ else
 	$mick=$_GET['mick'];
 	$marek=$_GET['marek'];
 	if($mick!=""&&$marek!=""&&$mick>0&&$marek>=$mick)
-	$sql .=" AND `Kilometraj` BETWEEN '$mick.' AND '$marek.'";
+	$sql .=" AND `Kilometraj` BETWEEN '$mick' AND '$marek'";
 	elseif((($mick!=""&&$marek!="")&&($mick<=0||$marek<=0))||(($mick!=""||$marek!=""))){
 	echo '<script language="javascript">';
 	echo 'alert("Valorile de cautare pentru Kilometraj nu sunt valide! Acestea trebuie sa fie mai mari decat 0!")';
@@ -828,7 +824,7 @@ else
 	$micc=$_GET['micc'];
 	$marec=$_GET['marec'];
 	if($micc!=""&&$marec!=""&&$micc>0&&$marec>=$micc)
-	$sql .=" AND `CaiPutere` BETWEEN '$micc.' AND '$marec.'";
+	$sql .=" AND `CaiPutere` BETWEEN '$micc' AND '$marec'";
 	elseif((($micc!=""&&$marec!="")&&($micc<=0||$marec<=0))||(($micc!=""||$marec!=""))){
 	echo '<script language="javascript">';
 	echo 'alert("Valorile de cautare pentru Cai putere nu sunt valide! Acestea trebuie sa fie mai mari decat 0!")';
@@ -850,7 +846,7 @@ else
 	$miccil=$_GET['miccil'];
 	$marecil=$_GET['marecil'];
 	if($miccil!=""&&$marecil!=""&&$miccil>0&&$marecil>=$miccil)
-	$sql .=" AND `Capacitate` BETWEEN '$miccil.' AND '$marecil.'";
+	$sql .=" AND `Capacitate` BETWEEN '$miccil' AND '$marecil'";
 	elseif((($miccil!=""&&$marecil!="")&&($miccil<=0||$marecil<=0))||(($miccil!=""||$marecil!=""))){
 	echo '<script language="javascript">';
 	echo 'alert("Valorile de cautare pentru Cilindree nu sunt valide! Acestea trebuie sa fie mai mari decat 0!")';
