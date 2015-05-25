@@ -1014,13 +1014,13 @@ else
 #combustibil
 {
 	position: absolute;
-    top: 63px;
+    top: 64px;
 	left:340px;
 }
 #distributie
 {
 	position: absolute;
-    top: 114px;
+    top: 116px;
 	left:340px;
 }
 #climatizare
@@ -1035,136 +1035,130 @@ else
     top: 12px;
 	left:512px;
 }
-#pret
-{
-	position: fixed;
-    top: 51px;
-	left:520px;
-}
 #incalzire
 {
-	position: fixed;
-    top: 70px;
-	left:520px;
+	position: absolute;
+    top: 64px;
+	left:512px;
 }
 #inchidere
 {
-	position: fixed;
-    top: 122px;
-	left:520px;
+	position: absolute;
+    top: 116px;
+	left:512px;
 }
 #regulatorV
 {
-	position: fixed;
-    top: 174px;
-	left:520px;
+	position: absolute;
+    top: 168px;
+	left:512px;
 }
 #scauneInc
 {
-	position: fixed;
-    top: 18px;
-	left:690px;
+	position: absolute;
+    top: 12px;
+	left:681px;
 }
 #geamuriEl
 {
-	position: fixed;
-    top: 70px;
-	left:690px;
+	position: absolute;
+    top: 64px;
+	left:681px;
 }
 #navigatie
 {
-	position: fixed;
-    top: 122px;
-	left:690px;
+	position: absolute;
+    top: 116px;
+	left:681px;
 }
 #senzori
 {
-	position: fixed;
-    top: 174px;
-	left:690px;
+	position: absolute;
+    top: 168px;
+	left:681px;
 }
 #servo
 {
-	position: fixed;
-    top: 18px;
-	left:860px;
+	position: absolute;
+    top: 12px;
+	left:851px;
 }
 #trapa
 {
-	position: fixed;
-    top: 70px;
-	left:860px;
+	position: absolute;
+    top: 64px;
+	left:851px;
 }
 #jante
 {
-	position: fixed;
-    top: 122px;
-	left:860px;
+	position: absolute;
+    top: 116px;
+	left:851px;
 }
 #ABS
 {
-	position: fixed;
-    top: 174px;
-	left:860px;
+	position: absolute;
+    top: 168px;
+	left:851px;
 }
 #carlig
 {
-	position: fixed;
-    top: 18px;
-	left:1030px;
+	position: absolute;
+    top: 12px;
+	left:1021px;
 }
 #ESP
 {
-	position: fixed;
-    top: 70px;
-	left:1030px;
+	position: absolute;
+    top: 64px;
+	left:1021px;
 }
 #integrala
 {
-	position: fixed;
-    top: 122px;
-	left:1030px;
+	position: absolute;
+    top: 116px;
+	left:1021px;
 }
 #xenon
 {
-	position: fixed;
-    top: 174px;
-	left:1030px;
+	position: absolute;
+    top: 168px;
+	left:1021px;
 }
 #div1
 {
-	position: fixed;
-    top: 220px;
+	position: absolute;
+    top: 222px;
 	left:250px;
 }
 #div2
 {
-	position: fixed;
-    top: 220px;
+	position: absolute;
+     top: 222px;
 	left:440px;
 }
 #div3
 {
-	position: fixed;
-    top: 220px;
+	position: absolute;
+     top: 222px;
 	left:630px;
 }
 #div4
 {
-	position: fixed;
-    top: 220px;
+	position: absolute;
+     top: 222px;
 	left:820px;
 }
 #div5
 {
-	position: fixed;
-    top: 220px;
+	position: absolute;
+     top: 222px;
 	left:1010px;
 }
 #cauta
 {
-	position: fixed;
-    top: 240px;
+	position: absolute;
+     top: 242px;
 	left:100px;
 }
 
@@ -1172,7 +1166,7 @@ else
 {
 	width:70px;
 }
-#input2
+#i
 {
 	position: relative;
 }
@@ -1181,7 +1175,7 @@ else
 </head>
 <body>
 <form name="autoturisme" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="get" >
-<div id="input2">
+<div id="i">
 	<div id="categorii">
 		<select name="categorii" onchange = "this.form.submit();">
 			<?php  echo $categories; ?>
