@@ -162,7 +162,7 @@ else
 	if (mysqli_num_rows($result) === 0)
 		$rezultate = "<tr><td>Ne pare rau, nu a fost gasit niciun anunt dupa criteriile de cautare selectate!</td></tr>";
 	else
-	{
+	{$rezultate .= "<tr><td height='120' colspan='13'></td></tr>";
 		while ($row = mysqli_fetch_array($result))
 		{
 			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
@@ -192,27 +192,27 @@ else
 
 #lista_marci
 {
-	position: fixed;
-    top: 20px;
-	left:30px;
+	position: relative;
+    top: 18px;
+	
 }
 #lista_modele
 {
-	position: fixed;
-    top: 60px;
-	left:25px;
+	position: relative;
+    top: 40px;
+	
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
 <form name="autoturisme" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="get" >
-	<div id="lista_marci1">
+	<div id="lista_marci">
 		<select name="marci" onchange = "this.form.submit();">
 			<?php  echo $makers; ?>
 		</select>
 	</div>
-	<div id = "lista_modele1">
+	<div id = "lista_modele">
 		<select name = "modele" <?php echo $stareListaModele ?> onchange = "this.form.submit();">
 			<?php echo $models; ?>
 		</select>
