@@ -555,6 +555,7 @@ $div=$_SESSION['div1'];
 
 
 else if($ok==1 && !isset($_SESSION['cauta'])&&$_GET['modele']!=$_GET['lastSelModel']){
+//echo "f";
 $selCategory=$_GET['categorii'];
 $selMaker=$_GET['marci'];
 $selModel=$_GET['modele'];
@@ -1006,33 +1007,33 @@ else
 
 #culoare
 {
-	position: fixed;
-    top: 18px;
-	left:350px;
+	position: absolute;
+    top: 12px;
+	left:340px;
 }
 #combustibil
 {
-	position: fixed;
-    top: 70px;
-	left:350px;
+	position: absolute;
+    top: 63px;
+	left:340px;
 }
 #distributie
 {
-	position: fixed;
-    top: 122px;
-	left:350px;
+	position: absolute;
+    top: 114px;
+	left:340px;
 }
 #climatizare
 {
-	position: fixed;
-    top: 174px;
-	left:350px;
+	position: absolute;
+    top: 168px;
+	left:340px;
 }
 #poluare
 {
-	position: fixed;
-    top: 18px;
-	left:520px;
+	position: absolute;
+    top: 12px;
+	left:512px;
 }
 #pret
 {
@@ -1171,12 +1172,16 @@ else
 {
 	width:70px;
 }
-
+#input2
+{
+	position: relative;
+}
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
 <form name="autoturisme" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="get" >
+<div id="input2">
 	<div id="categorii">
 		<select name="categorii" onchange = "this.form.submit();">
 			<?php  echo $categories; ?>
@@ -1292,7 +1297,7 @@ else
 			<?php echo $xenon; ?>
 		</select>
 	</div>
-	
+	</div>
 	<?php echo $div; ?>
 	
 	<input type = "hidden" name = "lastSelCategory" value = "<?php echo $selCategory; ?>">
