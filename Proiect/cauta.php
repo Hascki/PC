@@ -72,14 +72,47 @@ return $r;
 }
 
 //if(isset($_SESSION['div']))
-	 $_SESSION['div']="<div id='pret'>Pret(€)
+	 $_SESSION['div1']="<div id='div1'>Pret(€)
 	 <div>
 	<input type='number' name='mic' id='input1'> <input type='number' name='mare' id='input1'>
 	 <div>
 	  &nbsp &nbsp &nbsp  de la  &nbsp &nbsp &nbsp &nbsp pana la
 	  </div>
 	</div>
-	</div>";
+	</div>
+	<div id='div2'>Kilometraj(km)
+	 <div>
+	<input type='number' name='mick' id='input1'> <input type='number' name='marek' id='input1'>
+	 <div>
+	  &nbsp &nbsp &nbsp  de la  &nbsp &nbsp &nbsp &nbsp pana la
+	  </div>
+	</div>
+	</div>
+	<div id='div3'>Cai putere
+	 <div>
+	<input type='number' name='micc' id='input1'> <input type='number' name='marec' id='input1'>
+	 <div>
+	  &nbsp &nbsp &nbsp  de la  &nbsp &nbsp &nbsp &nbsp pana la
+	  </div>
+	</div>
+	</div>
+	<div id='div4'>Anul fabricatiei
+	 <div>
+	<input type='number' name='mica' id='input1'> <input type='number' name='marea' id='input1'>
+	 <div>
+	  &nbsp &nbsp &nbsp  de la  &nbsp &nbsp &nbsp &nbsp pana la
+	  </div>
+	</div>
+	</div>
+	<div id='div5'>Cilindree
+	 <div>
+	<input type='number' name='miccil' id='input1'> <input type='number' name='marecil' id='input1'>
+	 <div>
+	  &nbsp &nbsp &nbsp  de la  &nbsp &nbsp &nbsp &nbsp pana la
+	  </div>
+	</div>
+	</div>
+	";
 $ok=1;
 $stareCauta = "hidden";
 $selXenon=$selIntegrala=$selESP=$selcarlig=$selABS=$selJante=$selTrapa=$selServo=$selSenzori=$selNavigatie=$selGeamuriEl=$selScauneInc=$selRegulatorV=$selInchidere=$selIncalzire=$selPoluare=$selClimatizare=$selDistributie=$selCategory = $selMaker = $selModel = $selCombustibil= $selCuloare=""; //Marca selectata/Model selectat
@@ -476,7 +509,7 @@ $_SESSION['lastSelModel']=$_GET['modele'];
 $stareCauta = "submit";
 if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
-
+$div=$_SESSION['div1'];
 }
 
 
@@ -510,7 +543,7 @@ $ESP=$_SESSION['ESP'];
 $integrala=$_SESSION['integrala'];
 $xenon=$_SESSION['xenon'];
 //$_SESSION['cauta']='cauta';
-$div=$_SESSION['div'];
+$div=$_SESSION['div1'];
 $stareCauta="submit";
 }
 
@@ -769,9 +802,9 @@ else
 	$sql .=" ORDER by Promovare ASC";
 	$result = mysqli_query($conexiune,$sql);
 	if (mysqli_num_rows($result) === 0)
-		$rezultate = "<tr><td>Ne pare rau, nu a fost gasit niciun anunt dupa criteriile de cautare selectate!</td></tr>";
+		$rezultate = "<tr><td height='550'>Ne pare rau, nu a fost gasit niciun anunt dupa criteriile de cautare selectate!</td></tr>";
 	else
-	{$rezultate .= "<tr><td height='150' colspan='13'></td></tr>";
+	{$rezultate .= "<tr><td height='350' colspan='13'></td></tr>";
 	if($selCategory==1){
 		while ($row = mysqli_fetch_array($result))
 		{
@@ -828,7 +861,7 @@ else
 	}
 	}
 	$stareCauta = "submit";
-	$div=$_SESSION['div'];
+	$div=$_SESSION['div1'];
 	
 }
 ?>
@@ -983,16 +1016,48 @@ else
     top: 174px;
 	left:1030px;
 }
-
+#div1
+{
+	position: fixed;
+    top: 220px;
+	left:250px;
+}
+#div2
+{
+	position: fixed;
+    top: 220px;
+	left:440px;
+}
+#div3
+{
+	position: fixed;
+    top: 220px;
+	left:630px;
+}
+#div4
+{
+	position: fixed;
+    top: 220px;
+	left:820px;
+}
+#div5
+{
+	position: fixed;
+    top: 220px;
+	left:1010px;
+}
+#cauta
+{
+	position: fixed;
+    top: 240px;
+	left:100px;
+}
 
 #input1
 {
 	width:70px;
 }
-#input2
-{
-	width:70px;
-}
+
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
@@ -1113,11 +1178,11 @@ else
 			<?php echo $xenon; ?>
 		</select>
 	</div>
+	<?php echo $div; ?>
 	
 	
 	
 	
-	<?php //echo $div; ?>
 	<!div id="pret">
 	<!input type="number" name="mic" id="input1"> <!input type="number" name="mare" id="input1">
 	 <!div>
@@ -1126,7 +1191,7 @@ else
 	<input type = "hidden" name = "lastSelCategory" value = "<?php echo $selCategory; ?>">
 	<input type = "hidden" name = "lastSelMaker" value = "<?php echo $selMaker; ?>">
 	<input type = "hidden" name = "lastSelModel" value = "<?php echo $selModel; ?>">
-	<input type="<?php echo $stareCauta; ?>" name="cauta" value="Cauta">
+	<input id="cauta" type="<?php echo $stareCauta; ?>" name="cauta" value="Cauta">
 </form>
 <div id = "rezultate">
 	<table style = "width:100%" >
