@@ -72,9 +72,14 @@ return $r;
 }
 
 //if(isset($_SESSION['div']))
+	//if(!isset($_SESSION['mic']))
+	//$_SESSION['mic']="";
+	//if(!isset($_SESSION['mare']))
+	//$_SESSION['mare']="";
+	//echo $_SESSION['mic'];
 	 $_SESSION['div1']="<div id='div1'>Pret(€)
 	 <div>
-	<input type='number' name='mic' id='input1'> <input type='number' name='mare' id='input1'>
+	<input type='number' name='mic' id='input1' > <input type='number' name='mare' id='input1' >
 	 <div>
 	  &nbsp &nbsp &nbsp  de la  &nbsp &nbsp &nbsp &nbsp pana la
 	  </div>
@@ -98,7 +103,7 @@ return $r;
 	</div>
 	<div id='div4'>Anul fabricatiei
 	 <div>
-	<input type='number' name='mica' id='input1'> <input type='number' name='marea' id='input1'>
+	<input type='number' name='mica' id='input1' > <input type='number' name='marea' id='input1'>
 	 <div>
 	  &nbsp &nbsp &nbsp  de la  &nbsp &nbsp &nbsp &nbsp pana la
 	  </div>
@@ -798,6 +803,8 @@ else
 	if(isset($_GET['mic'])&&isset($_GET['mare'])){
 	$mic=$_GET['mic'];
 	$mare=$_GET['mare'];
+	//$_SESSION['mic']=$mic;
+	//$_SESSION['mare']=$mare;
 	if($mic!=""&&$mare!=""&&$mic>0&&$mare>=$mic)
 	$sql .=" AND `pret` BETWEEN '$mic.' AND '$mare.'";
 	elseif((($mic!=""&&$mare!="")&&($mic<=0||$mare<=0))||(($mic!=""||$mare!=""))){
@@ -832,7 +839,7 @@ else
 	$mica=$_GET['mica'];
 	$marea=$_GET['marea'];
 	if($mica!=""&&$marea!=""&&$mica>0&&$marea>=$mica)
-	$sql .=" AND `DataFabricatie` BETWEEN '$mica.' AND '$marea.'";
+	$sql .=" AND `DataFabricatie` BETWEEN STR_TO_DATE('$mica','%Y-%m-%d') AND STR_TO_DATE('$marea','%Y-%m-%d')";
 	elseif((($mica!=""&&$marea!="")&&($mica<=1873||$marea<=1873))||(($mica!=""||$marea!=""))){
 	echo '<script language="javascript">';
 	echo 'alert("Valorile de cautare pentru Anul fabricatiei nu sunt valide! Acestea trebuie sa fie mai mari decat 1872!")';
