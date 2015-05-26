@@ -79,7 +79,7 @@ $query = "SELECT `sold` FROM `profiles`, `utilizatori` WHERE `profiles`.`profile
 		 $row = mysqli_fetch_array($sql);
 		 $sold = $row['sold'];
 	}
-	else $sold=100;
+
 $_SESSION['idanunt']=$_GET['idAnunt'];
 $rezultat = "";
 $idanunt = "";
