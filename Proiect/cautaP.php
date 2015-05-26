@@ -74,38 +74,12 @@ return $r;
 
 $ok=1;
 $stareCauta = "hidden";
-$selCategory = $selMaker = $selModel = $selCombustibil= $selCuloare=""; //Marca selectata/Model selectat
+$selCategory = $selMaker = $selModel = ""; //Marca selectata/Model selectat
 $stareListaCategorii = $stareListaModele =$stareListaMarci = ""; // Activeaza sau dezactiveaza casuta cu modele
 $categories = $makers = $models = "0";
-$combustibil = "0";
-$culori = "0";
+
 $rezultate = "";
 
-function set_filtre()
-{
-	global $combustibil;
-	$combustibil = '<option value="0"> Combustibil </option>';
-	$combustibil .= '<option value="1"> Benzina </option>';
-	$combustibil .= '<option value="2"> Motorina </option>';
-	$combustibil .= '<option value="3"> Hibrid </option>';
-	$combustibil .= '<option value="4"> Electric </option>';
-	global $culori;
-	$culori = '<option value="0"> Culori </option>';
-	$culori .= '<option value="1"> Alb </option>';
-	$culori .= '<option value="2"> Albastru </option>';
-	$culori .= '<option value="3"> Argintiu </option>';
-	$culori .= '<option value="4"> Auriu </option>';
-	$culori .= '<option value="5"> Bej </option>';
-	$culori .= '<option value="6"> Galben </option>';
-	$culori .= '<option value="7"> Gri </option>';
-	$culori .= '<option value="8"> Maro </option>';
-	$culori .= '<option value="9"> Negru </option>';
-	$culori .= '<option value="10"> Portocaliu </option>';
-	$culori .= '<option value="11"> Rosu </option>';
-	$culori .= '<option value="12"> Verde </option>';
-	$culori .= '<option value="13"> Violet </option>';
-	
-}
 
 function get_categories()
 {
@@ -144,7 +118,6 @@ function get_makers($selCategory)
 	$result = mysqli_query($conexiune,$sql);
 	global $makers;
 	$makers = '<option value = "0"> Alegeti marca </option>';
-	//$makers .= '<option value="9999">Toate</option>';
 	while ($row = mysqli_fetch_array($result)) 
 	{
 		$makers.='<option value="' . $row["MakeId"] . '">' . $row["Producator"] . '</option>';
@@ -157,8 +130,7 @@ function get_models($selMaker)
 {
 	global $conexiune;
 	$category=$_SESSION['category'];
-	//global $category;
-	// Extrage modelele in functie de marca primita ca parametru
+	
 	$maker = mysqli_real_escape_string($conexiune,$selMaker);
 	$sql = "SELECT `modelid`, `modelname` FROM `modele` WHERE `makeid` = '$maker' and `Type`='$category'";
 	$result = mysqli_query($conexiune,$sql);
@@ -171,8 +143,7 @@ function get_models($selMaker)
 
 function change_selected($optionList, $selected = '0')
 {
-	// Modifica in lista optionList care optiune va avea atributul selected bazandu-se pe valoarea acestuia.
-	// Mai intai sterge unde gaseste substring-ul selected apoi adauga acest atribut dupa o valoare egala cu $selected.
+	
 	$tempList = $optionList;
 	$tempList = str_replace(' selected', '', $tempList);
 	$poz = strpos($tempList, "value=\"$selected\"");
@@ -192,8 +163,7 @@ function change_selected($optionList, $selected = '0')
 
 if (!isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']))
 {
-//echo "f1";
-	// Prima data cand se intra pe pagina
+
 	get_categories();
 	$_SESSION['categories'] = $categories;
 	$ok=0;
@@ -202,8 +172,8 @@ if (!isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']
 }
 
 else if (isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']))
-{//echo "f2";
-	//
+{
+	
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
@@ -214,12 +184,12 @@ else if (isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['mode
 	if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
 	$ok=0;
-	//$stareListaModele = "disabled";
+	
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['modele'])&& $_GET['categorii'] !== $_GET['lastSelCategory']&&$_GET['categorii']!=0)
-{//echo "f3";
-	//
+{
+	
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
@@ -233,8 +203,8 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['model
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['modele'])&& $_GET['marci'] !== $_GET['lastSelMaker'])
-{//echo "f4";
-	//
+{
+	
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
 	$selMaker = $_GET['marci'];
@@ -250,8 +220,8 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['model
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele'])&& $_GET['categorii'] !== $_GET['lastSelCategory'])
-{//echo "f5";
-	//
+{
+	
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
@@ -265,8 +235,8 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele'])&& $_GET['marci'] !== $_GET['lastSelMaker']&& $_GET['marci'] != 0)
-{//echo "f6";
-	//
+{
+	
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
 	$selMaker = $_GET['marci'];
@@ -282,7 +252,7 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci'])) && $_GET['categorii'] == 0)
-{//echo "f7";
+{
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
@@ -293,8 +263,7 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci'])) && $_GET['categorii'
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['marci'] == 0)
-{//echo "f8";
-	// Daca se alege prima optiune din lista marcilor se dezactiveaza lista de modele. Un fel de buton de restart.
+{
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
@@ -308,8 +277,7 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['model
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['modele'] == 0)
-{//echo "f9";
-	// Daca este activa optiunea default din lista de modele.
+{
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
 	$selMaker = $_GET['marci'];
@@ -324,16 +292,9 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['model
 }
 
 else if($ok==1 && isset($_SESSION['cauta'])){
-//echo "f10";
+
 if(isset($_GET['modele'])&& $_GET['modele'] != 0){
-set_filtre();
-$_SESSION['combustibil']=$combustibil;
-$_SESSION['culori']=$culori;
-//$combustibil=$_SESSION['combustibil'];
-//echo $_GET['combustibil'];
-//$selCombustibil=$_GET['combustibil'];
-//$combustibil= change_selected($combustibil, $selCombustibil);
-//$_SESSION['combustibil']=$combustibil;
+
 $categories = $_SESSION['categories'];
 $makers = $_SESSION['makers'];
 $models = $_SESSION['models'];
@@ -355,22 +316,8 @@ $_SESSION['lastSelModel']=$_GET['modele'];
 $stareCauta = "submit";
 if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
-//$selModel = $_GET['modele'];
-//$makers= change_selected($makers, $selMaker);
-//$_SESSION['makers'] = $makers;
-//echo $makers;
-//$models = $_SESSION['models'];
-}
 
-/*else if($ok==1&&$stareCauta="hidden")
-{
-$categories = $_SESSION['categories'];
-$makers = $_SESSION['makers'];
-$models = $_SESSION['models'];
-$selCategory = $_GET['categorii'];
-$stareCauta="submit";
 }
-*/
 
 
 else if($ok==1 && !isset($_SESSION['cauta'])&&$_GET['modele']!=$_GET['lastSelModel']){
@@ -382,18 +329,13 @@ $makers = $_SESSION['makers'];
 $models = $_SESSION['models'];
 $models = change_selected($models, $selModel);
 $_SESSION['models']=$models;
-$combustibil = $_SESSION['combustibil'];
-$culori=$_SESSION['culori'];
-//$_SESSION['cauta']='cauta';
+
 
 $stareCauta="submit";
 }
 
 else
-{//echo "f11";
-	// Aici se ajunge cand s-a ales o marca si un model si se poate cauta in tabelul de anunturi.
-	// Daca numarul de randuri este 0 inseamna ca nu exista nici un anunt care sa respecte cerintele selectate
-	// si se va afisa un mesaj.
+{
 	if(isset($_SESSION['cauta']))
 	 unset($_SESSION['cauta'] );
 	if ((isset($_GET['marci'])))
@@ -414,46 +356,27 @@ else
 	$_SESSION['categories']=$categories;
 	$_SESSION['makers'] = $makers;
 	$_SESSION['models'] = $models;
-	$culori = $_SESSION['culori'];
-	//echo $_GET['culoare'];
-	if ((isset($_GET['culoare']))){//&&!(isset($_SESSION['lastSelCuloare']))))//||((isset($_GET['culoare']))&&(isset($_SESSION['lastSelCuloare']))&&$_SESSION['lastSelCuloare']!=0)){
-	//echo $_GET['culoare']."    ";
-	
-	$selCuloare = $_GET['culoare'];
-	$culori = change_selected($culori, $selCuloare);
-	$_SESSION['culori'] = $culori;
-	//$_SESSION['lastSelCuloare']=$selCuloare;
-	}
-	if ((isset($_GET['combustibil']))){
-	$combustibil = $_SESSION['combustibil'];
-	$selCombustibil = $_GET['combustibil'];
-	$combustibil = change_selected($combustibil, $selCombustibil);
-	$_SESSION['combustibil'] = $combustibil;
-	}
-	$combustibil=$_SESSION['combustibil'];
-	$culori=$_SESSION['culori'];
-	$_SESSION['combustibil']=$combustibil;
 	$selCategory = mysqli_real_escape_string($conexiune,$selCategory);
 	$selMaker = mysqli_real_escape_string($conexiune,$selMaker);
 	$selModel = mysqli_real_escape_string($conexiune,$selModel);
 	$_SESSION['selMaker']=$selMaker;
 	$_SESSION['selModel']=$selModel;
 	
-	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`,`pozeanunturi`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`='$selCategory' and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
-	// Daca nu s-a ales optiunea Toate
+	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`='$selCategory' and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` AND `produse`.`MakeId`='$selMaker'";
+
 	if ($selModel != 9999)
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";
 		$sql .=" ORDER by Promovare ASC";
 	$result = mysqli_query($conexiune,$sql);
 	if (mysqli_num_rows($result) === 0)
-		$rezultate = "<tr><td>Ne pare rau, nu a fost gasit niciun anunt dupa criteriile de cautare selectate!</td></tr>";
+		$rezultate = "<tr><td height='280'>Ne pare rau, nu a fost gasit niciun anunt dupa criteriile de cautare selectate!</td></tr>";
 	else
 	{$rezultate .= "<tr><td height='150' colspan='13'></td></tr>";
 	if($selCategory==1){
 		while ($row = mysqli_fetch_array($result))
 		{
 			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
-			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
+			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['idanunt'] . "\" width = '250' height = '225'></td> <td height = '60' >";
 			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
 			$col = mysqli_query($conexiune,$sql);
 			$col = mysqli_fetch_array($col);
@@ -471,7 +394,7 @@ else
 		while ($row = mysqli_fetch_array($result))
 			{
 			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
-			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
+			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['idanunt'] . "\" width = '250' height = '225'></td> <td height = '60' >";
 			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
 			$col = mysqli_query($conexiune,$sql);
 			$col = mysqli_fetch_array($col);
@@ -489,7 +412,7 @@ else
 		while ($row = mysqli_fetch_array($result))
 			{
 			$rezultate .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
-			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
+			$rezultate .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['idanunt'] . "\" width = '250' height = '225'></td> <td height = '60' >";
 			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
 			$col = mysqli_query($conexiune,$sql);
 			$col = mysqli_fetch_array($col);
@@ -533,18 +456,13 @@ else
 	
 }
 
-#culoare
+#cauta
 {
-	position: fixed;
+	position: relative;
     top: 18px;
 	left:350px;
 }
-#combustibil
-{
-	position: fixed;
-    top: 70px;
-	left:350px;
-}
+
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
@@ -565,20 +483,13 @@ else
 			<?php echo $models; ?>
 		</select>
 	</div>
-	<div id = "culoare">
-		<select name = "culoare" >
-			<?php echo $culori; ?>
-		</select>
-	</div>
-	<div id = "combustibil">
-		<select name = "combustibil" >
-			<?php echo $combustibil; ?>
-		</select>
-	</div>
+
 	<input type = "hidden" name = "lastSelCategory" value = "<?php echo $selCategory; ?>">
 	<input type = "hidden" name = "lastSelMaker" value = "<?php echo $selMaker; ?>">
 	<input type = "hidden" name = "lastSelModel" value = "<?php echo $selModel; ?>">
+	<div id = "cauta">
 	<input type="<?php echo $stareCauta; ?>" name="cauta" value="Cauta">
+	</div>
 </form>
 <div id = "rezultate">
 	<table style = "width:100%" >
