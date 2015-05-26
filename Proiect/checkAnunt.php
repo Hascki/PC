@@ -9,7 +9,7 @@
 		header("location:index.php");
 		exit;
 	}
-	$query = "INSERT INTO `produse` (`IdAnunt`, `DataCreere`, `Categorie`, `IdVanzator`, `MakeId`, `ModelId`, `Kilometraj`, `DataFabricatie`, `Pret`, `Putere`, `CaiPutere`, `Capacitate`, `NrLocuri`, `MMA`, `ClasaEuro`, `Emisi`, `Culoare`, `VIN`, `Combustibil`, `Distributie`, `Climatizare`, `SIA`, `IC`, `RV`, `SIE`, `GE`, `Nav`, `SP`, `Servo`, `TD`, `JA`, `Carlig`, `ABS`, `ESP`, `Integrala`, `Xenon`, `Promovare`, `Descriere`) VALUES (NULL, ";
+	$query = "INSERT INTO `produse` (`IdAnunt`, `DataCreere`, `Categorie`, `IdVanzator`, `MakeId`, `ModelId`, `Tip`, `Kilometraj`, `DataFabricatie`, `Pret`, `Putere`, `CaiPutere`, `Capacitate`, `NrLocuri`, `MMA`, `ClasaEuro`, `Emisi`, `Culoare`, `VIN`, `Combustibil`, `Distributie`, `Climatizare`, `SIA`, `IC`, `RV`, `SIE`, `GE`, `Nav`, `SP`, `Servo`, `TD`, `JA`, `Carlig`, `ABS`, `ESP`, `Integrala`, `Xenon`, `Promovare`, `Descriere`) VALUES (NULL, ";
 	$errorsArray = array();
 	$post = array();
 	$files = array();
@@ -43,11 +43,6 @@
 	}
 	if (isset($post['submit']))
 	{
-		/*
-		if (isset($post['stil']) && filter_var($post['categorie'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => 19))))
-			$query .= $post['stil'] . ", ";
-		else $errorsArray[] = "Stilul este invalid!";
-		*/
 		$query .= "'" . date("Y-m-d") . "', "; // Adauga data cand s-a pus anuntul
 		// Adauga categoria anuntului
 		if (isset($post['categorie']) && filter_var($post['categorie'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => 1))))
@@ -73,6 +68,10 @@
 		if (isset($post['model']) && filter_var($post['model'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1))))
 			$query .= $post['model'] . ", ";
 		else $errorsArray[] = ("Modelul este invalid!");
+		// Adauga tipul autoturismului
+		if (isset($post['stil']) && filter_var($post['categorie'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => 19))))
+			$query .= $post['stil'] . ", ";
+		else $errorsArray[] = "Stilul este invalid!";
 		// Adauga kilometraj
 		if (isset($post['rulaj']) && filter_var($post['rulaj'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 0))) >= 0)
 			$query .= $post['rulaj'] . ", ";
@@ -233,10 +232,10 @@
 			$fname = dirname(__FILE__) . "/imagini/";
 			if ($post['categorie'] === 1)
 				$fname .= "defaultCar.png";
-			else if ($post['categorie'] === 1)
-				$fname .= "defaultCar.png";
-			else if ($post['categorie'] === 1)
-				$fname .= "defaultCar.png";
+			else if ($post['categorie'] === 2)
+				$fname .= "defaultMoto.png";
+			else if ($post['categorie'] === 3)
+				$fname .= "defaultATV.png";
 			else $errorsArray[] = "Nu s-a putut uploada poza deoarece categoria autovehiculului este invalida!";	
 		}
 		// Trimite cerere
