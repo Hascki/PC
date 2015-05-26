@@ -72,17 +72,17 @@ $r="DA";
 return $r;
 }
 
-$query = "SELECT `sold` FROM `utilizatori` WHERE `username` = '" . $_SESSION['login'] ."' AND `userid` = '" . $_SESSION['userID'] . "'";
-$sql = mysqli_query($conexiune, $query);
-if ($sql !== false && mysqli_num_rows($sql) === 1)
+$query = "SELECT `sold` FROM `profiles`, `utilizatori` WHERE `profiles`.`profileid` = `utilizatori`.`userid` AND `profileid` = '" . $_SESSION['userID'] ."' AND `username` = '" . $_SESSION['login'] ."'";
+	$sql = mysqli_query($conexiune, $query);
+	if ($sql !== false && mysqli_num_rows($sql) === 1)
 	{
 		 $row = mysqli_fetch_array($sql);
 		 $sold = $row['sold'];
 	}
-	else $sold = 100;
-	
+	else $sold=100;
 $_SESSION['idanunt']=$_GET['idAnunt'];
 $rezultat = "";
+$idanunt = "";
 $selMaker=$_SESSION['selMaker'];
 $selModel=$_SESSION['selModel'];
 	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `pozaid`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`,`pozeanunturi`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` and `pozeanunturi`.`IdAnunt` = `produse`.`IdAnunt` AND `produse`.`MakeId`='$selMaker'";
@@ -93,7 +93,7 @@ $selModel=$_SESSION['selModel'];
 	do{
 	$row = mysqli_fetch_array($result);
    }while ($row['idanunt']!=$_SESSION['idanunt']);
-		
+			$idanunt=$row['idanunt'];
 			$rezultat .= "<tr align = 'center'><th style = 'width:230' height='40' >". $row['Producator'] ." " . $row['ModelName'] . "</th><th width='300'>Culoare</th><td></td><th style>Data fabricației</th><td></td><th>Combustibil</th><td></td><th>Cai Putere</th><td width='1'></td></td><td></td><td><th align = 'center'>Kilometraj</th></tr>";
 			$rezultat .= "<tr align = 'center'><td rowspan='3' align='left'><img  src = " . '"getImage.php?id=' . $row['pozaid'] . "\" width = '250' height = '225'></td> <td height = '60' >";
 			$sql = "SELECT `culoare` FROM `culori` WHERE `colorid` = '" . $row['culoare'] . "'";
@@ -120,6 +120,8 @@ $selModel=$_SESSION['selModel'];
 			$rezultat .="<tr><th align='center' rowspan='3'>Adăugare preț promoțional</th><th align='left' colspan='2'>Introduceți prețul promoțional:<form action='modificaPret.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=text name='pretp'></th></tr>";
 			$rezultat .="<tr><th  align='left' colspan='2'>Data de la care începe promoția:(zi-luna-an) <input type=text name='datai'></th><td rowspan='2' align='right'><input type=submit name='modifica' value='Actualizează' ></td></tr>";
 			$rezultat .="<tr><th align='left' colspan='2'>Data la care expiră promoția:(zi-luna-an)   <input type=text name='datae'></th></form></td></tr>";
+			$rezultat .= "<tr><td height='100' colspan='13'></td></tr>";
+			
 ?>
 
 
@@ -144,19 +146,26 @@ border: 1px solid black;
     top: 60px;
 	left:25px;
 }
+#modifica
+{
+	position: absolute;
+	left:150px;
+}
+
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
 
 <div id = "rezultate">
-	<table style = "width:100%" border='1'>
+	<table style = "width:100%" >
 		<?php echo $rezultat ?>
 	</table>
 </div>
+<form action='checkPromovare.php' method=GET>
 <div style = "display: block;padding-top: 5px;padding-bottom: 10px">
 				<label>Promovare</label><br>
-				<select id = "promovare" name = "promovare" disabled>
+				<select id = "promovare" name = "promovare">
 					<option value = 2>Basic</option>
 					<option value = 1<?php if ($sold < 50) echo " disabled" ?>>Premium</option>
 					<option value = 0<?php if ($sold < 100) echo " disabled" ?>>Gold</option>
@@ -171,6 +180,11 @@ border: 1px solid black;
 					<strong>Daca nu aveti destui bani in sold nu veti putea selecta pachetele Premium sau Gold!</strong>
 				</p>
 				</div>
-
+				<div id='modifica'>
+				<input type=submit name='modifica' value='Actualizează promovare' >
+				</div>
+				<input type='hidden' name = 'sold' id="modifica" value='<?php echo $sold; ?>'>
+				<input type='hidden' name = 'idAnunt' id="modifica" value='<?php echo $idanunt; ?>'>
+</form>
 </body>
 </html>
