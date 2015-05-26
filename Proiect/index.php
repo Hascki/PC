@@ -25,17 +25,17 @@
 <div class = "container">
 	<div id="content" class = "pane">
 	
-		<img src = "front.jpg">
+		<img src = "centru.jpg" height="500" width="840">
 		
 	</div>
 	<div id = "left" class = "pane">
 		
-		
+		<img src = "semafor.png" height="500" width="190">
 		
 	</div>
 	<div id = "right" class = "pane">
 		
-		
+		<img src = "semafor.png" height="500" width="190">
 		
 	</div>
 </div>
