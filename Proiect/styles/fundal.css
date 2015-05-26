@@ -59,7 +59,7 @@ body
 {
 	width: 180px; /* RC width */
 	padding: 0 10px; /* RC padding */
-	margin-right: -210px; /* RC fullwidth + CC padding */
+	margin-right: -250px; /* RC fullwidth + CC padding */
 }
 
 * html #left
