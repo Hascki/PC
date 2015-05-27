@@ -122,6 +122,7 @@ $selModel=$_SESSION['selModel'];
 			$rezultate .="<tr><th  align='left' colspan='2'>Data de la care începe promoția:(zi-luna-an) <input type=text name='datai'></th><td rowspan='2' align='right'><input type=submit name='modifica' value='Actualizează' ></td></tr>";
 			$rezultate .="<tr><th align='left' colspan='2'>Data la care expiră promoția:(zi-luna-an)   <input type=text name='datae'></th></form></td></tr>";
 			$rezultate .= "<tr><td height='100' colspan='13'></td></tr>";
+			$promovare=$row['Promovare'];
 			
 ?>
 
@@ -159,12 +160,14 @@ border: 1px solid black;
 </div>
 <form action='checkPromovare.php' method=GET>
 <div style = "display: block;padding-top: 5px;padding-bottom: 10px">
-				<label>Promovare</label><br>
+				<label>Promovare</label>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Promovare actuală</label><br>
 				<select id = "promovare" name = "promovare">
 					<option value = 2>Basic</option>
 					<option value = 1<?php if ($sold < 50) echo " disabled" ?>>Premium</option>
 					<option value = 0<?php if ($sold < 100) echo " disabled" ?>>Gold</option>
 				</select>
+				&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 
+				<input size="5" type=text value='<?php echo $promovare; ?>' readonly="readonly">
 				<p>
 					Sunt disponibile 3 pachete de promovare a anunturilor:
 					<ol>

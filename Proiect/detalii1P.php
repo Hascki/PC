@@ -85,7 +85,7 @@ $rezultat = "";
 $idanunt = "";
 $selMaker=$_SESSION['selMaker'];
 $selModel=$_SESSION['selModel'];
-	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId`  AND `produse`.`MakeId`='$selMaker'";
+	$sql = "SELECT `Promovare`,`emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId`  AND `produse`.`MakeId`='$selMaker'";
 	if ($selModel != 9999)
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";
 		$sql .=" ORDER by Promovare ASC";
@@ -130,6 +130,7 @@ $selModel=$_SESSION['selModel'];
 			$rezultat .="<tr><th  align='left' colspan='2'>Data de la care începe promoția:(zi-luna-an) <input type=text name='datai'></th><td rowspan='2' align='right'><input type=submit name='modifica' value='Actualizează' ></td></tr>";
 			$rezultat .="<tr><th align='left' colspan='2'>Data la care expiră promoția:(zi-luna-an)   <input type=text name='datae'></th></form></td></tr>";
 			$rezultat .= "<tr><td height='100' colspan='13'></td></tr>";
+			$promovare=$row['Promovare'];
 			
 ?>
 
@@ -161,24 +162,28 @@ border: 1px solid black;
 	left:150px;
 }
 
+
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
 
 <div id = "rezultate">
-	<table style = "width:100%" >
+	<table style = "width:100%">
 		<?php echo $rezultat ?>
 	</table>
 </div>
-<form action='checkPromovare.php' method=GET>
+<form action='checkPromovare.php' method=GET >
 <div style = "display: block;padding-top: 5px;padding-bottom: 10px">
-				<label>Promovare</label><br>
+				<label>Promovare</label> <label>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Promovare actuală</label><br>
+				
 				<select id = "promovare" name = "promovare">
 					<option value = 2>Basic</option>
 					<option value = 1<?php if ($sold < 50) echo " disabled" ?>>Premium</option>
 					<option value = 0<?php if ($sold < 100) echo " disabled" ?>>Gold</option>
 				</select>
+				&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 
+				<input size="5" type=text value='<?php echo $promovare; ?>' readonly="readonly">
 				<p>
 					Sunt disponibile 3 pachete de promovare a anunturilor:
 					<ol>
