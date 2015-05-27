@@ -101,12 +101,23 @@ $selModel=$_SESSION['selModel'];
 			$col = mysqli_fetch_array($col);
 			$rezultat .= "" . $col['culoare'] . "</td><td></td><td>" . $row['datafabricatie'] . "</td><td></td><td>";
 			$rezultat .= get_combustibil($row['combustibil']);
+			
+			$anunt=$row['idanunt'];
+			$sql1 ="SELECT `NewPrice` FROM `promotii` where `promotii`.`AnuntId`=$anunt AND SYSDATE() BETWEEN `StartTime` and `EndTime`+INTERVAL 1 DAY";
+			$result1 = mysqli_query($conexiune,$sql1);
+			$row1 = mysqli_fetch_array($result1);
+			if (mysqli_num_rows($result1) === 1)
+			$rezultat .= "<td></td><td>" . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer condiționat</th><td></td><th>Transmisie</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><td style='font-weight:bold;color:red'>Preț promoțional(€)</td></tr><tr>";
+			else
 			$rezultat .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Aer condiționat</th><td></td><th>Transmisie</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Preț(€)</th></tr><tr>";
 			$rezultat .= "<td height = '60' align='center'>".get_climatizare($row['climatizare'])."</td><td></td><td td align='center'>";
 			$rezultat .= "".get_distributie($row['distributie'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
 			$rezultat .= "<td align='center'>" . $row['EuroName'] . "</td><td></td><td>";
-			$rezultat .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
 			
+			if (mysqli_num_rows($result1) === 1)
+			$rezultat .= "<td></td> <td align='center'>" . $row1['NewPrice'] . " </td>";
+			else
+			$rezultat .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
 			$rezultat .="<tr><th height='30' rowspan='6'>Dotări opționale</th><th height='40' align='center'>Sistem de încălzire auxiliar</th><th></th><th>Închidere centralizată</th><th></th><th>Regulator de viteză</th><th></th><th>Scaune încălzite electric</th><th></th><th></th><th></th><th>Geamuri electrice</th></tr>";
 			$rezultat .="<tr align='center'><td height='20'>".get_bit_fields($row['SIA'])."</td><td></td><td>".get_bit_fields($row['IC'])."</td><td></td><td>".get_bit_fields($row['RV'])."</td><td></td><td>".get_bit_fields($row['SIE'])."</td><td></td><td></td><td></td><td>".get_bit_fields($row['GE'])."</td></tr>";
 			$rezultat .="<tr><th height='40' align='center'>Sistem de navigație</th><th></th><th>Senzori de parcare</th><th></th><th>Servodirecție</th><th></th><th>Trapă decapotabilă</th><th></th><th></th><th></th><th>Jante de aliaj</th></tr>";

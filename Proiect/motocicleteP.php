@@ -172,10 +172,22 @@ else
 			$col = mysqli_fetch_array($col);
 			$rezultate .= "" . $col['culoare'] . "</td><td></td><td>" . $row['datafabricatie'] . "</td><td></td><td>";
 			$rezultate .= get_combustibil($row['combustibil']);
+			
+			$anunt=$row['idanunt'];
+			$sql1 ="SELECT `NewPrice` FROM `promotii` where `promotii`.`AnuntId`=$anunt AND SYSDATE() BETWEEN `StartTime` and `EndTime`+INTERVAL 1 DAY";
+			$result1 = mysqli_query($conexiune,$sql1);
+			$row1 = mysqli_fetch_array($result1);
+			if (mysqli_num_rows($result1) === 1)
+			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Regulator de viteză</th><td></td><th>ABS</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><td style='font-weight:bold;color:red'>Preț promoțional(€)</td></tr><tr>";
+			else
 			$rezultate .= "<td></td><td>"  . $row['caiputere'] . " </td><td></td></td><td></td><td><td>"  . $row['kilometraj'] . " </td><tr align = 'center'><th align = 'center' height='30'>Regulator de viteză</th><td></td><th>ABS</th><td></td><th style>Capacitate cilindrică</th><td></td><th>Normă poluare</th><td></td><td></td><td></td><th >Pret(€)</th></tr><tr>";
 			$rezultate .= "<td height = '60' align='center'>".get_bit_fields($row['RV'])."</td><td></td><td td align='center'>";
 			$rezultate .= "".get_bit_fields($row['ABS'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
 			$rezultate .= "<td align='center'>".$row['EuroName']. "</td><td></td><td>";
+			
+			if (mysqli_num_rows($result1) === 1)
+			$rezultate .= "<td></td> <td align='center'>" . $row1['NewPrice'] . " </td>";
+			else
 			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
 			$rezultate .="<td border = '0'><form action='detalii2P.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='detalii2' value='Detalii' /></form></td></tr><tr><td height='20' colspan='13'></td></tr>";
 		}
