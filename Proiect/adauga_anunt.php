@@ -346,8 +346,8 @@ fieldset
 			<fieldset id = "dateVehicul" style = "text-align: center;" disabled>
 				<legend>Date vehicul</legend>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "fabricatie" class = "required autoCalc">Anul fabricarii*</label><br>
-					<input type = "text" maxlength = "4" size = "4" id = "fabricatie" name = "fabricatie" >
+					<label for = "fabricatie" class = "required autoCalc">Anul fabricarii(format AAAA-LL-ZZ)*</label><br>
+					<input type = "text" maxlength = "10" size = "10" id = "fabricatie" name = "fabricatie" >
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "combustibil" class = "required autoCalc">Combustibil*</label><br>
