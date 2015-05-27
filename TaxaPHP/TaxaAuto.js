@@ -11,18 +11,20 @@ var today = new Date();
 		mm='0'+mm
 	}	 
 
-	today = yyyy+'-'+mm+''+dd;
+	today = new Date(yyyy+'-'+mm+''+dd);
 	errors = '';
+	today=today.getTime();
 var oneDay = 24*60*60*1000;
 
-var date=new Date(convertToSlash($('#fabricatie').val()));
+var date=new Date($('#fabricatie').val());
+	date=date.getTime();
 
-    function convertToSlash(string){
-      var response = string.replace(/-/g,"/");
-      return response;
-    }
+   // function convertToSlash(string){
+      //var response = string.replace(/-/g,"/");
+   //   return response;
+  //  }
 
-var diffDays = Math.round(Math.abs((today.getTime() - date.getTime())/(oneDay)));
+var diffDays = Math.round(Math.abs((today - date)/(oneDay)));
 var age=0;
     if (diffDays == 0)
         age=1
@@ -94,8 +96,8 @@ function calc1(){
 	b = Math.round(b*100)/100;
 	console.log(b);
 	tax = (a*b*(100-c))/100;
-	tax = Math.round(tax*100)/100;
-	$('#timbruMediu').html(tax);
+	return tax = Math.round(tax*100)/100;
+	//$('#timbruMediu').html(tax);
 }
 function calc2(){
 	d = cmc_val = Number($('#capacitate').val());
@@ -114,8 +116,8 @@ function calc2(){
 	}
 	console.log(c);
 	tax = (e*d*(100-c))/100;
-	tax = Math.round(tax*100)/100;
-	$('#timbruMediu').html(tax);
+	return tax = Math.round(tax*100)/100;
+	//$('#timbruMediu').html(tax);
 }
 function calc(){
 	
@@ -133,13 +135,13 @@ function calc(){
 		return false;
 	}
 	if( $('#clasaEuro').val()-1 > 2 ){
-		calc1();
+		return calc1();
 	}else if(($('#clasaEuro').val()-1 >5)  || $('#combustibil').val()-1 >2 ) {
-		tax=0;
-		$('#timbruMediu').html(tax);
+		return tax=0;
+		//$('#timbruMediu').html(tax);
 	}
 	else{
-		calc2();
+		return calc2();
 	}
 }
 
@@ -332,6 +334,3 @@ var reducere_vechime = [['nou',0],
 	['> 13 ani - 14 ani inclusiv',89],
 	['peste 14 ani',90]];
 	
-$(document).ready(function(){
-	init();
-});
