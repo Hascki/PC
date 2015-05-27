@@ -41,7 +41,7 @@
 			echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		}
 	}
-	if (!isset($post['submit']))
+	if (isset($post['submit']))
 	{
 		$query .= "'" . date("Y-m-d") . "', "; // Adauga data cand s-a pus anuntul
 		// Adauga categoria anuntului
@@ -111,9 +111,9 @@
 		// Adauga clasa EURO
 		if (isset($post['clasaEuro']) && filter_var($post['clasaEuro'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => 7))))
 			$query .= $post['clasaEuro'] . ", 0, ";
+		else $errorsArray[] = "Clasa Euro este invalida!";
 		// Adauga costul timbrului de mediu
 		
-		else $errorsArray[] = "Clasa Euro este invalida!";
 		// Adauga emisii CO2
 		if (isset($post['emisii']) && filter_var($post['emisii'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1))))
 			$query .= $post['emisii'] . ", ";
