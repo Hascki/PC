@@ -103,6 +103,7 @@ $selModel=$_SESSION['selModel'];
 			else
 			$rezultate .="<tr><td height='20' colspan='13'></td></tr><tr><th height='120' >Descriere vehicul</th><td colspan='7' id='t'></td>";
 			
+			
 ?>
 
 

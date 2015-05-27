@@ -71,6 +71,13 @@ $r="DA";
 }
 return $r;
 }
+$query = "SELECT `sold` FROM `profiles`, `utilizatori` WHERE `profiles`.`profileid` = `utilizatori`.`userid` AND `profileid` = '" . $_SESSION['userID'] ."' AND `username` = '" . $_SESSION['login'] ."'";
+	$sql = mysqli_query($conexiune, $query);
+	if ($sql !== false && mysqli_num_rows($sql) === 1)
+	{
+		 $row = mysqli_fetch_array($sql);
+		 $sold = $row['sold'];
+	}
 
 
 $_SESSION['idanunt']=$_GET['idAnunt'];
@@ -98,11 +105,12 @@ $selModel=$_SESSION['selModel'];
 			$rezultate .= "".get_bit_fields($row['ABS'])."</td><td></td><td align='center'>" . $row['capacitate'] ." cm³</td><td></td>";
 			$rezultate .= "<td align='center'>".$row['EuroName']. "</td><td></td><td>";
 			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
-			//if(isset($_SESSION['userType'])&&$_SESSION['userType']===2)
-			//$rezultate .="<td border = '0' align='center'><form action='sterge.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='sterge' value='Șterge anunț' /></form></td></tr>";
-			//else
-			
 			$rezultate .="<tr><td height='20' colspan='13'></td></tr><tr><th height='120' >Descriere vehicul</th><td colspan='7' id='t'></td>";
+			
+			$rezultate .="<tr><th align='center' rowspan='3'>Adăugare preț promoțional</th><th align='left' colspan='2'>Introduceți prețul promoțional:<form action='modificaPret.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=text name='pretp'></th></tr>";
+			$rezultate .="<tr><th  align='left' colspan='2'>Data de la care începe promoția:(zi-luna-an) <input type=text name='datai'></th><td rowspan='2' align='right'><input type=submit name='modifica' value='Actualizează' ></td></tr>";
+			$rezultate .="<tr><th align='left' colspan='2'>Data la care expiră promoția:(zi-luna-an)   <input type=text name='datae'></th></form></td></tr>";
+			$rezultate .= "<tr><td height='100' colspan='13'></td></tr>";
 			
 ?>
 
@@ -138,6 +146,30 @@ border: 1px solid black;
 		<?php echo $rezultate ?>
 	</table>
 </div>
+<form action='checkPromovare.php' method=GET>
+<div style = "display: block;padding-top: 5px;padding-bottom: 10px">
+				<label>Promovare</label><br>
+				<select id = "promovare" name = "promovare">
+					<option value = 2>Basic</option>
+					<option value = 1<?php if ($sold < 50) echo " disabled" ?>>Premium</option>
+					<option value = 0<?php if ($sold < 100) echo " disabled" ?>>Gold</option>
+				</select>
+				<p>
+					Sunt disponibile 3 pachete de promovare a anunturilor:
+					<ol>
+						<li>Pachetul <b>Basic</b> (gratuit) nu are beneficii speciale</li>
+						<li>Pachetul <b>Premium</b> (50 Lei): Afisarea anuntului la inceputul listei</li>
+						<li>Pachetul <b>Gold</b> (100 Lei): Afisarea anuntului la inceputul listei + evidentierea anuntului cu o culoare atractiva</li>
+					</ol>
+					<strong>Daca nu aveti destui bani in sold nu veti putea selecta pachetele Premium sau Gold!</strong>
+				</p>
+				</div>
+				<div id='modifica'>
+				<input type=submit name='modifica' value='Actualizează promovare' >
+				</div>
+				<input type='hidden' name = 'sold' id="modifica" value='<?php echo $sold; ?>'>
+				<input type='hidden' name = 'idAnunt' id="modifica" value='<?php echo $idanunt; ?>'>
+</form>
 
 </body>
 </html>
