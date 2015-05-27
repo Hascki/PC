@@ -27,51 +27,51 @@ var date=new Date($('#fabricatie').val());
 var diffDays = Math.round(Math.abs((today - date)/(oneDay)));
 var age=0;
     if (diffDays == 0)
-        age=1
+        age=1;
     else if (diffDays <= 30 && diffDays > 0)
-        age=2
+        age=2;
     else if (diffDays <= 90 && diffDays > 30)
-        age=3
+        age=3;
     else if (diffDays <= 180 && diffDays > 90)
-        age=4
+        age=4;
     else if (diffDays <= 270 && diffDays > 180)
-        age=5
+        age=5;
     else if (diffDays <= 365 && diffDays > 270)
         age=6
     else if (diffDays <= 730 && diffDays > 365)
-        age=7
+        age=7;
     else if (diffDays <= 1095 && diffDays > 730)
-        age=8
+        age=8;
     else if (diffDays <= 1460 && diffDays > 1095)
-        age=9
+        age=9;
     else if (diffDays <= 1825 && diffDays > 1460)
-        age=10
+        age=10;
     else if (diffDays <= 2190 && diffDays > 1825)
-        age=11
+        age=11;
     else if (diffDays <= 2555 && diffDays > 2180)
-        age=12
+        age=12;
     else if (diffDays <= 2920 && diffDays > 2555)
-        age=13
+        age=13;
     else if (diffDays <= 3285 && diffDays > 2920)
-        age=14
+        age=14;
     else if (diffDays <= 3650 && diffDays > 3285)
-        age=15
+        age=15;
     else if (diffDays <= 4015 && diffDays > 3650)
-        age=16
+        age=16;
     else if (diffDays <= 4380 && diffDays > 4015)
-        age=17
+        age=17;
     else if (diffDays <= 4745 && diffDays > 4380)
-        age=18
+        age=18;
     else if (diffDays <= 5110 && diffDays >  4745)
-        age=19
-    else if (diffDays <= 5475 && diffDays >  5110)
-        age=20
+        age=19;
     else
-        age=21
+        age=20;
 function calc1(){
 	a = co2 = Number($('#emisii').val());
 	b = 0;
-	c = reducere_vechime[age][1];
+	//alert(age);
+	alert(reducere_vechime['<= 1 luna'][1]);
+	c = reducere_vechime[age][0];
 	norme = norme_poluare[$('#clasaEuro').val()-1];
 	cmc_val = Number($('#capacitate').val());
 	if( $('#clasaEuro').val()-1 == norme_poluare.length-1 )
@@ -96,12 +96,15 @@ function calc1(){
 	b = Math.round(b*100)/100;
 	console.log(b);
 	tax = (a*b*(100-c))/100;
-	return tax = Math.round(tax*100)/100;
-	//$('#timbruMediu').html(tax);
+	tax = Math.round(tax*100)/100;
+	return tax;
+	$('#timbruMediu').html(tax);
 }
 function calc2(){
 	d = cmc_val = Number($('#capacitate').val());
 	b = 0;
+	//alert(age);
+	alert(reducere_vechime['<= 1 luna'][1]);
 	c = reducere_vechime[age][1];
 	e = 1;
 	norme_vals = norme_poluare[$('#clasaEuro').val()-1].vals;
@@ -116,8 +119,9 @@ function calc2(){
 	}
 	console.log(c);
 	tax = (e*d*(100-c))/100;
-	return tax = Math.round(tax*100)/100;
-	//$('#timbruMediu').html(tax);
+	tax = Math.round(tax*100)/100;
+	//return tax;
+	$('#timbruMediu').html(tax);
 }
 function calc(){
 	
@@ -134,11 +138,13 @@ function calc(){
 		alert(errors);
 		return false;
 	}
+	//var tax=100;
+		//return tax;
 	if( $('#clasaEuro').val()-1 > 2 ){
 		return calc1();
 	}else if(($('#clasaEuro').val()-1 >5)  || $('#combustibil').val()-1 >2 ) {
-		return tax=0;
-		//$('#timbruMediu').html(tax);
+		var tax=100;
+		$('#timbruMediu').html(tax);
 	}
 	else{
 		return calc2();
@@ -158,27 +164,27 @@ var norme_poluare = [
 			vals:[[0,1200,2],[1201,1400,2.6],[1401,1600,3.3],[1601,2000,4.2],[2001,3000,4.5],[3001,999999,5.2]]
 		},
 		{
-			name:'Euro 1',
+			name:'Euro1',
 			vals:[[0,1200,1.7],[1201,1400,2.5],[1401,1600,3.1],[1601,2000,4.0],[2001,3000,4.9],[3001,999999,5.1]]
 		},
 		{
-			name:'Euro 2',
+			name:'Euro2',
 			vals:[[0,1200,1.5],[1201,1400,24],[1401,1600,2.9],[1601,2000,3.3],[2001,3000,3.9],[3001,999999,4.4]]
 		},
 		{
-			name: 'Euro 3',
+			name: 'Euro3',
 			price_start: [5.4,9.45],
 			between_co: [[0,110],[111,125],[126,140],[141,155],[156,170],[171,185],[186,200],[201,215],[216,999999]],
 			between_cmc: [[0,1000],[1001,1200],[1201,1400],[1401,1600],[1601,2000],[2001,3000],[3001,999999]]
 		},
 		{
-			name: 'Euro 4',
+			name: 'Euro4',
 			price_start: [1.8,3.15],
 			between_co: [[0,110],[111,125],[126,140],[141,155],[156,170],[171,185],[186,200],[201,215],[216,999999]],
 			between_cmc: [[0,1000],[1001,1200],[1201,1400],[1401,1600],[1601,2000],[2001,3000],[3001,999999]]
 		},
 		{
-			name: 'Euro 5',
+			name: 'Euro5',
 			price_start: [0.3],
 			between_co: [[0,110],[111,120],[121,130],[131,140],[141,150],[151,165],[166,180],[181,195],[196,210],[210,999999]],
 			between_cmc: [[0,1000],[1001,1200],[1201,1400],[1401,1600],[1601,2000],[2001,3000],[3001,999999]]
@@ -312,8 +318,8 @@ var norme_poluare = [
 			]
 		}*/
 	];
-var tip_auto = ['benzina','diesel'];
-var reducere_vechime = [['nou',0],
+var tip_auto = ['Benzina','Motorina'];
+var reducere_vechime1 = [['nou',0],
 	['<= 1 luna',3],
 	['> 1 luna - 3 luni inclusiv',5],
 	['> 3 luni - 6 luni inclusiv',8],
@@ -333,4 +339,24 @@ var reducere_vechime = [['nou',0],
 	['> 12 ani - 13 ani inclusiv',84],
 	['> 13 ani - 14 ani inclusiv',89],
 	['peste 14 ani',90]];
+var reducere_vechime = [[1,0],
+	[2,3],
+	[3,5],
+	[4,8],
+	[5,10],
+	[6,13],
+	[7,21],
+	[8,28],
+	[9,33],
+	[10,38],
+	[11,43],
+	[12,49],
+	[13,55],
+	[14,61],
+	[15,66],
+	[16,73],
+	[17,79],
+	[18,84],
+	[19,89],
+	[20,90]];
 	
