@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Calculator taxa auto </title>
+
+<link href="default.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="jquery-1.9.0.min.js"></script>	
+<script language="javascript" type="text/javascript" src="TaxaAutoOriginal.js"></script>
+</head>
+
+<body>
+<div id="txm-calculator">
+	<h2 id="txm_label">Calculeaza Taxa timbru mediu</h2>
+    <label class="half left">
+    	<span>Tip autovehicul:</span>
+        <select id="tip_auto">        	
+        </select>
+    </label>
+    <label class="half right">
+    	<span>Norma de poluare:</span>
+        <select id="norma_poluare">        	
+        </select>
+    </label>
+    <label class="half left">
+    	<span>Emisii CO2:</span>
+        <input id="emisii_co2" type="text" value="0" />
+    </label>
+    <label class="half right">
+    	<span>Capacitatea cilindrica (cmc):</span>
+        <input id="cmc" type="text" value="0" />
+    </label>
+    <div style="clear:both"></div>
+    <label class="last">
+    	<span>Data primei inmatriculari:</span>
+        <select id="data_inmatriculare">        	
+        </select>
+    </label>
+    <button onclick="calc()">Calculeaza</button>
+    <div id="calcul">
+    	<strong>Taxa de timbru</strong>
+        <div id="taxa">0 &euro;</div>
+    </div>
+	<div style="clear:both"></div>
+</div>
+
+</body>
+
+</html>
