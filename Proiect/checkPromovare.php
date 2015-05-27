@@ -12,8 +12,6 @@ if($promovare==1)
 $sold=$sold-50;
 elseif($promovare==0)
 $sold=$sold-100;
-echo $idAnunt;
-echo $promovare;
 $sql = "UPDATE `produse` SET `Promovare`='$promovare' where `produse`.`idAnunt`='$idAnunt'";
 mysqli_query($conexiune,$sql);
 if (mysqli_affected_rows($conexiune) > 0) {
