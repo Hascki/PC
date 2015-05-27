@@ -43,7 +43,7 @@
 		echo "
 			<li " . $arrayLeftBtns['acasa'] . "</li>
 			<li " . $arrayLeftBtns['produse'] . "</li>";
-		if (isset($_SESSION['userType']) && $_SESSION['userType'] !== "2")
+		if (isset($_SESSION['userType']) && $_SESSION['userType'] !== "3")
 			echo "
 			<li " . $arrayLeftBtns['promotii'] . "</li>
 			";
