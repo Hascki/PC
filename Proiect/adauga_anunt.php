@@ -192,7 +192,8 @@ $(document).ready(function()
 			emisii:
 			{
 				required: true,
-				digits: true
+				digits: true,
+				min: 0
 			},
 			pret: 
 			{
@@ -253,12 +254,15 @@ $(document).ready(function()
 						var alertStr = "Au aparut urmatoarele erori:\n";
 						for (var i = 0;i < n;i++)
 						{
-							if (rasp[2 + i] !== "Eroare la inserarea in tabel!" || rasp[2 + i] !== "Poza aleasa nu a putut fii uploadata!" || rasp[2 + i] !== "Poza default nu a putut fii uploadata!" || rasp[2 + i] !== "Datele nu au fost trimise cum trebuie!")
-								alertStr += rasp[2 + i] + "\n";
-							else
+							if (rasp[2 + i] === "Eroare la inserarea in tabel!" || rasp[2 + i] === "Poza aleasa nu a putut fii uploadata!" || rasp[2 + i] === "Poza default nu a putut fii uploadata!" || rasp[2 + i] === "Datele nu au fost trimise cum trebuie!")
 							{
+								
 								console.log(rasp[2 + i]);
 								errSys = true;
+							}
+							else
+							{
+								alertStr += rasp[2 + i] + "\n";
 							}
 						}
 						if (!errSys)
@@ -482,10 +486,10 @@ fieldset
 					Sunt disponibile 3 pachete de promovare a anunturilor:
 					<ol>
 						<li>Pachetul <b>Basic</b> (gratuit) nu are beneficii speciale</li>
-						<li>Pachetul <b>Premium</b> (50 Lei): Afisarea anuntului la inceputul listei</li>
-						<li>Pachetul <b>Gold</b> (100 Lei): Afisarea anuntului la inceputul listei + evidentierea anuntului cu o culoare atractiva</li>
+						<li>Pachetul <b>Premium</b> (50 Lei): Afișarea anunțului la începutul listei</li>
+						<li>Pachetul <b>Gold</b> (100 Lei): Afișarea anunțului la începutul listei + evidențierea anunțului cu o culoare atractivă</li>
 					</ol>
-					<strong>Daca nu aveti destui bani in sold nu veti putea selecta pachetele Premium sau Gold!</strong>
+					<strong>Dacă nu aveți destui bani în sold nu veți putea selecta pachetele Premium sau Gold!</strong>
 				</p>
 			</div>
 			<!-- End Promovare -->
