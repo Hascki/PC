@@ -77,7 +77,7 @@ $_SESSION['idanunt']=$_GET['idAnunt'];
 $rezultat = "";
 $selMaker=$_SESSION['selMaker'];
 $selModel=$_SESSION['selModel'];
-	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` AND `produse`.`MakeId`='$selMaker'";
+	$sql = "SELECT `Descriere`,`emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=1 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` AND `produse`.`MakeId`='$selMaker'";
 	if ($selModel != 9999)
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";
 		$sql .=" ORDER by Promovare ASC";
@@ -112,14 +112,13 @@ $selModel=$_SESSION['selModel'];
 			$rezultat .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
 			if(isset($_SESSION['userType'])&&$_SESSION['userType']==2)
 			$rezultat .="<td border = '0' align='center'><form action='sterge.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='sterge' value='Șterge anunț' /></form></td></tr>";
-			else
 			$rezultat .="<tr><th height='30' rowspan='6'>Dotări opționale</th><th height='40' align='center'>Sistem de încălzire auxiliar</th><th></th><th>Închidere centralizată</th><th></th><th>Regulator de viteză</th><th></th><th>Scaune încălzite electric</th><th></th><th></th><th></th><th>Geamuri electrice</th></tr>";
 			$rezultat .="<tr align='center'><td height='20'>".get_bit_fields($row['SIA'])."</td><td></td><td>".get_bit_fields($row['IC'])."</td><td></td><td>".get_bit_fields($row['RV'])."</td><td></td><td>".get_bit_fields($row['SIE'])."</td><td></td><td></td><td></td><td>".get_bit_fields($row['GE'])."</td></tr>";
 			$rezultat .="<tr><th height='40' align='center'>Sistem de navigație</th><th></th><th>Senzori de parcare</th><th></th><th>Servodirecție</th><th></th><th>Trapă decapotabilă</th><th></th><th></th><th></th><th>Jante de aliaj</th></tr>";
 			$rezultat .="<tr align='center'><td height='20'>".get_bit_fields($row['Nav'])."</td><td></td><td>".get_bit_fields($row['SP'])."</td><td></td><td>".get_bit_fields($row['Servo'])."</td><td></td><td>".get_bit_fields($row['TD'])."</td><td></td><td></td><td></td><td>".get_bit_fields($row['JA'])."</td></tr>";
 			$rezultat .="<tr><th height='40' align='center'>Cârlig de remorcare</th><th></th><th>ABS</th><th></th><th>ESP</th><th></th><th>Tracțiune integrală</th><th></th><th></th><th></th><th>Faruri Xenon</th></tr>";
 			$rezultat .="<tr align='center'><td height='20'>".get_bit_fields($row['Carlig'])."</td><td></td><td>".get_bit_fields($row['ABS'])."</td><td></td><td>".get_bit_fields($row['ESP'])."</td><td></td><td>".get_bit_fields($row['Integrala'])."</td><td></td><td></td><td></td><td>".get_bit_fields($row['Xenon'])."</td></tr>";
-			$rezultat .="<tr><th height='120' >Descriere vehicul</th><td colspan='7' id='t'></td>";
+			$rezultat .="<tr><th height='120' >Descriere vehicul</th><td colspan='7' id='t'>".$row['Descriere']."</td>";
 			
 ?>
 

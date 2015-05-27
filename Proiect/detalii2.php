@@ -112,7 +112,6 @@ $selModel=$_SESSION['selModel'];
 			$rezultate .= "<td></td> <td align='center'>" . $row['pret'] . " </td>";
 			if(isset($_SESSION['userType'])&&$_SESSION['userType']==2)
 			$rezultate .="<td border = '0' align='center'><form action='sterge.php' method=GET><input type='hidden' name = 'idAnunt' value='" . $row['idanunt'] . "'><input type=submit name='sterge' value='Șterge anunț' /></form></td></tr>";
-			else
 			$rezultate .="<tr><td height='20' colspan='13'></td></tr><tr><th height='120' >Descriere vehicul</th><td colspan='7' id='t'></td>";
 			
 			
