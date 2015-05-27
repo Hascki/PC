@@ -113,7 +113,7 @@
 			$query .= $post['clasaEuro'] . ", ";
 		else $errorsArray[] = "Clasa Euro este invalida!";
 		// Adauga costul timbrului de mediu
-		if (isset($post['costTimbru']) && filter_var($post['costTimbru']), FILTER_VALIDATE_INT, array('options' => array('min_range' => 0)))
+		if (isset($post['costTimbru']) && filter_var($post['costTimbru'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 0))))
 			$query .= $post['costTimbru'] . ", ";
 		else $errorsArray[] = "Costul timbrului este invalid!";
 		// Adauga emisii CO2
