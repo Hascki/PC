@@ -137,14 +137,16 @@
 			$query .= $post['combustibil'] .= ", ";
 		else $errorsArray[] = "Tipul de combustibil este invalid!";
 		// Adauga Distributie
-		if (isset($post['distributie']) && filter_var($post['distributie'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => 6))))
+		if (isset($post['distributie']) && filter_var($post['distributie'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => 3))))
 			$query .= $post['distributie'] . ", ";
+		else if (!isset($post['distributie']) && ($post['categorie'] === 2 || $post['categorie'] === 3))
+			$query .= "3, ";
 		else $errorsArray[] = "Distributia este invalida!";
 		/// Adauga climatizare
-		if (isset($post['climatizare']) && filter_var($post['distributie'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => 3))))
+		if (isset($post['climatizare']) && (filter_var($post['distributie'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 0, 'max_range' => 2))) || filter_var($post['promovare'], FILTER_VALIDATE_INT) === 0))
 			$query .= $post['climatizare'] .", ";
 		else if (!isset($post['climatizare']) && ($post['categorie'] === 2 || $post['categorie'] === 3))
-			$query .= "1, ";
+			$query .= "0, ";
 		else $errorsArray[] = "Climatizarea este invalida!";
 		// Adauga SIA
 		if (isset($post['sia']) && filter_var($post['sia'], FILTER_VALIDATE_BOOLEAN))
@@ -207,7 +209,7 @@
 			$query .= "1, ";
 		else $query .= "0, ";
 		// Adauga Promovare
-		if (isset($post['promovare']) && filter_var($post['promovare'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 0, 'max_range' => 2))))
+		if (isset($post['promovare']) && (filter_var($post['promovare'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 0, 'max_range' => 2))) || filter_var($post['promovare'], FILTER_VALIDATE_INT) === 0))
 			$query .=  $post['promovare'] . ", ";
 		else $errorsArray[] = "Tipul promovarii este invalid!";
 		// Adauga Descriere

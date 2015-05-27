@@ -72,7 +72,7 @@
 						$data .= fread($fp, 23269);
 					fclose($fp);
 					$data = mysqli_real_escape_string($conexiune, $data);
-					$cerere = "INSERT INTO `profiles` (`ProfileId`, `Nume`, `Prenume`, `Telefon`, `AdresaEmail`, `Localitate`, `Strada`, `Bloc`, `Numar`, `Scara`, `Etaj`, `Apartament`, `Avatar`) VALUES ($id, NULL, NULL, NULL, '$email', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '" . $data . "');";
+					$cerere = "INSERT INTO `profiles` (`ProfileId`, `Nume`, `Prenume`, `Telefon`, `AdresaEmail`, `Localitate`, `Strada`, `Bloc`, `Numar`, `Scara`, `Etaj`, `Apartament`, `Avatar`, `Sold`) VALUES ($id, NULL, NULL, NULL, '$email', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '" . $data . "', 100);";
 					$sql = mysqli_query($conexiune, $cerere);
 					if ($sql !== false)
 						$mesaj = "V-ați înregistrat cu succes. Veți fi redirecționat către pagina de login în câteva momente.";

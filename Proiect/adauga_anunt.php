@@ -25,7 +25,6 @@
 	$clasaEuro = "<option value = 0> Selectati </option>";
 	while ($row = mysqli_fetch_array($sql))
 		$clasaEuro .= "<option value = " . $row['EcoId'] . ">" . $row['EuroName'] . "</option>";
-	//$query = "SELECT `sold` FROM `utilizatori` WHERE `username` = '" . $_SESSION['login'] ."' AND `userid` = '" . $_SESSION['userID'] . "'";
 	$query = "SELECT `sold` FROM `profiles`, `utilizatori` WHERE `profiles`.`profileid` = `utilizatori`.`userid` AND `profileid` = '" . $_SESSION['userID'] ."' AND `username` = '" . $_SESSION['login'] ."'";
 	$sql = mysqli_query($conexiune, $query);
 	if ($sql !== false && mysqli_num_rows($sql) === 1)
@@ -33,7 +32,6 @@
 		 $row = mysqli_fetch_array($sql);
 		 $sold = $row['sold'];
 	}
-	else $sold = 100;
 ?>
 
 <!DOCTYPE html>
@@ -73,6 +71,8 @@ $(document).ready(function()
 			});
 			if ($(this).val() === "1")
 			{
+				$("#divDistributie").css("display", "inline-block");
+				$("#divDistributie").prop("disabled", false);
 				$("#divNrLocuri").css("display", "inline-block");
 				$("#divMMA").css("display", "inline-block");
 				$("#dotari").css("display", "block");
@@ -83,11 +83,11 @@ $(document).ready(function()
 			}
 			else 
 			{
+				$("#divDistributie").css("display", "none");
+				$("#distributie").prop("disabled", true);
 				$("#divNrLocuri").css("display", "none");
 				$("#divMMA").css("display", "none");
 				$("#dotari").css("display", "none");
-				var options = "<option value = 4>Lant</option><option value = 5>Cardan</option><option value = 6>Curea</option>";
-				$("#distributie").html(options);
 				options = "<option value = 0>Selectati</option><option value = 1>Benzina</option><option value = 2>Motorina</option><option value = 4>Electric</option>";
 				$("#combustibil").html(options);
 			}
@@ -184,46 +184,33 @@ $(document).ready(function()
 			fabricatie: 
 			{
 				required: true,
+				digits: true,
 				range: [1900, parseInt((new Date).getFullYear())]
 			},
 			combustibil: {selectNotDefault: "0"},
 			culoare: {selectNotDefault: "0"},
+			capacitate:
+			{
+				required: true,
+				digits: true
+			},
 			rulaj:
 			{
 				required: true,
+				digits: true,
 				min: 0
 			},
 			clasaEuro: {selectNotDefault: "0"},
+			emisii:
+			{
+				required: true,
+				digits: true
+			},
 			pret: 
 			{
 				required: true,
+				digits: true,
 				min: 1
-			}
-		},
-		// Mesaje de eroare
-		messages:
-		{
-			categorie: {selectNotDefault: "Selectati o categorie de autovehicul!"},
-			marca: {selectNotDefault: "Selectati o marca!"},
-			model: {selectNotDefault: "Selectati un model!"},
-			stil: {selectNotDefault: "Selectati stilul autovehiculului!"},
-			fabricatie:
-			{
-				required: "Introduceti anul fabricatiei!",
-				range: "Anul introdus este invalid!"
-			},
-			combustibil: {selectNotDefault: "Selectati tipul de combustibil!"},
-			culoare: {selectNotDefault: "Selectati culoare autovehiculului!"},
-			rulaj:
-			{
-				required: "Introduceti kilometrajul!",
-				min: "Kilometrajul nu poate fi negativ!"
-			},
-			clasaEuro: {selectNotDefault: "Selectati clasa euro!"},
-			pret:
-			{
-				required: "Introduceti pretul!",
-				min: "Pretul nu poate fi mai mic ca 1"
 			}
 		},
 		//Schimbare clase CSS de evidentiere a casutelor ce sunt gresite/valide
@@ -312,6 +299,20 @@ $(document).ready(function()
 	border-radius: 5px;
 	background: #ffbcbc;
 }
+.required
+{
+	font-weight: bold;
+}
+.autoCalc
+{
+	//text-decoration: underline;
+	color: #0033CC;
+}
+fieldset
+{
+	border-color: black; 
+	border-radius: 5px;
+}
 </style>
 <title>Adauga anunt</title>
 </head>
@@ -322,12 +323,15 @@ $(document).ready(function()
 </div>
 <div class = "container">
 	<div id="content" class = "pane">
-		<p>Campurile ingrosate si marcate cu * sunt obligatorii!</p><br>
+		<p>
+			Campurile ingrosate si marcate cu * sunt obligatorii!<br>
+			Câmpurile de culoare albastra sunt necesare pentru calcularea automată a timbrului de mediu și a asigurării obligatorii!
+		</p>
 		<span id = "sumarErori" class = "error"></span>
 		<form id = "anunt" name = "anunt" action = "checkAnunt.php" method = "POST" style = "padding-bottom: 20px">
 			<!-- Categorii -->
 			<div style = "display: block;padding-top: 10px;padding-bottom: 10px">
-				<label for = "categorie"><b>Categoria anuntului*</b></label><br>
+				<label for = "categorie" class = "required">Categoria anuntului*</label><br>
 				<select id = "categorie" name = "categorie" >
 					<?php echo $categorii ?>
 				</select>
@@ -337,13 +341,13 @@ $(document).ready(function()
 			<fieldset id = "marcaModel" disabled>
 				<legend>Marca si modelul</legend>
 					<div style = "display: inline-block;padding-right: 20px">
-						<label for = "marca"><b>Marca*</b></label><br>
+						<label for = "marca" class = "required">Marca*</label><br>
 						<select id = "marca"  name = "marca"  style = "width: 150px">
 							<option value = 0>Selectati</option>
 						</select>
 					</div>
 					<div style = "display: inline-block;padding-right: 20px;">
-						<label for = "model"><b>Modelul*</b></label><br>
+						<label for = "model" class = "required">Modelul*</label><br>
 						<select id = "model" name = "model"  style = "width: 150px">
 							<option value = 0>Selectati</option>
 						</select>
@@ -354,29 +358,29 @@ $(document).ready(function()
 			<fieldset id = "dateVehicul" style = "text-align: center;" disabled>
 				<legend>Date vehicul</legend>
 				<div style = "display: inline-block;text-align: left;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "stil"><b>Stil*</b></label><br>
+					<label for = "stil" class = "required">Stil*</label><br>
 					<select id = "stil" name = "stil"  style = "width: 105px">
 						<option value = 0>Selectati</option>
 					</select>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "fabricatie"><b>Anul fabricarii*</b></label><br>
+					<label for = "fabricatie" class = "required autoCalc">Anul fabricarii*</label><br>
 					<input type = "text" maxlength = "4" size = "4" id = "fabricatie" name = "fabricatie" >
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "combustibil"><b>Combustibil*</b></label><br>
+					<label for = "combustibil" class = "required">Combustibil*</label><br>
 					<select id = "combustibil" name = "combustibil" >
 						<option value = 0>Selectati</option>
 					</select>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "culoare"><b>Culoare*</b></label><br>
+					<label for = "culoare" class = "required">Culoare*</label><br>
 					<select id = "culoare" name = "culoare" >
 						<?php echo $culori; ?>
 					</select>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "capacitate">Cap. cilindrica(cm<sup>3</sup>)</label><br>
+					<label for = "capacitate" class = "required autoCalc">Cap. cilindrica(cm<sup>3</sup>)*</label><br>
 					<input type = "text" id = "capacitate" name = "capacitate">
 				</div>
 				<div style = "display: inline-block;text-align: left;padding-right: 20px;padding-bottom: 5px;">
@@ -385,7 +389,7 @@ $(document).ready(function()
 					<input type = "radio" id = "putereKW" name = "tipPutere" value = "kW" checked>kW
 					<input type = "radio" id = "putereCP" name = "tipPutere" value = "CP">CP
 				</div>
-				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
+				<div id = "divDistributie" style = "display: none;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "distributie">Distributie</label><br>
 					<select id = "distributie" name = "distributie">
 						<option value = 0>Selectati</option>
@@ -413,17 +417,17 @@ $(document).ready(function()
 			<fieldset id = "infoGen" disabled>
 				<legend>Informatii despre starea generala si exploatarea vehiculului</legend>
 				<div style = "display: inline-block;padding-right: 20px;">
-					<label for = "rulaj"><b>Rulaj*</b></label><br>
+					<label for = "rulaj" class = "required">Rulaj*</label><br>
 					<input type = "text" id = "rulaj" name = "rulaj" >
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;">
-					<label for = "clasaEuro"><b>Norma Euro*</b></label><br>
+					<label for = "clasaEuro" class = "required autoCalc">Norma Euro*</label><br>
 					<select id = "clasaEuro" name = "clasaEuro" >
 						<?php echo $clasaEuro; ?>
 					</select>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "emisii">Emisii CO<sub>2</sub>/l</label><br>
+					<label for = "emisii" class = "required autoCalc">Emisii CO<sub>2</sub>/l*</label><br>
 					<input type = "text" id = "emisii" name = "emisii">
 				</div>
 			</fieldset>
@@ -434,9 +438,9 @@ $(document).ready(function()
 				<div style = "display: block;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "climatizare">Climatizare</label><br>
 					<select id = "climatizare" name = "climatizare">
-						<option value = 1>Fara AC</option>
-						<option value = 2>AC manual</option>
-						<option value = 3>AC automat</option>
+						<option value = 0>Fara AC</option>
+						<option value = 1>AC manual</option>
+						<option value = 2>AC automat</option>
 					</select>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
@@ -474,7 +478,7 @@ $(document).ready(function()
 			<div style = "display: block;padding-top: 10px;padding-bottom: 5px">
 				<label>Adauga poza la anunt</label><br>
 				<input type = "file" accept = "image/*" id = "poza" name = "poza" disabled><br>
-				<input type = "button" id = "resetPoza" name = "resetPoza" value = "Sterge poza" disabled></br>
+				<input type = "button" id = "resetPoza" name = "resetPoza" value = "Sterge poza" disabled><br>
 				<p>Adaugarea unei poze la anunt nu este necesara, dar daca adaugi una vei creste sansele vanzarii autovehiculului.<b> Poza poate avea o dimensiune de maxim 6 MB!</b></p>
 			</div>
 			<!-- End Poza -->

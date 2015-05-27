@@ -10,7 +10,7 @@
 		exit;
 	}
 	$pagCurenta = basename(__FILE__, '.php');
-	$query = "SELECT `nume`, `prenume`, `telefon`, `adresaEmail`, `judet`, `localitate`, `strada`, `bloc`, `numar`, `scara`, `etaj`, `apartament` FROM `profiles` WHERE `profileid` = " . $_SESSION['userID'];
+	$query = "SELECT `nume`, `prenume`, `telefon`, `adresaEmail`, `judet`, `localitate`, `strada`, `bloc`, `numar`, `scara`, `etaj`, `apartament`, `sold` FROM `profiles` WHERE `profileid` = " . $_SESSION['userID'];
 	$sql = mysqli_query($conexiune, $query);
 	if ($sql !== false)
 	{
@@ -28,7 +28,6 @@
 			if ($rez[$key] === NULL)
 				$rez[$key] = '-';
 		}
-		/*[nume] => - [prenume] => - [telefon] => - [adresaEmail] => nume_fain@gmail.com [judet] => - [localitate] => - [strada] => - [bloc] => - [numar] => - [scara] => - [etaj] => - [apartament] => -*/
 	}
 	else $mesajEroare = "<span class = \"error\">Au aparut ceva probleme la incarcarea profilului. Va rugam reincarcati pagina. Daca problemele persista va rugam sa semnalati aceasta eroare contactandu-ne folosind datele din pagina About.</span><br>";
 ?>
@@ -58,7 +57,7 @@
 					<span><b>Prenume: </b><?php if (isset($rez['prenume'])) echo $rez['prenume']; ?></span>
 				</p>
 				<p>
-					<span><b>Telefon: </b><?php if (isset($rez['telefon'])) echo "0" . $rez['telefon']; ?></span><br>
+					<span><b>Telefon: </b><?php if (isset($rez['telefon']) && $rez['telefon'] !== '-') echo "0" . $rez['telefon']; else echo $rez['telefon']; ?></span><br>
 					<span><b>Adresa email: </b><?php if (isset($rez['adresaEmail'])) echo $rez['adresaEmail']; ?></span>
 				</p>
 				<p>
@@ -66,10 +65,13 @@
 					<span><b>Localitate: </b><?php if (isset($rez['localitate'])) echo $rez['localitate']; ?></span><br>
 					<span><b>Strada: </b><?php if (isset($rez['strada'])) echo $rez['strada']; ?></span>&nbsp;
 					<span><b>Nr: </b><?php if (isset($rez['numar'])) echo $rez['numar']; ?></span><br>
-					<span><b>Bloc: </b><?php if (isset($rez['bloc'])) echo $rez['bloc']; ?></span>
-					<span><b>Scara: </b><?php if (isset($rez['scara'])) echo $rez['scara']; ?></span>
-					<span><b>Etaj: </b><?php if (isset($rez['etaj'])) echo $rez['etaj']; ?></span>
-					<span><b>Apartament:</b><?php if (isset($rez['apartament'])) echo $rez['apartament']; ?></span>
+					<span><b>Bloc: </b><?php if (isset($rez['bloc'])) echo $rez['bloc']; ?></span>&nbsp;
+					<span><b>Scara: </b><?php if (isset($rez['scara'])) echo $rez['scara']; ?></span>&nbsp;
+					<span><b>Etaj: </b><?php if (isset($rez['etaj'])) echo $rez['etaj']; ?></span>&nbsp;
+					<span><b>Apartament: </b><?php if (isset($rez['apartament'])) echo $rez['apartament']; ?></span>
+				</p>
+				<p style = "margin-bottom: 0px;">
+					<span><b>Sold: </b><?php if (isset($rez['sold'])) echo $rez['sold'] . " Lei"; ?></span>
 				</p>
 			</div>
 			<input type = "button" id = "schProfil" name = "schProfil" value = "Modificare profil" onclick = "window.location.href = 'edit_profile.php'" style = "display: block;margin: 10px;">
