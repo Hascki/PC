@@ -60,15 +60,6 @@ $(document).ready(function()
 				}
 				$("#marca").html(options);
 			});
-			$.getJSON("getStyles.php", {tip:$(this).val()}, function(rez)
-			{
-				var options = "<option value = 0>Selectati</option>";
-				for (var i = 0;i < rez.length;i++)
-				{
-					options += "<option value = " + rez[i].id + ">" + rez[i].stil + "</option>";
-				}
-				$("#stil").html(options);
-			});
 			if ($(this).val() === "1")
 			{
 				$("#divDistributie").css("display", "inline-block");
@@ -116,7 +107,6 @@ $(document).ready(function()
 			$("#submit").prop("disabled", true);
 			$("#marca").html("<option value = 0>Selectati</option>");
 			$("#model").html("<option value = 0>Selectati</option>");
-			$("#stil").html("<option value = 0>Selectati</option>");
 			$("#combustibil").html("<option value = 0>Selectati</option>");
 			$("#distributie").html("<option value = 0>Selectati</option>");
 		}
@@ -180,12 +170,10 @@ $(document).ready(function()
 			categorie: {selectNotDefault: "0"},
 			marca: {selectNotDefault: "0"},
 			model: {selectNotDefault: "0"},
-			stil: {selectNotDefault: "0"},
 			fabricatie: 
 			{
 				required: true,
-				digits: true,
-				range: [1900, parseInt((new Date).getFullYear())]
+				dateISO: true
 			},
 			combustibil: {selectNotDefault: "0"},
 			culoare: {selectNotDefault: "0"},
@@ -239,7 +227,7 @@ $(document).ready(function()
 			var r = confirm("Sigur doriti sa postati anuntul?\nDupa ce anuntul va fi postat nu veti mai putea face modificari.");
 			if (r === true)
 			{
-				
+				$("timbruMediu").val();// Adauga taxa de mediu intre parantezele lui val
 				request = $.ajax(
 				{
 					url: "checkAnunt.php",
@@ -325,7 +313,7 @@ fieldset
 	<div id="content" class = "pane">
 		<p>
 			Campurile ingrosate si marcate cu * sunt obligatorii!<br>
-			Câmpurile de culoare albastra sunt necesare pentru calcularea automată a timbrului de mediu și a asigurării obligatorii!
+			Câmpurile de culoare albastra sunt necesare pentru calcularea automată a timbrului de mediu!
 		</p>
 		<span id = "sumarErori" class = "error"></span>
 		<form id = "anunt" name = "anunt" action = "checkAnunt.php" method = "POST" style = "padding-bottom: 20px">
@@ -357,18 +345,12 @@ fieldset
 			<!-- Date vehicul -->
 			<fieldset id = "dateVehicul" style = "text-align: center;" disabled>
 				<legend>Date vehicul</legend>
-				<div style = "display: inline-block;text-align: left;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "stil" class = "required">Stil*</label><br>
-					<select id = "stil" name = "stil"  style = "width: 105px">
-						<option value = 0>Selectati</option>
-					</select>
-				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "fabricatie" class = "required autoCalc">Anul fabricarii*</label><br>
 					<input type = "text" maxlength = "4" size = "4" id = "fabricatie" name = "fabricatie" >
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "combustibil" class = "required">Combustibil*</label><br>
+					<label for = "combustibil" class = "required autoCalc">Combustibil*</label><br>
 					<select id = "combustibil" name = "combustibil" >
 						<option value = 0>Selectati</option>
 					</select>
@@ -507,6 +489,7 @@ fieldset
 				</p>
 			</div>
 			<!-- End Promovare -->
+			<input type = "hidden" id = "timbruMediu" name = "timbruMediu">
 			<input type = "submit" id = "submit" name = "submit" value = "Adauga anunt" disabled>
 		</form>
 	</div>
