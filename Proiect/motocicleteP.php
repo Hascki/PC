@@ -153,7 +153,7 @@ else
 	$selModel = mysqli_real_escape_string($conexiune,$selModel);
 	$_SESSION['selMaker']=$selMaker;
 	$_SESSION['selModel']=$selModel;
-	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`, `produse`,`modele`,`marci` WHERE `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=2 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` AND `produse`.`MakeId`='$selMaker'";
+	$sql = "SELECT `emisii`.`EuroName`,`Producator`,`ModelName`,`produse`.`idanunt`, `kilometraj`, DATE_FORMAT(`datafabricatie`,'%d-%m-%Y' )`datafabricatie`,`pret`, `caiputere`, `capacitate`, `clasaeuro`, `culoare` ,`combustibil`, `distributie`, `climatizare`,`SIA`,`IC`,`RV`,`SIE`,`GE`,`Nav`,`SP`,`Servo`,`TD`,`JA`,`Carlig`,`ABS`,`ESP`,`Integrala`,`Xenon` FROM `emisii`, `produse`,`modele`,`marci` WHERE `IdVanzator`='" . $_SESSION['userID'] ."' and `produse`.`ClasaEuro`=`emisii`.`EcoId` and `Categorie`=2 and`produse`.`ModelId`=`modele`.`ModelId` and `produse`.`MakeId`=`marci`.`MakeId` AND `produse`.`MakeId`='$selMaker'";
 	// Daca nu s-a ales optiunea Toate
 	if ($selModel != 9999)
 		$sql .= " AND `produse`.`ModelId` = '$selModel'";

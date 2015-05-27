@@ -359,7 +359,7 @@ if($selCategory==2){
 
 if (!isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']))
 {
-//echo "f1";
+echo "f1";
 	// Prima data cand se intra pe pagina
 	get_categories();
 	$_SESSION['categories'] = $categories;
@@ -371,7 +371,7 @@ if (!isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']
 }
 
 else if (isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['modele']))
-{//echo "f2";
+{echo "f2";
 	//
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
@@ -389,7 +389,7 @@ else if (isset($_GET['categorii'])&&!isset($_GET['marci']) && !isset($_GET['mode
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['modele'])&& $_GET['categorii'] !== $_GET['lastSelCategory']&&$_GET['categorii']!=0)
-{//echo "f3";
+{echo "f3";
 	//
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
@@ -406,7 +406,7 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['model
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['modele'])&& $_GET['marci'] !== $_GET['lastSelMaker'])
-{//echo "f4";
+{echo "f4";
 	//
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
@@ -425,7 +425,7 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && !isset($_GET['model
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele'])&& $_GET['categorii'] !== $_GET['lastSelCategory'])
-{//echo "f5";
+{echo "f5";
 	//
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
@@ -442,7 +442,7 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele
 }
 
 else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele'])&& $_GET['marci'] !== $_GET['lastSelMaker']&& $_GET['marci'] != 0)
-{//echo "f6";
+{echo "f6";
 	//
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
@@ -461,7 +461,7 @@ else if (isset($_GET['categorii'])&&isset($_GET['marci']) && isset($_GET['modele
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci'])) && $_GET['categorii'] == 0)
-{//echo "f7";
+{echo "f7";
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
 	$categories= change_selected($categories, $selCategory);
@@ -474,7 +474,7 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci'])) && $_GET['categorii'
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['marci'] == 0)
-{//echo "f8";
+{echo "f8";
 	// Daca se alege prima optiune din lista marcilor se dezactiveaza lista de modele. Un fel de buton de restart.
 	$categories = $_SESSION['categories'];
 	$selCategory = $_GET['categorii'];
@@ -491,7 +491,7 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['model
 }
 
 else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['modele'])) && $_GET['modele'] == 0)
-{//echo "f9";
+{echo "f9";
 	// Daca este activa optiunea default din lista de modele.
 	$categories = $_SESSION['categories'];
 	$makers = $_SESSION['makers'];
@@ -509,7 +509,7 @@ else if (isset($_GET['categorii'])&&(isset($_GET['marci']) && isset($_GET['model
 }
 
 else if($ok==1 && isset($_SESSION['cauta'])){
-//echo "f10";
+echo "f10";
 if(isset($_GET['modele'])&& $_GET['modele'] != 0){
 set_filtre();
 global $div1;
@@ -555,7 +555,7 @@ $div=$_SESSION['div1'];
 
 
 else if($ok==1 && !isset($_SESSION['cauta'])&&$_GET['modele']!=$_GET['lastSelModel']){
-//echo "f";
+echo "f";
 $selCategory=$_GET['categorii'];
 $selMaker=$_GET['marci'];
 $selModel=$_GET['modele'];
@@ -591,7 +591,7 @@ verifica_categorie($selCategory);
 }
 
 else
-{//echo "f11";
+{echo "f11";
 	// Aici se ajunge cand s-a ales o marca si un model si se poate cauta in tabelul de anunturi.
 	// Daca numarul de randuri este 0 inseamna ca nu exista nici un anunt care sa respecte cerintele selectate
 	// si se va afisa un mesaj.
