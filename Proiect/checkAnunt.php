@@ -9,7 +9,7 @@
 		header("location:index.php");
 		exit;
 	}
-	$query = "INSERT INTO `produse` (`IdAnunt`, `DataCreere`, `Categorie`, `IdVanzator`, `MakeId`, `ModelId`, `Tip`, `Kilometraj`, `DataFabricatie`, `Pret`, `Putere`, `CaiPutere`, `Capacitate`, `NrLocuri`, `MMA`, `ClasaEuro`, `Emisi`, `Culoare`, `VIN`, `Combustibil`, `Distributie`, `Climatizare`, `SIA`, `IC`, `RV`, `SIE`, `GE`, `Nav`, `SP`, `Servo`, `TD`, `JA`, `Carlig`, `ABS`, `ESP`, `Integrala`, `Xenon`, `Promovare`, `Descriere`) VALUES (NULL, ";
+	$query = "INSERT INTO `produse` (`IdAnunt`, `DataCreere`, `Categorie`, `IdVanzator`, `MakeId`, `ModelId`, `Kilometraj`, `DataFabricatie`, `Pret`, `Putere`, `CaiPutere`, `Capacitate`, `NrLocuri`, `MMA`, `ClasaEuro`, `CostTimbru`, `Emisi`, `Culoare`, `VIN`, `Combustibil`, `Distributie`, `Climatizare`, `SIA`, `IC`, `RV`, `SIE`, `GE`, `Nav`, `SP`, `Servo`, `TD`, `JA`, `Carlig`, `ABS`, `ESP`, `Integrala`, `Xenon`, `Promovare`, `Descriere`) VALUES (NULL, ";
 	$errorsArray = array();
 	$post = array();
 	$files = array();
@@ -41,7 +41,7 @@
 			echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		}
 	}
-	if (isset($post['submit']))
+	if (!isset($post['submit']))
 	{
 		$query .= "'" . date("Y-m-d") . "', "; // Adauga data cand s-a pus anuntul
 		// Adauga categoria anuntului
@@ -68,18 +68,14 @@
 		if (isset($post['model']) && filter_var($post['model'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1))))
 			$query .= $post['model'] . ", ";
 		else $errorsArray[] = ("Modelul este invalid!");
-		// Adauga tipul autoturismului
-		if (isset($post['stil']) && filter_var($post['categorie'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => 19))))
-			$query .= $post['stil'] . ", ";
-		else $errorsArray[] = "Stilul este invalid!";
 		// Adauga kilometraj
 		if (isset($post['rulaj']) && filter_var($post['rulaj'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 0))) >= 0)
 			$query .= $post['rulaj'] . ", ";
 		else $errorsArray[] = "Rulajul este invalid!";
-		// Adauga anul fabricarii
-		if (isset($post['fabricatie']) && filter_var($post['fabricatie'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => intval(date("Y"))))))
-			$query .= "'" . $post['fabricatie'] . "-01-01', ";
-		else $errorsArray[] = "Anul fabricarii este invalid!";
+		// Adauga data fabricarii
+		if (isset($post['fabricatie']) && checkdate(intval(substr($post['fabricatie'], 5, 2)), intval(substr($post['fabricatie'], 5, 2)), intval(substr($post['fabricatie'], 0, 4))))
+			$query .= "'" . $post['fabricatie'] . "', ";
+		else $errorsArray[] = "Data fabricarii este invalid!";
 		// Adauga pret
 		if (isset($post['pret']) && filter_var($post['pret'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1))))
 			$query .= $post['pret'] . ", ";
@@ -114,7 +110,9 @@
 		else $errorsArray[] = "Masa maxima admisa este invalida!";
 		// Adauga clasa EURO
 		if (isset($post['clasaEuro']) && filter_var($post['clasaEuro'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => 7))))
-			$query .= $post['clasaEuro'] . ", ";
+			$query .= $post['clasaEuro'] . ", 0, ";
+		// Adauga costul timbrului de mediu
+		
 		else $errorsArray[] = "Clasa Euro este invalida!";
 		// Adauga emisii CO2
 		if (isset($post['emisii']) && filter_var($post['emisii'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1))))
@@ -289,7 +287,7 @@
 			}
 			else
 			{
-				$errorsArray[] = "Eroare la inserarea in tabel!";
+				$errorsArray[] = "Eroare la inserarea in tabel! " . $query;
 				returnHandler("eroare");
 			}
 		}
