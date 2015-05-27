@@ -110,10 +110,12 @@
 		else $errorsArray[] = "Masa maxima admisa este invalida!";
 		// Adauga clasa EURO
 		if (isset($post['clasaEuro']) && filter_var($post['clasaEuro'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1, 'max_range' => 7))))
-			$query .= $post['clasaEuro'] . ", 0, ";
+			$query .= $post['clasaEuro'] . ", ";
 		else $errorsArray[] = "Clasa Euro este invalida!";
 		// Adauga costul timbrului de mediu
-		
+		if (isset($post['costTimbru']) && filter_var($post['costTimbru']), FILTER_VALIDATE_INT, array('options' => array('min_range' => 0)))
+			$query .= $post['costTimbru'] . ", ";
+		else $errorsArray[] = "Costul timbrului este invalid!";
 		// Adauga emisii CO2
 		if (isset($post['emisii']) && filter_var($post['emisii'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1))))
 			$query .= $post['emisii'] . ", ";
