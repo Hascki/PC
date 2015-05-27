@@ -42,6 +42,7 @@
 <link rel = "stylesheet" type = "text/css" href = "styles/fundal.css">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+<script src="TaxaAuto.js"></script>
 <script>
 $(document).ready(function()
 {
@@ -192,8 +193,7 @@ $(document).ready(function()
 			emisii:
 			{
 				required: true,
-				digits: true,
-				min: 0
+				digits: true
 			},
 			pret: 
 			{
@@ -228,7 +228,7 @@ $(document).ready(function()
 			var r = confirm("Sigur doriti sa postati anuntul?\nDupa ce anuntul va fi postat nu veti mai putea face modificari.");
 			if (r === true)
 			{
-				$("timbruMediu").val();// Adauga taxa de mediu intre parantezele lui val
+				$("timbruMediu").val(calc());// Adauga taxa de mediu intre parantezele lui val
 				request = $.ajax(
 				{
 					url: "checkAnunt.php",
@@ -254,15 +254,12 @@ $(document).ready(function()
 						var alertStr = "Au aparut urmatoarele erori:\n";
 						for (var i = 0;i < n;i++)
 						{
-							if (rasp[2 + i] === "Eroare la inserarea in tabel!" || rasp[2 + i] === "Poza aleasa nu a putut fii uploadata!" || rasp[2 + i] === "Poza default nu a putut fii uploadata!" || rasp[2 + i] === "Datele nu au fost trimise cum trebuie!")
-							{
-								
-								console.log(rasp[2 + i]);
-								errSys = true;
-							}
+							if (rasp[2 + i] !== "Eroare la inserarea in tabel!" || rasp[2 + i] !== "Poza aleasa nu a putut fii uploadata!" || rasp[2 + i] !== "Poza default nu a putut fii uploadata!" || rasp[2 + i] !== "Datele nu au fost trimise cum trebuie!")
+								alertStr += rasp[2 + i] + "\n";
 							else
 							{
-								alertStr += rasp[2 + i] + "\n";
+								console.log(rasp[2 + i]);
+								errSys = true;
 							}
 						}
 						if (!errSys)
@@ -395,13 +392,13 @@ fieldset
 			<div style = "display: block;padding-top: 10px;padding-bottom: 10px">
 				<label for = "VIN">VIN</label><br>
 				<input type = "text" id = "VIN" name = "VIN" maxlength = "17" size = "18" disabled>
-				<p>Câmpul VIN/seria de sasiu poate fi găsit în talonul mașinii (câmpul E în talonul nou sau câmpul 3 în talonul vechi). El este format dintr-un șir de 17 caractere, primele 3 sunt litere iar restul sunt cifre.</p>
+				<p>Campul VIN/seria de sasiu poate fi gasit in talonul masinii (campul E in talonul nou sau campul 3 in talonul vechi). El este format dintr-un sir de 17 caractere, primele 3 sunt litere iar restul sunt cifre.</p>
 				<p>Prin furnizarea codului VIN/seria de sasiu, credibilitatea anuntului va creste si vanzarea autovehiculului se va face mai repede.</p>
 			</div>
 			<!-- End VIN -->
 			<!-- Info Gen -->
 			<fieldset id = "infoGen" disabled>
-				<legend>Informații despre starea generală și exploatarea vehiculului</legend>
+				<legend>Informatii despre starea generala si exploatarea vehiculului</legend>
 				<div style = "display: inline-block;padding-right: 20px;">
 					<label for = "rulaj" class = "required">Rulaj*</label><br>
 					<input type = "text" id = "rulaj" name = "rulaj" >
@@ -424,27 +421,27 @@ fieldset
 				<div style = "display: block;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "climatizare">Climatizare</label><br>
 					<select id = "climatizare" name = "climatizare">
-						<option value = 0>Fără AC</option>
+						<option value = 0>Fara AC</option>
 						<option value = 1>AC manual</option>
 						<option value = 2>AC automat</option>
 					</select>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<input type = "checkbox" id = "sia" name = "sia">Sistem de încălzire auxiliar<br>
-					<input type = "checkbox" id = "ic" name = "ic">Închidere centralizată<br>
-					<input type = "checkbox" id = "rv" name = "rv">Regulator de viteză<br>
-					<input type = "checkbox" id = "sie" name = "sie">Scaune încălzite electric<br>
+					<input type = "checkbox" id = "sia" name = "sia">Sistem de incalzire auxiliar<br>
+					<input type = "checkbox" id = "ic" name = "ic">Inchidere centralizata<br>
+					<input type = "checkbox" id = "rv" name = "rv">Regulator de viteza<br>
+					<input type = "checkbox" id = "sie" name = "sie">Scaune incalzite electric<br>
 					<input type = "checkbox" id = "ge" name = "ge">Geamuri electrice<br>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<input type = "checkbox" id = "nav" name = "nav">Sistem de navigație<br>
+					<input type = "checkbox" id = "nav" name = "nav">Sistem de navigatie<br>
 					<input type = "checkbox" id = "sp" name = "sp">Senzori de parcare<br>
-					<input type = "checkbox" id = "servo" name = "servo">Servodirecție<br>
-					<input type = "checkbox" id = "td" name = "td">Trapa decapotabilă<br>
+					<input type = "checkbox" id = "servo" name = "servo">Servo directie<br>
+					<input type = "checkbox" id = "td" name = "td">Trapa decapotabila<br>
 					<input type = "checkbox" id = "ja" name = "ja">Jante de aliaj<br>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<input type = "checkbox" id = "carlig" name = "carlig">Cârlig<br>
+					<input type = "checkbox" id = "carlig" name = "carlig">Carlig<br>
 					<input type = "checkbox" id = "abs" name = "abs">ABS<br>
 					<input type = "checkbox" id = "esp" name = "esp">ESP<br>
 					<input type = "checkbox" id = "integrala" name = "integrala">4x4<br>
@@ -456,7 +453,7 @@ fieldset
 			<div style = "display: block;padding-top: 10px;padding-bottom: 5px">
 				<label for = "descriere">Descriere</label><br>
 				<textarea id = "descriere" name = "descriere" maxlength = 1024 rows = "15" cols = "60" disabled></textarea><br>
-				<label for = "charRamase">Caractere rămase:</label>
+				<label for = "charRamase">Caractere ramase:</label>
 				<input type = "text" id = "charRamase" disabled value = "1024" maxlength = "4" size = "4">
 			</div>
 			<!-- End Descriere -->
@@ -465,12 +462,12 @@ fieldset
 				<label>Adauga poza la anunt</label><br>
 				<input type = "file" accept = "image/*" id = "poza" name = "poza" disabled><br>
 				<input type = "button" id = "resetPoza" name = "resetPoza" value = "Sterge poza" disabled><br>
-				<p>Adăugarea unei poze la anunț nu este necesară, dar dacă adaugi una vei crește șansele vânzării autovehiculului.<b> Poza poate avea o dimensiune de maxim 6 MB!</b></p>
+				<p>Adaugarea unei poze la anunt nu este necesara, dar daca adaugi una vei creste sansele vanzarii autovehiculului.<b> Poza poate avea o dimensiune de maxim 6 MB!</b></p>
 			</div>
 			<!-- End Poza -->
 			<!-- Pret -->
 			<div style = "display: block;padding-top: 5px;padding-bottom: 10px">
-				<label><b>Preț* <u title = "Pretul trebuie sa fie in Euro">?</u></b></label><br>
+				<label><b>Pret* <u title = "Pretul trebuie sa fie in Euro">?</u></b></label><br>
 				<input type = "text" id = "pret" name = "pret"  disabled>
 			</div>
 			<!-- End Pret -->
@@ -483,13 +480,13 @@ fieldset
 					<option value = 0<?php if ($sold < 100) echo " disabled" ?>>Gold</option>
 				</select>
 				<p>
-					Sunt disponibile 3 pachete de promovare a anunțurilor:
+					Sunt disponibile 3 pachete de promovare a anunturilor:
 					<ol>
 						<li>Pachetul <b>Basic</b> (gratuit) nu are beneficii speciale</li>
-						<li>Pachetul <b>Premium</b> (50 Lei): Afișarea anunțului la începutul listei</li>
-						<li>Pachetul <b>Gold</b> (100 Lei): Afișarea anunțului la începutul listei + evidențierea anunțului cu o culoare atractivă</li>
+						<li>Pachetul <b>Premium</b> (50 Lei): Afisarea anuntului la inceputul listei</li>
+						<li>Pachetul <b>Gold</b> (100 Lei): Afisarea anuntului la inceputul listei + evidentierea anuntului cu o culoare atractiva</li>
 					</ol>
-					<strong>Dacă nu aveți destui bani în sold nu veți putea selecta pachetele Premium sau Gold!</strong>
+					<strong>Daca nu aveti destui bani in sold nu veti putea selecta pachetele Premium sau Gold!</strong>
 				</p>
 			</div>
 			<!-- End Promovare -->
