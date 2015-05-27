@@ -181,7 +181,7 @@ else
 		$sql .=" ORDER by Promovare ASC";
 	$result = mysqli_query($conexiune,$sql);
 	if (mysqli_num_rows($result) === 0)
-		$rezultate = "<tr><td>Ne pare rau, nu a fost gasit niciun anunt dupa criteriile de cautare selectate!</td></tr>";
+		$rezultate = "<tr><td height='200'>Ne pare rau, nu a fost gasit niciun anunt dupa criteriile de cautare selectate!</td></tr>";
 	else
 	{$rezultate .= "<tr><td height='120' colspan='13'></td></tr>";
 		while ($row = mysqli_fetch_array($result))
