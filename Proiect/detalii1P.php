@@ -72,7 +72,7 @@ $r="DA";
 return $r;
 }
 
-$query = "SELECT `sold` FROM `profiles`, `utilizatori` WHERE `profiles`.`profileid` = `utilizatori`.`userid` AND `profileid` = '" . $_SESSION['userID'] ."' AND `username` = '" . $_SESSION['login'] ."'";
+$query = "SELECT `sold` FROM `profiles`,`utilizatori` WHERE `profiles`.`profileid` = `utilizatori`.`userid` AND `profileid` = '" . $_SESSION['userID'] ."' AND `username` = '" . $_SESSION['login'] ."'";
 	$sql = mysqli_query($conexiune, $query);
 	if ($sql !== false && mysqli_num_rows($sql) === 1)
 	{
