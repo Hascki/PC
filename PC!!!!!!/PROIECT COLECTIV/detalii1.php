@@ -153,23 +153,6 @@ border: 1px solid black;
 	<table style = "width:100%" >
 		<?php echo $rezultat ?>
 	</table>
-	<div>
-	  <div id="content" style="margin-top:10px;height:100%;">
-   <center><h1>Group Chat In PHP</h1></center>
-   <div class="chat">
-    <div class="users">
-     <?include("users.php");?>
-    </div>
-    <div class="chatbox">
-     <?
-     if(isset($_SESSION['user'])){
-      include("chatbox.php");
-     }else{
-      $display_case=true;
-      include("login.php");
-     }
-     ?>
-	</div>
 </div>
 
 </body>
