@@ -30,12 +30,12 @@
 	</div>
 	<div id = "left" class = "pane">
 		
-		<img src = "semafor.png" height="500" width="190">
+		<img src="reclama.jpg" height="500" width="190">
 		
 	</div>
 	<div id = "right" class = "pane">
 		
-		<img src = "semafor.png" height="500" width="190">
+		<img src="reclama.jpg" height="500" width="190">
 		
 	</div>
 </div>

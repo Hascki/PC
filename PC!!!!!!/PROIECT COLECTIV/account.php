@@ -76,8 +76,6 @@
 			</div>
 			<input type = "button" id = "schProfil" name = "schProfil" value = "Modificare profil" onclick = "window.location.href = 'edit_profile.php'" style = "display: block;margin: 10px;">
 		</div>
-		<div id = "anunturi" style = "margin: 5px 0px;border:2px solid black;">
-			<iframe name="anunturiFrame" id="anunturiFrame" src= "anunturile_mele.php" scrolling="yes" style = "width: 99.6%;height: 1000px;border: 0px;"></iframe>
 		</div>
 	</div>
 	<div id = "left" class = "pane">
