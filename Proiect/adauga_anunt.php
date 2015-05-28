@@ -12,7 +12,7 @@
 	$pagCurenta = basename(__FILE__, '.php');
 	$query = "SELECT * FROM `categorie` order by `type` asc";
 	$sql = mysqli_query($conexiune, $query);
-	$categorii = '<option value = 0> Selectati </option>';
+	$categorii = '<option value = 0> Selectați </option>';
 	while ($row = mysqli_fetch_array($sql))
 		$categorii .= '<option value = ' . $row["Type"] . '>' . $row["CatName"] . '</option>';
 	$query = "SELECT * FROM `culori`";
@@ -22,7 +22,7 @@
 		$culori .= "<option value = " . $row['ColorId'] . ">" . $row['Culoare'] . "</option>";
 	$query = "SELECT * FROM `emisii`";
 	$sql = mysqli_query($conexiune, $query);
-	$clasaEuro = "<option value = 0> Selectati </option>";
+	$clasaEuro = "<option value = 0> Selectați </option>";
 	while ($row = mysqli_fetch_array($sql))
 		$clasaEuro .= "<option value = " . $row['EcoId'] . ">" . $row['EuroName'] . "</option>";
 	$query = "SELECT `sold` FROM `profiles`, `utilizatori` WHERE `profiles`.`profileid` = `utilizatori`.`userid` AND `profileid` = '" . $_SESSION['userID'] ."' AND `username` = '" . $_SESSION['login'] ."'";
@@ -54,7 +54,7 @@ $(document).ready(function()
 		{
 			$.getJSON("getMakers.php", {tip: $(this).val()}, function(rez)
 			{
-				var options = "<option value = 0>Selectati</option>\n";
+				var options = "<option value = 0>Selectați</option>\n";
 				for (var i = 0;i < rez.length;i++)
 				{
 					options += "<option value = " + rez[i].id + ">" + rez[i].maker + "</option>\n";
@@ -68,9 +68,9 @@ $(document).ready(function()
 				$("#divNrLocuri").css("display", "inline-block");
 				$("#divMMA").css("display", "inline-block");
 				$("#dotari").css("display", "block");
-				var options = "<option value = 1>Manuala</option><option value = 2>Secventiala</option><option value = 3>Automata</option>";
+				var options = "<option value = 1>Manuală</option><option value = 2>Secvențială</option><option value = 3>Automată</option>";
 				$("#distributie").html(options);
-				options = "<option value = 0>Selectati</option><option value = 1>Benzina</option><option value = 2>Motorina</option><option value = 3>Hibrid</option><option value = 4>Electric</option>";
+				options = "<option value = 0>Selectați</option><option value = 1>Benzină</option><option value = 2>Motorină</option><option value = 3>Hibrid</option><option value = 4>Electric</option>";
 				$("#combustibil").html(options);
 			}
 			else 
@@ -80,7 +80,7 @@ $(document).ready(function()
 				$("#divNrLocuri").css("display", "none");
 				$("#divMMA").css("display", "none");
 				$("#dotari").css("display", "none");
-				options = "<option value = 0>Selectati</option><option value = 1>Benzina</option><option value = 2>Motorina</option><option value = 4>Electric</option>";
+				options = "<option value = 0>Selectați</option><option value = 1>Benzină</option><option value = 2>Motorină</option><option value = 4>Electric</option>";
 				$("#combustibil").html(options);
 			}
 			$("#marcaModel").prop("disabled", false);
@@ -106,10 +106,10 @@ $(document).ready(function()
 			$("#pret").prop("disabled", true);
 			$("#promovare").prop("disabled", true);
 			$("#submit").prop("disabled", true);
-			$("#marca").html("<option value = 0>Selectati</option>");
-			$("#model").html("<option value = 0>Selectati</option>");
-			$("#combustibil").html("<option value = 0>Selectati</option>");
-			$("#distributie").html("<option value = 0>Selectati</option>");
+			$("#marca").html("<option value = 0>Selectați</option>");
+			$("#model").html("<option value = 0>Selectați</option>");
+			$("#combustibil").html("<option value = 0>Selectați</option>");
+			$("#distributie").html("<option value = 0>Selectați</option>");
 		}
 	});
 	// Cand se schimba modelul
@@ -165,6 +165,7 @@ $(document).ready(function()
 	// Validare formular
 	$("#anunt").validate(
 	{
+		//debug: true,
 		//Reguli de validare
 		rules:
 		{
@@ -228,7 +229,10 @@ $(document).ready(function()
 			var r = confirm("Sigur doriti sa postati anuntul?\nDupa ce anuntul va fi postat nu veti mai putea face modificari.");
 			if (r === true)
 			{
-				$("timbruMediu").val(calc());// Adauga taxa de mediu intre parantezele lui val
+				var taxa = calc();
+				console.log("Taxa " + taxa);
+				$("#timbruMediu").val(taxa);
+				console.log("Val " + $("#timbruMediu").val());
 				request = $.ajax(
 				{
 					url: "checkAnunt.php",
@@ -303,7 +307,7 @@ fieldset
 	border-radius: 5px;
 }
 </style>
-<title>Adauga anunt</title>
+<title>Adaugă anunț</title>
 </head>
 
 <body>
@@ -313,8 +317,8 @@ fieldset
 <div class = "container">
 	<div id="content" class = "pane">
 		<p>
-			Campurile ingrosate si marcate cu * sunt obligatorii!<br>
-			Câmpurile de culoare albastra sunt necesare pentru calcularea automată a timbrului de mediu!
+			Câmpurile îngrosate și marcate cu * sunt obligatorii!<br>
+			Câmpurile de culoare albastră sunt necesare pentru calcularea automată a timbrului de mediu!
 		</p>
 		<span id = "sumarErori" class = "error"></span>
 		<form id = "anunt" name = "anunt" action = "checkAnunt.php" method = "POST" style = "padding-bottom: 20px">
@@ -328,17 +332,17 @@ fieldset
 			<!-- End Categorii -->
 			<!-- Marca si model -->
 			<fieldset id = "marcaModel" disabled>
-				<legend>Marca si modelul</legend>
+				<legend>Marca și modelul</legend>
 					<div style = "display: inline-block;padding-right: 20px">
 						<label for = "marca" class = "required">Marca*</label><br>
 						<select id = "marca"  name = "marca"  style = "width: 150px">
-							<option value = 0>Selectati</option>
+							<option value = 0>Selectați</option>
 						</select>
 					</div>
 					<div style = "display: inline-block;padding-right: 20px;">
 						<label for = "model" class = "required">Modelul*</label><br>
 						<select id = "model" name = "model"  style = "width: 150px">
-							<option value = 0>Selectati</option>
+							<option value = 0>Selectați</option>
 						</select>
 					</div>
 			</fieldset>
@@ -347,13 +351,13 @@ fieldset
 			<fieldset id = "dateVehicul" style = "text-align: center;" disabled>
 				<legend>Date vehicul</legend>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "fabricatie" class = "required autoCalc">Anul fabricarii(format AAAA-LL-ZZ)*</label><br>
+					<label for = "fabricatie" class = "required autoCalc">Data fabricării(format AAAA-LL-ZZ)*</label><br>
 					<input type = "text" maxlength = "10" size = "10" id = "fabricatie" name = "fabricatie" >
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "combustibil" class = "required autoCalc">Combustibil*</label><br>
 					<select id = "combustibil" name = "combustibil" >
-						<option value = 0>Selectati</option>
+						<option value = 0>Selectați</option>
 					</select>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
@@ -363,7 +367,7 @@ fieldset
 					</select>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "capacitate" class = "required autoCalc">Cap. cilindrica(cm<sup>3</sup>)*</label><br>
+					<label for = "capacitate" class = "required autoCalc">Cap. cilindrică(cm<sup>3</sup>)*</label><br>
 					<input type = "text" id = "capacitate" name = "capacitate">
 				</div>
 				<div style = "display: inline-block;text-align: left;padding-right: 20px;padding-bottom: 5px;">
@@ -373,17 +377,17 @@ fieldset
 					<input type = "radio" id = "putereCP" name = "tipPutere" value = "CP">CP
 				</div>
 				<div id = "divDistributie" style = "display: none;padding-right: 20px;padding-bottom: 5px;">
-					<label for = "distributie">Distributie</label><br>
+					<label for = "distributie">Distribuție</label><br>
 					<select id = "distributie" name = "distributie">
-						<option value = 0>Selectati</option>
+						<option value = 0>Selectați</option>
 					</select>
 				</div>
 				<div id = "divMMA" style = "display: none;padding-right: 20px;">
-					<label for = "MMA">Masa maxima admisa(t)</label><br>
+					<label for = "MMA">Masa maximă admisă(t)</label><br>
 					<input type = "text" id = "MMA" name = "MMA" maxlength = "4" size = "4">
 				</div>
 				<div id = "divNrLocuri" style = "display: none;padding-right: 20px;">
-					<label for = "nrLocuri">Numar locuri</label><br>
+					<label for = "nrLocuri">Număr locuri</label><br>
 					<input type = "text" id = "nrLocuri" name = "nrLocuri" maxlength = "1" size = "2">
 				</div>
 			</fieldset>
@@ -392,13 +396,13 @@ fieldset
 			<div style = "display: block;padding-top: 10px;padding-bottom: 10px">
 				<label for = "VIN">VIN</label><br>
 				<input type = "text" id = "VIN" name = "VIN" maxlength = "17" size = "18" disabled>
-				<p>Campul VIN/seria de sasiu poate fi gasit in talonul masinii (campul E in talonul nou sau campul 3 in talonul vechi). El este format dintr-un sir de 17 caractere, primele 3 sunt litere iar restul sunt cifre.</p>
-				<p>Prin furnizarea codului VIN/seria de sasiu, credibilitatea anuntului va creste si vanzarea autovehiculului se va face mai repede.</p>
+				<p>Câmpul VIN/seria de șasiu poate fi găsit în talonul mașinii (câmpul E în talonul nou sau câmpul 3 în talonul vechi). El este format dintr-un șir de 17 caractere, primele 3 sunt litere iar restul sunt cifre.</p>
+				<p>Prin furnizarea codului VIN/seriei de șasiu, credibilitatea anunțului va crește și vânzarea autovehiculului se va face mai repede.</p>
 			</div>
 			<!-- End VIN -->
 			<!-- Info Gen -->
 			<fieldset id = "infoGen" disabled>
-				<legend>Informatii despre starea generala si exploatarea vehiculului</legend>
+				<legend>Informații despre starea generală și exploatarea vehiculului</legend>
 				<div style = "display: inline-block;padding-right: 20px;">
 					<label for = "rulaj" class = "required">Rulaj*</label><br>
 					<input type = "text" id = "rulaj" name = "rulaj" >
@@ -417,31 +421,31 @@ fieldset
 			<!-- End Info Gen -->
 			<!-- Dotari -->
 			<fieldset id = "dotari" disabled style = "display: none;">
-				<legend>Dotari</legend>
+				<legend>Dotări</legend>
 				<div style = "display: block;padding-right: 20px;padding-bottom: 5px;">
 					<label for = "climatizare">Climatizare</label><br>
 					<select id = "climatizare" name = "climatizare">
-						<option value = 0>Fara AC</option>
+						<option value = 0>Fără AC</option>
 						<option value = 1>AC manual</option>
 						<option value = 2>AC automat</option>
 					</select>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<input type = "checkbox" id = "sia" name = "sia">Sistem de incalzire auxiliar<br>
-					<input type = "checkbox" id = "ic" name = "ic">Inchidere centralizata<br>
-					<input type = "checkbox" id = "rv" name = "rv">Regulator de viteza<br>
-					<input type = "checkbox" id = "sie" name = "sie">Scaune incalzite electric<br>
+					<input type = "checkbox" id = "sia" name = "sia">Sistem de încălzire auxiliar<br>
+					<input type = "checkbox" id = "ic" name = "ic">Închidere centralizată<br>
+					<input type = "checkbox" id = "rv" name = "rv">Regulator de viteză<br>
+					<input type = "checkbox" id = "sie" name = "sie">Scaune încălzite electric<br>
 					<input type = "checkbox" id = "ge" name = "ge">Geamuri electrice<br>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<input type = "checkbox" id = "nav" name = "nav">Sistem de navigatie<br>
+					<input type = "checkbox" id = "nav" name = "nav">Sistem de navigație<br>
 					<input type = "checkbox" id = "sp" name = "sp">Senzori de parcare<br>
-					<input type = "checkbox" id = "servo" name = "servo">Servo directie<br>
-					<input type = "checkbox" id = "td" name = "td">Trapa decapotabila<br>
+					<input type = "checkbox" id = "servo" name = "servo">Servodirecție<br>
+					<input type = "checkbox" id = "td" name = "td">Trapă decapotabilă<br>
 					<input type = "checkbox" id = "ja" name = "ja">Jante de aliaj<br>
 				</div>
 				<div style = "display: inline-block;padding-right: 20px;padding-bottom: 5px;">
-					<input type = "checkbox" id = "carlig" name = "carlig">Carlig<br>
+					<input type = "checkbox" id = "carlig" name = "carlig">Cârlig<br>
 					<input type = "checkbox" id = "abs" name = "abs">ABS<br>
 					<input type = "checkbox" id = "esp" name = "esp">ESP<br>
 					<input type = "checkbox" id = "integrala" name = "integrala">4x4<br>
@@ -453,21 +457,21 @@ fieldset
 			<div style = "display: block;padding-top: 10px;padding-bottom: 5px">
 				<label for = "descriere">Descriere</label><br>
 				<textarea id = "descriere" name = "descriere" maxlength = 1024 rows = "15" cols = "60" disabled></textarea><br>
-				<label for = "charRamase">Caractere ramase:</label>
-				<input type = "text" id = "charRamase" disabled value = "1024" maxlength = "4" size = "4">
+				<label for = "charRamase">Caractere rămase:</label>
+				<input type = "text" id = "charRamase" disabled readonly = "readonly" value = "1024" maxlength = "4" size = "4">
 			</div>
 			<!-- End Descriere -->
 			<!-- Poza -->
 			<div style = "display: block;padding-top: 10px;padding-bottom: 5px">
-				<label>Adauga poza la anunt</label><br>
+				<label>Adaugă poza la anunț</label><br>
 				<input type = "file" accept = "image/*" id = "poza" name = "poza" disabled><br>
-				<input type = "button" id = "resetPoza" name = "resetPoza" value = "Sterge poza" disabled><br>
-				<p>Adaugarea unei poze la anunt nu este necesara, dar daca adaugi una vei creste sansele vanzarii autovehiculului.<b> Poza poate avea o dimensiune de maxim 6 MB!</b></p>
+				<input type = "button" id = "resetPoza" name = "resetPoza" value = "Șterge poza" disabled><br>
+				<p>Adăugarea unei poze la anunț nu este necesară, dar dacă adaugi una vei crește șansele vânzării autovehiculului.<b> Poza poate avea o dimensiune de maxim 6 MB!</b></p>
 			</div>
 			<!-- End Poza -->
 			<!-- Pret -->
 			<div style = "display: block;padding-top: 5px;padding-bottom: 10px">
-				<label><b>Pret* <u title = "Pretul trebuie sa fie in Euro">?</u></b></label><br>
+				<label><b>Preț* <u title = "Pretul trebuie sa fie in Euro">?</u></b></label><br>
 				<input type = "text" id = "pret" name = "pret"  disabled>
 			</div>
 			<!-- End Pret -->
@@ -480,13 +484,13 @@ fieldset
 					<option value = 0<?php if ($sold < 100) echo " disabled" ?>>Gold</option>
 				</select>
 				<p>
-					Sunt disponibile 3 pachete de promovare a anunturilor:
+					Sunt disponibile 3 pachete de promovare a anunțurilor:
 					<ol>
 						<li>Pachetul <b>Basic</b> (gratuit) nu are beneficii speciale</li>
-						<li>Pachetul <b>Premium</b> (50 Lei): Afisarea anuntului la inceputul listei</li>
-						<li>Pachetul <b>Gold</b> (100 Lei): Afisarea anuntului la inceputul listei + evidentierea anuntului cu o culoare atractiva</li>
+						<li>Pachetul <b>Premium</b> (50 Lei): Afișarea anunțului la începutul listei</li>
+						<li>Pachetul <b>Gold</b> (100 Lei): Afișarea anunțului la începutul listei + evidențierea anunțului cu o culoare atractivă</li>
 					</ol>
-					<strong>Daca nu aveti destui bani in sold nu veti putea selecta pachetele Premium sau Gold!</strong>
+					<strong>Dacă nu aveți destui bani în sold nu veți putea selecta pachetele Premium sau Gold!</strong>
 				</p>
 			</div>
 			<!-- End Promovare -->
